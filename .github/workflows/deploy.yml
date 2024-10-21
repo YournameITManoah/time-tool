@@ -60,6 +60,11 @@ jobs:
                   from_file: '.env.template'
                   to_file: '.env'
                   commit: 'false'
+              run: |
+                echo "Name : $APP_NAME"
+                echo "Env : $APP_ENV"
+                echo "Debug : $APP_DEBUG"
+                echo "user : $DB_USERNAME"
 
             - name: 🔨 Build Project
               run: |
