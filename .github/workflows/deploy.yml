@@ -9,18 +9,15 @@ on:
 
 name: 🚀 Deploy website on push
 
-env:
-    env_name: |-
-        ${{github.ref_name == 'production' && 'production'
-        || github.ref_name == 'main' && 'staging'
-        || 'testing'
-        }}
-
 jobs:
     web-deploy:
         name: 🎉 Deploy
         runs-on: ubuntu-latest
-        environment: $env_name
+        environment: |-
+          ${{github.ref_name == 'production' && 'production'
+          || github.ref_name == 'main' && 'staging'
+          || 'testing'
+          }}
         steps:
             - name: 🚚 Get latest code
               uses: actions/checkout@v4
@@ -49,7 +46,11 @@ jobs:
               uses: franzbischoff/replace_envs@v1
               env:
                   APP_NAME: ${{ vars.APP_NAME }}
-                  APP_ENV: $env_name
+                  APP_ENV: |-
+                    ${{github.ref_name == 'production' && 'production'
+                    || github.ref_name == 'main' && 'production'
+                    || 'development'
+                    }}
                   APP_KEY: ${{ secrets.APP_KEY }}
                   APP_DEBUG: ${{ vars.APP_DEBUG }}
                   APP_URL: ${{ vars.SERVER }}
@@ -62,7 +63,7 @@ jobs:
 
             - name: 🔨 Build Project
               env:
-                  APP_ENV: ${{ $env_name }}
+                  APP_ENV: $env_name
                   APP_URL: ${{ vars.SERVER }}
                   DB_USERNAME: ${{ secrets.DB_USERNAME }}
               run: |
