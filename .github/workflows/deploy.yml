@@ -21,9 +21,7 @@ jobs:
     web-deploy:
         name: 🎉 Deploy
         runs-on: ubuntu-latest
-        environment:
-            name: $ENV_NAME
-            url: ${{ format('https://{0}/', secrets.SERVER) }}
+        environment: $ENV_NAME
         steps:
             - name: 🚚 Get latest code
               uses: actions/checkout@v4
