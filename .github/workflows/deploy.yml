@@ -60,14 +60,16 @@ jobs:
                   from_file: '.env.template'
                   to_file: '.env'
                   commit: 'false'
-              run: |
-                echo "Name : $APP_NAME"
-                echo "Env : $APP_ENV"
-                echo "Debug : $APP_DEBUG"
-                echo "user : $DB_USERNAME"
 
             - name: 🔨 Build Project
+              env:
+                  APP_ENV: $ENV_NAME
+                  APP_URL: ${{ vars.SERVER }}
+                  DB_USERNAME: ${{ secrets.DB_USERNAME }}
               run: |
+                  echo "Env : $APP_ENV"
+                  echo "URL : $APP_URL"
+                  echo "user : $DB_USERNAME"
                   composer install
                   npm install
                   npm run build
