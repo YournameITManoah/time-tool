@@ -21,7 +21,7 @@ jobs:
     web-deploy:
         name: 🎉 Deploy
         runs-on: ubuntu-latest
-        environment: $ENV_NAME
+        environment: ${{ $ENV_NAME }}
         steps:
             - name: 🚚 Get latest code
               uses: actions/checkout@v4
@@ -63,7 +63,7 @@ jobs:
 
             - name: 🔨 Build Project
               env:
-                  APP_ENV: $ENV_NAME
+                  APP_ENV: ${{ $ENV_NAME }}
                   APP_URL: ${{ vars.SERVER }}
                   DB_USERNAME: ${{ secrets.DB_USERNAME }}
               run: |
