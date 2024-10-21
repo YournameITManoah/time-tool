@@ -130,6 +130,7 @@ jobs:
     cleanup:
         if: github.ref_name != 'production'
         name: Cleanup deployment
+        needs: web-deploy
         runs-on: ubuntu-latest
         environment:
           name: |-
