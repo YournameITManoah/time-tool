@@ -126,7 +126,7 @@ jobs:
                       php artisan filament:optimize-clear
                       php artisan filament:optimize
 
-                      php artisan migrate
+                      php artisan migrate --force
     cleanup:
         if: github.ref_name != 'production'
         name: Cleanup deployment
