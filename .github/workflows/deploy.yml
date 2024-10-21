@@ -13,11 +13,13 @@ jobs:
     web-deploy:
         name: 🎉 Deploy
         runs-on: ubuntu-latest
-        environment: |-
-          ${{github.ref_name == 'production' && 'production'
-          || github.ref_name == 'main' && 'staging'
-          || 'testing'
-          }}
+        environment:
+          name: |-
+            ${{github.ref_name == 'production' && 'production'
+            || github.ref_name == 'main' && 'staging'
+            || 'testing'
+            }}
+          url: https://${{vars.SERVER}}/
         steps:
             - name: 🚚 Get latest code
               uses: actions/checkout@v4
