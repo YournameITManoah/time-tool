@@ -62,7 +62,7 @@ jobs:
 
             - name: 🔨 Build Project
               env:
-                  APP_ENV: $ENV_NAME
+                  APP_ENV: $env_name
                   APP_URL: ${{ vars.SERVER }}
                   DB_USERNAME: ${{ secrets.DB_USERNAME }}
               run: |
