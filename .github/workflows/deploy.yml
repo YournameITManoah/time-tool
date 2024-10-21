@@ -14,12 +14,12 @@ jobs:
         name: 🎉 Deploy
         runs-on: ubuntu-latest
         environment:
-          name: |-
-            ${{github.ref_name == 'production' && 'production'
-            || github.ref_name == 'main' && 'staging'
-            || 'testing'
-            }}
-          url: https://${{vars.SERVER}}/
+            name: |-
+                ${{github.ref_name == 'production' && 'production'
+                || github.ref_name == 'main' && 'staging'
+                || 'testing'
+                }}
+            url: https://${{vars.SERVER}}/
         steps:
             - name: 🚚 Get latest code
               uses: actions/checkout@v4
@@ -49,10 +49,10 @@ jobs:
               env:
                   APP_NAME: ${{ vars.APP_NAME }}
                   APP_ENV: |-
-                    ${{github.ref_name == 'production' && 'production'
-                    || github.ref_name == 'main' && 'production'
-                    || 'development'
-                    }}
+                      ${{github.ref_name == 'production' && 'production'
+                      || github.ref_name == 'main' && 'production'
+                      || 'development'
+                      }}
                   APP_KEY: ${{ secrets.APP_KEY }}
                   APP_DEBUG: ${{ vars.APP_DEBUG }}
                   APP_URL: ${{ vars.SERVER }}
@@ -63,11 +63,16 @@ jobs:
                   to_file: '.env'
                   commit: 'false'
 
-            - name: 🔨 Build Project
+            - name: Install dependencies
               run: |
                   composer install
                   npm install
-                  npm run build
+
+            - name: Run tests
+              run: composer test
+
+            - name: 🔨 Build Project
+              run: npm run build
 
             - name: 📂 Sync files
               uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -133,11 +138,11 @@ jobs:
         needs: web-deploy
         runs-on: ubuntu-latest
         environment:
-          name: |-
-            ${{github.ref_name == 'production' && 'production'
-            || github.ref_name == 'main' && 'staging'
-            || 'testing'
-            }}
+            name: |-
+                ${{github.ref_name == 'production' && 'production'
+                || github.ref_name == 'main' && 'staging'
+                || 'testing'
+                }}
         steps:
             - name: Refresh database
               uses: appleboy/ssh-action@v1.1.0
