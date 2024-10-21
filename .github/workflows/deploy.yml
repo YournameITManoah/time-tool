@@ -1,0 +1,151 @@
+on:
+    push:
+        branches:
+            - main
+            - production
+    pull_request:
+        branches:
+            - main
+
+name: 🚀 Deploy website on push
+
+jobs:
+    web-deploy:
+        name: 🎉 Deploy
+        runs-on: ubuntu-latest
+        environment:
+          name: |-
+            ${{github.ref_name == 'production' && 'production'
+            || github.ref_name == 'main' && 'staging'
+            || 'testing'
+            }}
+          url: https://${{vars.SERVER}}/
+        steps:
+            - name: 🚚 Get latest code
+              uses: actions/checkout@v4
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: 8.2
+                  tools: php-cs-fixer, phpunit
+
+            - name: Cache composer dependencies
+              uses: actions/cache@v4
+              with:
+                  path: vendor
+                  key: composer-${{ hashFiles('**/composer.lock') }}
+                  restore-keys: |
+                      composer-
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: 'npm'
+
+            - name: Setup environment variables
+              uses: franzbischoff/replace_envs@v2
+              env:
+                  APP_NAME: ${{ vars.APP_NAME }}
+                  APP_ENV: |-
+                    ${{github.ref_name == 'production' && 'production'
+                    || github.ref_name == 'main' && 'production'
+                    || 'development'
+                    }}
+                  APP_KEY: ${{ secrets.APP_KEY }}
+                  APP_DEBUG: ${{ vars.APP_DEBUG }}
+                  APP_URL: ${{ vars.SERVER }}
+                  DB_USERNAME: ${{ secrets.DB_USERNAME }}
+                  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+              with:
+                  from_file: '.env.template'
+                  to_file: '.env'
+                  commit: 'false'
+
+            - name: 🔨 Build Project
+              run: |
+                  composer install
+                  npm install
+                  npm run build
+
+            - name: 📂 Sync files
+              uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+              with:
+                  server: ${{ vars.SERVER }}
+                  username: ${{ secrets.USERNAME }}
+                  password: ${{ secrets.PASSWORD }}
+                  server-dir: ./app/
+                  exclude: |
+                      **/.git*
+                      **/.git*/**
+                      **/node_modules/**
+                      **/vendor/**
+                      .hybridly/**
+                      public/**
+                      !public/build/manifest.json
+                      tests/**
+                      .editorconfig
+                      .env.*
+                      .php-cs-fixer*
+                      .prettier*
+                      eslint*
+                      package*
+                      phpunit.xml
+                      README.md
+                      tsconfig.json
+                      vite.config.ts
+
+            - name: 📂 Sync public folder
+              uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+              with:
+                  server: ${{ vars.SERVER }}
+                  username: ${{ secrets.USERNAME }}
+                  password: ${{ secrets.PASSWORD }}
+                  local-dir: ./public/
+                  server-dir: ./public_html/
+                  state-name: .ftp-deploy-public-sync-state.json
+                  exclude: |
+                      index.php
+                      build/manifest.json
+
+            - name: Optimize app
+              uses: appleboy/ssh-action@v1.1.0
+              with:
+                  host: ${{ vars.SERVER }}
+                  username: ${{ secrets.USERNAME }}
+                  password: ${{ secrets.PASSWORD }}
+                  script: |
+                      cd app
+
+                      composer install --prefer-dist -o
+
+                      php artisan optimize:clear
+                      php artisan optimize
+
+                      php artisan filament:optimize-clear
+                      php artisan filament:optimize
+
+                      php artisan migrate --force
+    cleanup:
+        if: github.ref_name != 'production'
+        name: Cleanup deployment
+        needs: web-deploy
+        runs-on: ubuntu-latest
+        environment:
+          name: |-
+            ${{github.ref_name == 'production' && 'production'
+            || github.ref_name == 'main' && 'staging'
+            || 'testing'
+            }}
+        steps:
+            - name: Refresh database
+              uses: appleboy/ssh-action@v1.1.0
+              with:
+                  host: ${{ vars.SERVER }}
+                  username: ${{ secrets.USERNAME }}
+                  password: ${{ secrets.PASSWORD }}
+                  script: |
+                      cd app
+                      php artisan migrate:fresh --force
+                      php artisan db:seed --force
