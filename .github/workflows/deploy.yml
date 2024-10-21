@@ -49,10 +49,11 @@ jobs:
             - name: Setup environment variables
               uses: franzbischoff/replace_envs@v1
               env:
+                  APP_NAME: ${{ vars.APP_NAME }}
                   APP_ENV: $ENV_NAME
                   APP_KEY: ${{ secrets.APP_KEY }}
-                  APP_DEBUG: ${{ secrets.APP_DEBUG }}
-                  APP_URL: ${{ secrets.SERVER }}
+                  APP_DEBUG: ${{ vars.APP_DEBUG }}
+                  APP_URL: ${{ vars.SERVER }}
                   DB_USERNAME: ${{ secrets.DB_USERNAME }}
                   DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
               with:
@@ -69,7 +70,7 @@ jobs:
             - name: 📂 Sync files
               uses: SamKirkland/FTP-Deploy-Action@v4.3.5
               with:
-                  server: ${{ secrets.SERVER }}
+                  server: ${{ vars.SERVER }}
                   username: ${{ secrets.USERNAME }}
                   password: ${{ secrets.PASSWORD }}
                   server-dir: ./app/
@@ -96,7 +97,7 @@ jobs:
             - name: 📂 Sync public folder
               uses: SamKirkland/FTP-Deploy-Action@v4.3.5
               with:
-                  server: ${{ secrets.SERVER }}
+                  server: ${{ vars.SERVER }}
                   username: ${{ secrets.USERNAME }}
                   password: ${{ secrets.PASSWORD }}
                   local-dir: ./public/
@@ -109,7 +110,7 @@ jobs:
             - name: Execute SSH commands
               uses: appleboy/ssh-action@v1.1.0
               with:
-                  host: ${{ secrets.SERVER }}
+                  host: ${{ vars.SERVER }}
                   username: ${{ secrets.USERNAME }}
                   password: ${{ secrets.PASSWORD }}
                   script: |
