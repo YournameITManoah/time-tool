@@ -109,7 +109,7 @@ jobs:
                       index.php
                       build/manifest.json
 
-            - name: Execute SSH commands
+            - name: Optimize app
               uses: appleboy/ssh-action@v1.1.0
               with:
                   host: ${{ vars.SERVER }}
@@ -126,5 +126,25 @@ jobs:
                       php artisan filament:optimize-clear
                       php artisan filament:optimize
 
+                      php artisan migrate
+    cleanup:
+        if: github.ref_name != 'production'
+        name: Cleanup deployment
+        runs-on: ubuntu-latest
+        environment:
+          name: |-
+            ${{github.ref_name == 'production' && 'production'
+            || github.ref_name == 'main' && 'staging'
+            || 'testing'
+            }}
+        steps:
+            - name: Refresh database
+              uses: appleboy/ssh-action@v1.1.0
+              with:
+                  host: ${{ vars.SERVER }}
+                  username: ${{ secrets.USERNAME }}
+                  password: ${{ secrets.PASSWORD }}
+                  script: |
+                      cd app
                       php artisan migrate:fresh --force
                       php artisan db:seed --force
