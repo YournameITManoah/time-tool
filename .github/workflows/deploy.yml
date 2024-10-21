@@ -23,7 +23,7 @@ jobs:
         runs-on: ubuntu-latest
         environment:
             name: $ENV_NAME
-            url: https://${{ secrets.SERVER }}/
+            url: ${{ format('https://{0}/', secrets.SERVER) }}
         steps:
             - name: 🚚 Get latest code
               uses: actions/checkout@v4
