@@ -4,12 +4,7 @@ export interface Project extends Resource {
     id: number
     name: string
     client_id: number
-    max_hours: number
-}
-
-export interface ProjectWithClient extends Project {
-    client: {
-        id: number
-        name: string
-    }
+    start_date: Date
+    end_date: Date
+    available_hours: number
 }

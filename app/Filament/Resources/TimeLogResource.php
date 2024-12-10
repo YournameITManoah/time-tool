@@ -2,11 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Components\TimeLogForm;
 use App\Filament\Resources\TimeLogResource\Pages;
 use App\Filament\Resources\ProjectResource\RelationManagers\TimeLogsRelationManager as ProjectTimeLogsRelationManager;
 use App\Filament\Resources\UserResource\RelationManagers\TimeLogsRelationManager as UserTimeLogsRelationManager;
-use App\Filament\Resources\TimeLogResource\Pages\MyTimeLogs;
 use App\Models\Project;
 use App\Models\TimeLog;
 use App\Rules\Timeframe;
@@ -33,9 +31,23 @@ class TimeLogResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema(
-                TimeLogForm::schema()
-            );
+            ->schema([
+                Forms\Components\Select::make('user_id')
+                    ->relationship('user', 'name')
+                    ->required(),
+                Forms\Components\Select::make('project_id')
+                    ->relationship('project', 'name')
+                    ->required(),
+                Forms\Components\Select::make('task_id')
+                    ->relationship('task', 'name')
+                    ->required(),
+                Forms\Components\DatePicker::make('date')
+                    ->required(),
+                Forms\Components\TimePicker::make('start_time')
+                    ->required(),
+                Forms\Components\TimePicker::make('stop_time')
+                    ->required(),
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -44,14 +56,12 @@ class TimeLogResource extends Resource
             ->recordTitleAttribute('id')
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
-                    ->sortable()
-                    ->hiddenOn([
-                        UserTimeLogsRelationManager::class,
-                        MyTimeLogs::class,
-                    ]),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('project.name')
-                    ->sortable()
-                    ->hiddenOn(ProjectTimeLogsRelationManager::class),
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('task.name')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('date')
                     ->date()
                     ->sortable(),
@@ -61,7 +71,6 @@ class TimeLogResource extends Resource
                 Tables\Columns\TextColumn::make('stop_time')
                     ->time('H:i')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('duration'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -96,7 +105,6 @@ class TimeLogResource extends Resource
             'index' => Pages\ListTimeLogs::route('/'),
             'create' => Pages\CreateTimeLog::route('/create'),
             'edit' => Pages\EditTimeLog::route('/{record}/edit'),
-            'my' => Pages\MyTimeLogs::route('/my')
         ];
     }
 

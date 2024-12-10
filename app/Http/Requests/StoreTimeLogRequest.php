@@ -18,13 +18,15 @@ class StoreTimeLogRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'project_id' => ['required', Rule::exists('project_user')->where(function (Builder $query) {
+            'project_id' => ['required', Rule::exists('user_tasks')->where(function (Builder $query) {
+                return $query->where('user_id', auth()->id());
+            })],
+            'task_id' => ['required', Rule::exists('user_tasks')->where(function (Builder $query) {
                 return $query->where('user_id', auth()->id());
             })],
             'date' => ['required', 'date', 'before_or_equal:now'],
-            'start_time' => ['required'],
-            'stop_time' => ['required', 'after:start_time'],
-            'description' => ['required', 'string', 'max:255'],
+            'start_time' => ['required', 'date_format:H:i'],
+            'stop_time' => ['required', 'date_format:H:i', 'after:start_time'],
         ];
     }
 }

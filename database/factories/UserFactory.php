@@ -24,9 +24,12 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $available = $this->faker->randomElement([16, 24, 32, 40]);
         return [
-            'name' => fake()->name(),
+            'name' => fake()->unique()->name(),
             'email' => fake()->unique()->safeEmail(),
+            'available_hours' => $available,
+            'planned_hours' => $this->faker->numberBetween(0, $available),
             'email_verified_at' => now(),
             'role_id' => Role::USER,
             'password' => static::$password ??= Hash::make('password'),
@@ -39,7 +42,7 @@ class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'email_verified_at' => null,
         ]);
     }

@@ -18,10 +18,10 @@ class TimeLog extends Model
     protected $fillable = [
         'user_id',
         'project_id',
+        'task_id',
         'date',
         'start_time',
         'stop_time',
-        'description',
     ];
 
     /**
@@ -49,5 +49,10 @@ class TimeLog extends Model
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
+    }
+
+    public function task(): BelongsTo
+    {
+        return $this->belongsTo(Task::class);
     }
 }

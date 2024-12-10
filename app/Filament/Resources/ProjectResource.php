@@ -7,6 +7,7 @@ use App\Filament\Resources\ProjectResource\RelationManagers;
 use App\Filament\Resources\ProjectResource\RelationManagers\TimeLogsRelationManager;
 use App\Filament\Resources\ProjectResource\RelationManagers\UsersRelationManager;
 use App\Filament\Resources\ClientResource\RelationManagers\ProjectsRelationManager as ClientProjectsRelationManager;
+use App\Filament\Resources\ProjectResource\RelationManagers\TasksRelationManager;
 use App\Models\Project;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -21,7 +22,7 @@ class ProjectResource extends Resource
 {
     protected static ?string $model = Project::class;
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 3;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Admin';
@@ -31,14 +32,16 @@ class ProjectResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
                 Forms\Components\Select::make('client_id')
                     ->relationship('client', 'name')
                     ->required()
                     ->hiddenOn(ClientProjectsRelationManager::class),
-                Forms\Components\TextInput::make('max_hours')
+                Forms\Components\TextInput::make('name')
+                    ->required()
+                    ->maxLength(50),
+                Forms\Components\DatePicker::make('start_date'),
+                Forms\Components\DatePicker::make('end_date'),
+                Forms\Components\TextInput::make('available_hours')
                     ->numeric()
                     ->default(null),
             ]);
@@ -49,12 +52,18 @@ class ProjectResource extends Resource
         return $table
             ->recordTitleAttribute('name')
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('client.name')
                     ->sortable()
                     ->hiddenOn(ClientProjectsRelationManager::class),
-                Tables\Columns\TextColumn::make('max_hours')
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('start_date')
+                    ->date()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('end_date')
+                    ->date()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('available_hours')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -83,8 +92,7 @@ class ProjectResource extends Resource
     public static function getRelations(): array
     {
         return [
-            UsersRelationManager::class,
-            TimeLogsRelationManager::class,
+            TasksRelationManager::class,
         ];
     }
 
@@ -94,7 +102,6 @@ class ProjectResource extends Resource
             'index' => Pages\ListProjects::route('/'),
             'create' => Pages\CreateProject::route('/create'),
             'edit' => Pages\EditProject::route('/{record}/edit'),
-            'my' => Pages\MyProjects::route('/my'),
         ];
     }
 

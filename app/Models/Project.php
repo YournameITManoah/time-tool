@@ -18,9 +18,11 @@ class Project extends Model
      * @var array
      */
     protected $fillable = [
-        'name',
         'client_id',
-        'max_hours',
+        'name',
+        'start_date',
+        'end_date',
+        'available_hours',
     ];
 
     /**
@@ -31,7 +33,9 @@ class Project extends Model
     protected $casts = [
         'id' => 'integer',
         'client_id' => 'integer',
-        'max_hours' => 'integer',
+        'start_date' => 'date',
+        'end_date' => 'date',
+        'available_hours' => 'integer',
     ];
 
     public function client(): BelongsTo
@@ -39,13 +43,13 @@ class Project extends Model
         return $this->belongsTo(Client::class);
     }
 
+    public function tasks(): BelongsToMany
+    {
+        return $this->belongsToMany(Task::class);
+    }
+
     public function timeLogs(): HasMany
     {
         return $this->hasMany(TimeLog::class);
-    }
-
-    public function users(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class);
     }
 }

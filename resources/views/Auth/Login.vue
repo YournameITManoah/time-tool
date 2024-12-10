@@ -49,14 +49,13 @@ const submit = async () => {
                             v-if="canResetPassword"
                             class="d-flex align-center justify-end"
                         >
-                            <router-link
+                            <text-link
                                 :href="route('password.request')"
-                                class="text-caption text-decoration-none text-blue"
+                                class="text-caption"
+                                label="Forgot password?"
                                 rel="noopener noreferrer"
                                 target="_blank"
-                            >
-                                Forgot password?
-                            </router-link>
+                            />
                         </div>
                         <password-field
                             v-model="form.fields.password"

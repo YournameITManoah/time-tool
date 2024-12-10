@@ -23,6 +23,31 @@ const vuetify = createVuetify({
         VDateInput,
         VTimePicker,
     },
+    theme: {
+        defaultTheme: 'light',
+        themes: {
+            light: {
+                colors: {
+                    primary: '#D30240',
+                    secondary: '#003C50',
+                    warning: '#F29100',
+                    error: '#E5321B',
+                    info: '#0E9594',
+                },
+                dark: false,
+            },
+            dark: {
+                colors: {
+                    primary: '#D30240',
+                    secondary: '#003C50',
+                    warning: '#F29100',
+                    error: '#E5321B',
+                    info: '#0E9594',
+                },
+                dark: true,
+            },
+        },
+    },
     directives,
     icons: {
         defaultSet: 'mdi',

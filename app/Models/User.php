@@ -27,6 +27,8 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     protected $fillable = [
         'name',
         'email',
+        'available_hours',
+        'planned_hours',
         'role_id',
         'password',
     ];
@@ -42,26 +44,27 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast to native types.
      *
-     * @return array<string, string>
+     * @var array
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
-
-    public function projects(): BelongsToMany
-    {
-        return $this->belongsToMany(Project::class);
-    }
+    protected $casts = [
+        'id' => 'integer',
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'available_hours' => 'integer',
+        'planned_hours' => 'integer',
+        'role_id' => 'integer',
+    ];
 
     public function timeLogs(): HasMany
     {
         return $this->hasMany(TimeLog::class);
+    }
+
+    public function userTasks(): HasMany
+    {
+        return $this->hasMany(UserTask::class);
     }
 
     public function role(): BelongsTo

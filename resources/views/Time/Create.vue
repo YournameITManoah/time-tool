@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { VFormRef, PagedResult, ProjectWithClient } from '~/resources/types'
+import { VFormRef, PagedResult, UserTaskExtended } from '~/resources/types'
 
 defineOptions({ name: 'TimeLogCreate' })
 
@@ -23,36 +23,46 @@ const breadcrumbs = [
     },
 ]
 
-const fetchingProjects = ref(false)
-const projects = ref<ProjectWithClient[]>([])
-const fetchProjects = async () => {
+const fetchingUserTasks = ref(false)
+const userTasks = ref<UserTaskExtended[]>([])
+const fetchUserTasks = async () => {
     try {
-        fetchingProjects.value = true
-        const result = await window.axios<PagedResult<ProjectWithClient>>(
-            '/api/project/my',
+        fetchingUserTasks.value = true
+        const result = await window.axios<PagedResult<UserTaskExtended>>(
+            '/api/user-task/my',
             { params: { limit: -1 } },
         )
 
-        projects.value = result.data.data
+        userTasks.value = result.data.data
     } catch (e) {
         console.error(e)
     } finally {
-        fetchingProjects.value = false
+        fetchingUserTasks.value = false
     }
 }
 
+const projects = computed(() => {
+    return [...new Set(userTasks.value.map((ut) => ut.project))]
+})
+
+const tasks = computed(() => {
+    return userTasks.value
+        .filter((ut) => ut.project.id === form.fields.project_id)
+        .map((ut) => ut.task)
+})
+
 onMounted(() => {
-    fetchProjects()
+    fetchUserTasks()
 })
 
 const form = useForm({
     url: route('time-log.store'),
     fields: {
         project_id: null,
+        task_id: null,
         date: null,
         start_time: null,
         stop_time: null,
-        description: null,
     },
 })
 
@@ -85,7 +95,7 @@ const submit = async () => {
                                     label="Project"
                                     :items="projects"
                                     :error-messages="form.errors.project_id"
-                                    :loading="fetchingProjects"
+                                    :loading="fetchingUserTasks"
                                     prepend-icon="mdi-cards-variant"
                                     item-title="name"
                                     item-value="id"
@@ -94,7 +104,20 @@ const submit = async () => {
                                 />
                             </v-col>
                             <v-col cols="12" sm="6" lg="3">
-                                <v-date-input
+                                <v-select
+                                    v-model="form.fields.task_id"
+                                    label="Task"
+                                    :items="tasks"
+                                    :error-messages="form.errors.task_id"
+                                    prepend-icon="mdi-cards-variant"
+                                    item-title="name"
+                                    item-value="id"
+                                    :rules="[isRequired]"
+                                    required
+                                />
+                            </v-col>
+                            <v-col cols="12" sm="6" lg="3">
+                                <date-field
                                     v-model="form.fields.date"
                                     label="Date"
                                     :max="today"
@@ -108,27 +131,18 @@ const submit = async () => {
                                 <TimeField
                                     v-model="form.fields.start_time"
                                     label="Start Time"
+                                    :max="form.fields.stop_time"
                                     :rules="[isRequired]"
                                     :error-messages="form.errors.start_time"
-                                    required
                                 />
                             </v-col>
                             <v-col cols="12" sm="6" lg="3">
                                 <TimeField
                                     v-model="form.fields.stop_time"
                                     label="Stop Time"
+                                    :min="form.fields.start_time"
                                     :rules="[isRequired]"
                                     :error-messages="form.errors.stop_time"
-                                    required
-                                />
-                            </v-col>
-                            <v-col cols="12">
-                                <v-textarea
-                                    v-model="form.fields.description"
-                                    label="Description"
-                                    :rules="[isRequired]"
-                                    :error-messages="form.errors.description"
-                                    required
                                 />
                             </v-col>
                             <v-col cols="12">

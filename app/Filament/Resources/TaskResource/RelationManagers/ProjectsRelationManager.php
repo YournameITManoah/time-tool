@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\UserResource\RelationManagers;
+namespace App\Filament\Resources\TaskResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -35,7 +35,7 @@ class ProjectsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\AttachAction::make()->preloadRecordSelect(),
+                Tables\Actions\AttachAction::make(),
             ])
             ->actions([
                 Tables\Actions\DetachAction::make(),

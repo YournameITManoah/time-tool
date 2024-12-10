@@ -22,10 +22,11 @@ const breadcrumbs = [
     },
 ]
 
-const groupBy = ref<any>([])
+const groupBy = ref<{ title: string; key: string }[]>([])
 const headers = computed(() => {
     return [
         { title: 'Project', key: 'project.name' },
+        { title: 'Task', key: 'task.name' },
         { title: 'Date', key: 'date' },
         { title: 'Start Time', key: 'start_time' },
         { title: 'Stop Time', key: 'stop_time' },
