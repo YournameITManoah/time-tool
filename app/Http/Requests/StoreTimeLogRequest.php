@@ -24,7 +24,7 @@ class StoreTimeLogRequest extends FormRequest
             'task_id' => ['required', Rule::exists('user_tasks')->where(function (Builder $query) {
                 return $query->where('user_id', auth()->id());
             })],
-            'date' => ['required', 'date', 'before_or_equal:now'],
+            'date' => ['required', 'date', 'after_or_equal:1 year ago', 'before_or_equal:now'],
             'start_time' => ['required', 'date_format:H:i'],
             'stop_time' => ['required', 'date_format:H:i', 'after:start_time'],
         ];

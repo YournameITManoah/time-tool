@@ -5,7 +5,11 @@
 const local = ref<Date | null>(null)
 const model = defineModel<string | null>({ required: true })
 
-watchImmediate(local, (val) => {
+watch(local, (val) => {
     model.value = val ? val.toLocaleString() : null
+})
+
+watchImmediate(model, (val) => {
+    local.value = val ? new Date(val) : null
 })
 </script>

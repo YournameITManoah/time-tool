@@ -46,8 +46,10 @@ class TimeLogResource extends Resource
                     ->minDate('1 year ago')
                     ->maxDate('today'),
                 Forms\Components\TimePicker::make('start_time')
+                    ->seconds(false)
                     ->required(),
                 Forms\Components\TimePicker::make('stop_time')
+                    ->seconds(false)
                     ->required(),
             ]);
     }

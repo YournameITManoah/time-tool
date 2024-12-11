@@ -39,8 +39,7 @@ class UserResource extends Resource
                     ->unique(),
                 Forms\Components\TextInput::make('password')
                     ->password()
-                    ->required()
-                    ->maxLength(255),
+                    ->required(),
                 Forms\Components\TextInput::make('available_hours')
                     ->numeric()
                     ->required()
