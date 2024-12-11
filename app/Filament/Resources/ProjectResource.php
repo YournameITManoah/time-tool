@@ -34,6 +34,8 @@ class ProjectResource extends Resource
             ->schema([
                 Forms\Components\Select::make('client_id')
                     ->relationship('client', 'name')
+                    ->searchable()
+                    ->preload()
                     ->required()
                     ->hiddenOn(ClientProjectsRelationManager::class),
                 Forms\Components\TextInput::make('name')
@@ -60,8 +62,10 @@ class ProjectResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('client.name')
                     ->sortable()
+                    ->searchable()
                     ->hiddenOn(ClientProjectsRelationManager::class),
                 Tables\Columns\TextColumn::make('name')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('start_date')
                     ->date()
@@ -82,7 +86,11 @@ class ProjectResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('client')
+                    ->relationship('client', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->hiddenOn(ClientProjectsRelationManager::class),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

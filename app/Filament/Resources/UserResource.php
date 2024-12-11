@@ -57,11 +57,13 @@ class UserResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('email')
+            ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('available_hours')
                     ->numeric()

@@ -18,10 +18,9 @@ class TimeLogExporter extends Exporter
                 ->label('ID'),
             ExportColumn::make('user.name'),
             ExportColumn::make('project.name'),
+            ExportColumn::make(name: 'task.name'),
             ExportColumn::make('start_time'),
             ExportColumn::make('stop_time'),
-            // TODO: duration field
-            ExportColumn::make('description'),
             ExportColumn::make('created_at'),
             ExportColumn::make('updated_at'),
         ];

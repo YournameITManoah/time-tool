@@ -39,8 +39,10 @@ class TaskResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\IconColumn::make('billable')
                     ->boolean(),
@@ -54,7 +56,7 @@ class TaskResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\TernaryFilter::make('billable')
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
