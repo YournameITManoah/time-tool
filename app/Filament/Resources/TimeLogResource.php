@@ -42,7 +42,9 @@ class TimeLogResource extends Resource
                     ->relationship('task', 'name')
                     ->required(),
                 Forms\Components\DatePicker::make('date')
-                    ->required(),
+                    ->required()
+                    ->minDate('1 year ago')
+                    ->maxDate('today'),
                 Forms\Components\TimePicker::make('start_time')
                     ->required(),
                 Forms\Components\TimePicker::make('stop_time')

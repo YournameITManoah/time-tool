@@ -30,11 +30,13 @@ class ClientResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
-                    ->maxLength(50),
+                    ->maxLength(50)
+                    ->unique(),
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
-                    ->maxLength(100),
+                    ->maxLength(100)
+                    ->unique(),
             ]);
     }
 

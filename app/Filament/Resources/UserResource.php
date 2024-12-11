@@ -30,21 +30,28 @@ class UserResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
-                    ->maxLength(50),
+                    ->maxLength(50)
+                    ->unique(),
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
-                    ->maxLength(100),
+                    ->maxLength(100)
+                    ->unique(),
                 Forms\Components\TextInput::make('password')
                     ->password()
                     ->required()
                     ->maxLength(255),
-                Tables\Columns\TextColumn::make('available_hours')
+                Forms\Components\TextInput::make('available_hours')
                     ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('planned_hours')
+                    ->required()
+                    ->minValue(0)
+                    ->maxValue(40),
+                Forms\Components\TextInput::make('planned_hours')
                     ->numeric()
-                    ->sortable(),
+                    ->required()
+                    ->minValue(0)
+                    ->maxValue(40)
+                    ->lte('available_hours')
             ]);
     }
 

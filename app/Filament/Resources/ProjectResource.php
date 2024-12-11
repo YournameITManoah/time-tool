@@ -39,10 +39,16 @@ class ProjectResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(50),
-                Forms\Components\DatePicker::make('start_date'),
-                Forms\Components\DatePicker::make('end_date'),
+                Forms\Components\DatePicker::make('start_date')
+                    ->minDate('today')
+                    ->maxDate('+10 years'),
+                Forms\Components\DatePicker::make('end_date')
+                    ->minDate('today')
+                    ->maxDate('+10 years')
+                    ->afterOrEqual('start_date'),
                 Forms\Components\TextInput::make('available_hours')
                     ->numeric()
+                    ->minValue(0)
                     ->default(null),
             ]);
     }

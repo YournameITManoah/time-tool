@@ -82,5 +82,8 @@ const submit = async () => {
                 </v-row>
             </v-container>
         </v-form>
+        <v-card-text class="text-center mt-4">
+            <text-link :href="route('register')" label="No account yet?" />
+        </v-card-text>
     </div>
 </template>
