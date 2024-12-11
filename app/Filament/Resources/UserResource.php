@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
+use Illuminate\Validation\Rules;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Filament\Resources\UserResource\RelationManagers\ProjectsRelationManager;
 use App\Models\User;
@@ -39,7 +40,9 @@ class UserResource extends Resource
                     ->unique(),
                 Forms\Components\TextInput::make('password')
                     ->password()
-                    ->required(),
+                    ->revealable()
+                    ->required()
+                    ->rules([Rules\Password::defaults()]),
                 Forms\Components\TextInput::make('available_hours')
                     ->numeric()
                     ->required()
