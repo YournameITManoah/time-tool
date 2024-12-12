@@ -8,3 +8,10 @@ export interface Project extends Resource {
     end_date: Date
     available_hours: number
 }
+
+export interface ProjectExtended extends Project {
+    client: {
+        id: number
+        name: string
+    }
+}

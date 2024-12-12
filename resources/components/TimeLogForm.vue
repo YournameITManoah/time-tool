@@ -12,7 +12,7 @@ const props = defineProps<{
 
 const today = new Date().toISOString()
 const lastYear = new Date()
-lastYear.setYear(new Date().getFullYear() - 1)
+lastYear.setFullYear(new Date().getFullYear() - 1)
 
 const breadcrumbs = [
     {

@@ -4,6 +4,7 @@ export interface TimeLog extends Resource {
     id: number
     user_id: number
     project_id: number
+    task_id: number
     date: string
     start_time: string
     stop_time: string
