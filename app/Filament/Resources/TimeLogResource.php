@@ -3,23 +3,14 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TimeLogResource\Pages;
-use App\Filament\Resources\ProjectResource\RelationManagers\TimeLogsRelationManager as ProjectTimeLogsRelationManager;
-use App\Filament\Resources\UserResource\RelationManagers\TimeLogsRelationManager as UserTimeLogsRelationManager;
-use App\Models\Project;
 use App\Models\TimeLog;
-use App\Rules\Timeframe;
-use Carbon\Carbon;
-use Closure;
+use App\Rules\UniqueTimeLogFrame;
 use Filament\Forms;
-use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Form;
 use App\Filament\Exports\TimeLogExporter;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Collection;
 
 class TimeLogResource extends Resource
 {
@@ -57,7 +48,8 @@ class TimeLogResource extends Resource
                     ->required(),
                 Forms\Components\TimePicker::make('stop_time')
                     ->seconds(false)
-                    ->required(),
+                    ->required()
+                    ->after('start_time'),
             ]);
     }
 

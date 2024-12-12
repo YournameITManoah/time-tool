@@ -1,0 +1,51 @@
+<?php
+
+namespace App\Rules;
+
+use App\Models\TimeLog;
+use Closure;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Validation\DataAwareRule;
+use Illuminate\Contracts\Validation\ValidationRule;
+
+class UniqueTimeLogFrame implements DataAwareRule, ValidationRule
+{
+    /**
+     * All of the data under validation.
+     *
+     * @var array<string, mixed>
+     */
+    protected $data = [];
+
+    /**
+     * Run the validation rule.
+     *
+     * @param  \Closure(string, ?string=): \Illuminate\Translation\PotentiallyTranslatedString  $fail
+     */
+    public function validate(string $attribute, mixed $value, Closure $fail): void
+    {
+        if (TimeLog::where('user_id', $this->data['user_id'] ?? auth()->id())
+            ->whereDate('date', $this->data['date'])
+            ->where(function (Builder $query) use ($value) {
+                $query->contains($value)->orWhere(function (Builder $query) {
+                    $query->partOf($this->data['start_time'], $this->data['stop_time']);
+                });
+            })
+            ->exists()
+        ) {
+            $fail("The {$attribute} conflicts with an existing time log.");
+        }
+    }
+
+    /**
+     * Set the data under validation.
+     *
+     * @param  array<string, mixed>  $data
+     */
+    public function setData(array $data): static
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+}

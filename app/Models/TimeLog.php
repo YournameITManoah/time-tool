@@ -55,4 +55,31 @@ class TimeLog extends Model
     {
         return $this->belongsTo(Task::class);
     }
+
+    /**
+     * Scope a query to only include time logs that contain a specific time value.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $time
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeContains($query, $time)
+    {
+        return $query->where('start_time', '<', $time)
+            ->where('stop_time', '>', $time);
+    }
+
+    /**
+     * Scope a query to only include time logs that are part of a specific time frame.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $start
+     * @param  string  $stop
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePartOf($query, $start, $stop)
+    {
+        return $query->where('start_time', '>=', $start)
+            ->where('stop_time', '<=', $stop);
+    }
 }
