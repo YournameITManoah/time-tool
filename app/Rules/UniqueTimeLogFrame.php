@@ -16,6 +16,12 @@ class UniqueTimeLogFrame implements DataAwareRule, ValidationRule
      * @var array<string, mixed>
      */
     protected $data = [];
+    protected $currentId;
+
+    public function __construct(?int $currentId = null)
+    {
+        $this->currentId = $currentId;
+    }
 
     /**
      * Run the validation rule.
@@ -25,6 +31,7 @@ class UniqueTimeLogFrame implements DataAwareRule, ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         if (TimeLog::where('user_id', $this->data['user_id'] ?? auth()->id())
+            ->where('id', '!=', $this->currentId)
             ->whereDate('date', $this->data['date'])
             ->where(function (Builder $query) use ($value) {
                 $query->contains($value)->orWhere(function (Builder $query) {

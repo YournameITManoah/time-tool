@@ -13,8 +13,7 @@ watchImmediate(prefersDark, (val) => {
     theme.global.name.value = val ? 'dark' : 'light'
 })
 
-onMounted(() => {
-    const val = flash.value
+watchImmediate(flash, (val) => {
     if (val) {
         Object.keys(val).forEach((key) => {
             const msg = val[key as keyof typeof val]

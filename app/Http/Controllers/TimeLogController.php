@@ -72,16 +72,19 @@ class TimeLogController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TimeLog $timeLog)
+    public function update(StoreTimeLogRequest $request, TimeLog $timeLog)
     {
         // Check if user is authorized
         Gate::authorize('update', $timeLog);
 
+        // Retrieve the validated input data
+        $validated = $request->validated();
+
         // Update the time log
-        $message = sprintf('Successfully updated %s', 'Time Log');
+        $timeLog->updateOrFail($validated);
 
         // Redirect back with success message
-        return redirect()->back()->with('success', $message);
+        return redirect()->back()->with('success', sprintf('Successfully updated time log #%s', $timeLog->id));
     }
 
     /**
@@ -93,9 +96,8 @@ class TimeLogController extends Controller
         Gate::authorize('delete', $timeLog);
 
         // Delete time log
-        $message = sprintf('Successfully deleted %s', 'Time Log');
 
         // Redirect back with success message
-        return redirect()->back()->with('success', $message);
+        return redirect()->back()->with('success', sprintf('Successfully deleted time log #%s', $timeLog->id));
     }
 }

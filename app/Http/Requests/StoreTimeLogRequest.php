@@ -18,6 +18,7 @@ class StoreTimeLogRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('time_log')?->id;
         return [
             'project_id' => ['required', Rule::exists('user_tasks')->where(function (Builder $query) {
                 return $query->where('user_id', auth()->id());
@@ -26,8 +27,8 @@ class StoreTimeLogRequest extends FormRequest
                 return $query->where('user_id', auth()->id());
             })],
             'date' => ['required', 'date', 'after_or_equal:1 year ago', 'before_or_equal:now'],
-            'start_time' => ['required', 'date_format:H:i', new UniqueTimeLogFrame()],
-            'stop_time' => ['required', 'date_format:H:i', 'after:start_time', new UniqueTimeLogFrame()],
+            'start_time' => ['required', 'date_format:H:i', new UniqueTimeLogFrame($id)],
+            'stop_time' => ['required', 'date_format:H:i', 'after:start_time', new UniqueTimeLogFrame($id)],
         ];
     }
 }

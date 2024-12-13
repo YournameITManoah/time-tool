@@ -73,8 +73,14 @@ const form = useForm({
         project_id: props.edit?.project_id,
         task_id: props.edit?.task_id,
         date: props.edit?.date,
-        start_time: props.edit?.start_time,
-        stop_time: props.edit?.stop_time,
+        start_time: props.edit?.start_time?.replace(
+            /^(\d{2}:\d{2})(:\d{2})?$/,
+            '$1',
+        ),
+        stop_time: props.edit?.stop_time?.replace(
+            /^(\d{2}:\d{2})(:\d{2})?$/,
+            '$1',
+        ),
     },
 })
 
@@ -82,7 +88,21 @@ const formRef = ref<VFormRef | null>(null)
 const submit = async () => {
     const result = await formRef.value?.validate()
     if (!result?.valid) return
-    form.submit()
+    form.submit().then(() => {
+        form.fields = {
+            project_id: props.edit?.project_id,
+            task_id: props.edit?.task_id,
+            date: props.edit?.date,
+            start_time: props.edit?.start_time?.replace(
+                /^(\d{2}:\d{2})(:\d{2})?$/,
+                '$1',
+            ),
+            stop_time: props.edit?.stop_time?.replace(
+                /^(\d{2}:\d{2})(:\d{2})?$/,
+                '$1',
+            ),
+        }
+    })
 }
 </script>
 
