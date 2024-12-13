@@ -143,7 +143,7 @@ const submit = async () => {
                                     label="Task"
                                     :items="tasks"
                                     :error-messages="form.errors.task_id"
-                                    prepend-icon="mdi-cards-variant"
+                                    prepend-icon="mdi-format-list-bulleted"
                                     item-title="name"
                                     item-value="id"
                                     :rules="[isRequired]"
