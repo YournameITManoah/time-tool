@@ -12,6 +12,5 @@ final class UserData extends Data
         public readonly string $name,
         public readonly string $email,
         public readonly ?CarbonInterface $email_verified_at,
-    ) {
-    }
+    ) {}
 }

@@ -4,7 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class() extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
@@ -12,14 +13,12 @@ return new class() extends Migration {
     {
         Schema::disableForeignKeyConstraints();
 
-        Schema::create('time_logs', function (Blueprint $table) {
+        Schema::create('user_tasks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('project_id')->constrained();
-            $table->date('date');
-            $table->time('start_time');
-            $table->time('stop_time');
-            $table->text('description');
+            $table->foreignId('task_id')->constrained();
+            $table->unique(['user_id', 'project_id', 'task_id']);
             $table->timestamps();
         });
 
@@ -31,6 +30,6 @@ return new class() extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('time_logs');
+        Schema::dropIfExists('user_tasks');
     }
 };

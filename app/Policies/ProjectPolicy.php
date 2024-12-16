@@ -33,7 +33,7 @@ class ProjectPolicy
      */
     public function view(User $user, Project $project): bool
     {
-        return $project->users()->where('user_id', $user->id)->exists();
+        return true;
     }
 
     /**

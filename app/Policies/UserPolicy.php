@@ -21,7 +21,7 @@ class UserPolicy
 
     public function viewAdmin(User $user): bool
     {
-        return true;
+        return false;
     }
 
     /**

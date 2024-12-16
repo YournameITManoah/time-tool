@@ -13,13 +13,22 @@
             activator="parent"
             transition="scale-transition"
         >
-            <v-time-picker v-if="menu" v-model="model" format="24hr" />
+            <v-time-picker
+                v-if="menu"
+                v-model="model"
+                :min="min"
+                :max="max"
+                format="24hr"
+                @update:model-value="menu = false"
+            />
         </v-menu>
     </v-text-field>
 </template>
 <script setup lang="ts">
 defineProps<{
     label?: string
+    min?: string
+    max?: string
 }>()
 
 const menu = ref(false)

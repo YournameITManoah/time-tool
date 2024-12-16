@@ -36,7 +36,7 @@ class AdminPanelProvider extends PanelProvider
             ->spa()
             ->databaseNotifications()
             ->colors([
-                'primary' => Color::Indigo,
+                'primary' => Color::hex('#D30240'),
                 'gray' => Color::Slate,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
@@ -66,18 +66,9 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->navigationItems([
                 NavigationItem::make()
-                    ->label(fn(): string => MyProjects::getNavigationLabel())
-                    ->icon('heroicon-o-rectangle-stack')
-                    ->url(fn(): string => MyProjects::getUrl())
-                    ->isActiveWhen(fn() => request()->routeIs('filament.admin.resources.projects.my'))
-                    ->badge(fn() => Project::query()->whereHas('users', function (Builder $query) {
-                        $query->where('user_id', auth()->id());
-                    })->count()),
-                NavigationItem::make()
-                    ->label(fn(): string => MyTimeLogs::getNavigationLabel())
-                    ->icon('heroicon-o-clock')
-                    ->url(fn(): string => MyTimeLogs::getUrl())
-                    ->isActiveWhen(fn() => request()->routeIs('filament.admin.resources.time-logs.my'))
+                    ->label('User Panel')
+                    ->icon('heroicon-o-user-circle')
+                    ->url('/dashboard')
             ]);
     }
 }
