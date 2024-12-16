@@ -1,29 +1,3 @@
-<script lang="ts" setup>
-import type { VFormRef } from '~/resources/types'
-
-useHead({ title: 'Email Verification' })
-
-const props = defineProps<{
-    status?: string | null
-}>()
-
-const form = useForm({
-    url: route('verification.send'),
-    fields: [],
-})
-
-const verificationLinkSent = computed(
-    () => props.status === 'verification-link-sent',
-)
-
-const formRef = ref<VFormRef | null>(null)
-const submit = async () => {
-    const result = await formRef.value?.validate()
-    if (!result?.valid) return
-    form.submit()
-}
-</script>
-
 <template layout="guest">
     <div>
         <v-card-title>Email Verification</v-card-title>
@@ -54,3 +28,28 @@ const submit = async () => {
         </v-form>
     </div>
 </template>
+<script lang="ts" setup>
+import type { VFormRef } from '~/resources/types'
+
+useHead({ title: 'Email Verification' })
+
+const props = defineProps<{
+    status?: string | null
+}>()
+
+const form = useForm({
+    url: route('verification.send'),
+    fields: [],
+})
+
+const verificationLinkSent = computed(
+    () => props.status === 'verification-link-sent',
+)
+
+const formRef = ref<VFormRef | null>(null)
+const submit = async () => {
+    const result = await formRef.value?.validate()
+    if (!result?.valid) return
+    form.submit()
+}
+</script>

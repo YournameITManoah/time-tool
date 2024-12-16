@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\User;
+use App\Rules\Time;
 use App\Rules\UniqueTimeLogFrame;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -27,8 +28,8 @@ class StoreTimeLogRequest extends FormRequest
                 return $query->where('user_id', auth()->id());
             })],
             'date' => ['required', 'date', 'after_or_equal:1 year ago', 'before_or_equal:now'],
-            'start_time' => ['required', 'date_format:H:i', new UniqueTimeLogFrame($id)],
-            'stop_time' => ['required', 'date_format:H:i', 'after:start_time', new UniqueTimeLogFrame($id)],
+            'start_time' => ['required', new Time(), new UniqueTimeLogFrame($id)],
+            'stop_time' => ['required', new Time(), 'after:start_time', new UniqueTimeLogFrame($id)],
         ];
     }
 }

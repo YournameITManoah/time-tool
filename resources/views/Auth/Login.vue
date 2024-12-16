@@ -1,30 +1,3 @@
-<script lang="ts" setup>
-import type { VFormRef } from '~/resources/types'
-
-defineOptions({ name: 'LoginPage' })
-
-useHead({ title: 'Login' })
-
-defineProps<{
-    status?: string | null
-    canResetPassword?: boolean
-}>()
-
-const form = useForm({
-    fields: {
-        email: 'admin@example.com',
-        password: 'admin',
-        remember: false,
-    },
-})
-
-const formRef = ref<VFormRef | null>(null)
-const submit = async () => {
-    const result = await formRef.value?.validate()
-    if (!result?.valid) return
-    form.submit()
-}
-</script>
 <template layout="guest">
     <div>
         <v-card-title>Login</v-card-title>
@@ -39,7 +12,7 @@ const submit = async () => {
                         <v-alert :text="status" />
                     </v-col>
                     <v-col cols="12">
-                        <email-field
+                        <field-email
                             v-model="form.fields.email"
                             :errors="form.errors.email"
                         />
@@ -57,7 +30,7 @@ const submit = async () => {
                                 target="_blank"
                             />
                         </div>
-                        <password-field
+                        <field-password
                             v-model="form.fields.password"
                             :errors="form.errors.password"
                             hint="current-password"
@@ -87,3 +60,30 @@ const submit = async () => {
         </v-card-text>
     </div>
 </template>
+<script lang="ts" setup>
+import type { VFormRef } from '~/resources/types'
+
+defineOptions({ name: 'LoginPage' })
+
+useHead({ title: 'Login' })
+
+defineProps<{
+    status?: string | null
+    canResetPassword?: boolean
+}>()
+
+const form = useForm({
+    fields: {
+        email: 'admin@example.com',
+        password: 'admin',
+        remember: false,
+    },
+})
+
+const formRef = ref<VFormRef | null>(null)
+const submit = async () => {
+    const result = await formRef.value?.validate()
+    if (!result?.valid) return
+    form.submit()
+}
+</script>

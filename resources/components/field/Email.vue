@@ -1,4 +1,17 @@
+<template>
+    <v-text-field
+        v-model="model"
+        :error-messages="errors"
+        :label="label"
+        :prepend-inner-icon="icon"
+        autocomplete="username"
+        :rules="required ? [isRequired] : []"
+        type="email"
+    />
+</template>
 <script lang="ts" setup>
+defineOptions({ name: 'FieldEmail' })
+
 withDefaults(
     defineProps<{
         label?: string
@@ -16,15 +29,3 @@ withDefaults(
 
 const model = defineModel<string | null>()
 </script>
-
-<template>
-    <v-text-field
-        v-model="model"
-        :error-messages="errors"
-        :label="label"
-        :prepend-inner-icon="icon"
-        autocomplete="username"
-        :rules="required ? [isRequired] : []"
-        type="email"
-    />
-</template>

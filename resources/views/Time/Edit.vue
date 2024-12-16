@@ -1,3 +1,6 @@
+<template layout>
+    <time-page :edit="timeLog" />
+</template>
 <script lang="ts" setup>
 import { TimeLog } from '~/resources/types'
 
@@ -9,7 +12,3 @@ defineProps<{
     timeLog: TimeLog
 }>()
 </script>
-
-<template layout>
-    <time-log-form :edit="timeLog" />
-</template>
