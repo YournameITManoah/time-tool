@@ -8,7 +8,7 @@ export const formatDate = (iso: string) => {
     const now = new Date()
     const date = parseDate(iso)
     const sameYear = now.getFullYear() === date.getFullYear()
-    return useDate().formatByString(date, sameYear ? 'd MMM' : 'd MMM yyyy')
+    return useDate().formatByString(date, sameYear ? 'd MMMM' : 'd MMMM yyyy')
 }
 
 export const parseTime = (time: string) => {

@@ -6,3 +6,9 @@ a {
     color: unset;
     text-decoration: unset;
 }
+
+.link {
+    &:hover {
+        text-decoration: underline;
+    }
+}

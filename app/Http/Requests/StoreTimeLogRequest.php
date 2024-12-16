@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\User;
+use App\Rules\UniqueTimeLogFrame;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Database\Query\Builder;
@@ -17,14 +18,17 @@ class StoreTimeLogRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('time_log')?->id;
         return [
-            'project_id' => ['required', Rule::exists('project_user')->where(function (Builder $query) {
+            'project_id' => ['required', Rule::exists('user_tasks')->where(function (Builder $query) {
                 return $query->where('user_id', auth()->id());
             })],
-            'date' => ['required', 'date', 'before_or_equal:now'],
-            'start_time' => ['required'],
-            'stop_time' => ['required', 'after:start_time'],
-            'description' => ['required', 'string', 'max:255'],
+            'task_id' => ['required', Rule::exists('user_tasks')->where(function (Builder $query) {
+                return $query->where('user_id', auth()->id());
+            })],
+            'date' => ['required', 'date', 'after_or_equal:1 year ago', 'before_or_equal:now'],
+            'start_time' => ['required', 'date_format:H:i', new UniqueTimeLogFrame($id)],
+            'stop_time' => ['required', 'date_format:H:i', 'after:start_time', new UniqueTimeLogFrame($id)],
         ];
     }
 }

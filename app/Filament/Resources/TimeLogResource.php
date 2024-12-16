@@ -2,25 +2,15 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Components\TimeLogForm;
 use App\Filament\Resources\TimeLogResource\Pages;
-use App\Filament\Resources\ProjectResource\RelationManagers\TimeLogsRelationManager as ProjectTimeLogsRelationManager;
-use App\Filament\Resources\UserResource\RelationManagers\TimeLogsRelationManager as UserTimeLogsRelationManager;
-use App\Filament\Resources\TimeLogResource\Pages\MyTimeLogs;
-use App\Models\Project;
 use App\Models\TimeLog;
-use App\Rules\Timeframe;
-use Carbon\Carbon;
-use Closure;
+use App\Rules\UniqueTimeLogFrame;
 use Filament\Forms;
-use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Form;
+use App\Filament\Exports\TimeLogExporter;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Collection;
 
 class TimeLogResource extends Resource
 {
@@ -33,9 +23,34 @@ class TimeLogResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema(
-                TimeLogForm::schema()
-            );
+            ->schema([
+                Forms\Components\Select::make('user_id')
+                    ->relationship('user', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
+                Forms\Components\Select::make('project_id')
+                    ->relationship('project', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
+                Forms\Components\Select::make('task_id')
+                    ->relationship('task', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
+                Forms\Components\DatePicker::make('date')
+                    ->required()
+                    ->minDate('1 year ago')
+                    ->maxDate('today'),
+                Forms\Components\TimePicker::make('start_time')
+                    ->seconds(false)
+                    ->required(),
+                Forms\Components\TimePicker::make('stop_time')
+                    ->seconds(false)
+                    ->required()
+                    ->after('start_time'),
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -45,13 +60,14 @@ class TimeLogResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
                     ->sortable()
-                    ->hiddenOn([
-                        UserTimeLogsRelationManager::class,
-                        MyTimeLogs::class,
-                    ]),
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('project.name')
                     ->sortable()
-                    ->hiddenOn(ProjectTimeLogsRelationManager::class),
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('task.name')
+                    ->numeric()
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('date')
                     ->date()
                     ->sortable(),
@@ -61,7 +77,6 @@ class TimeLogResource extends Resource
                 Tables\Columns\TextColumn::make('stop_time')
                     ->time('H:i')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('duration'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -72,7 +87,22 @@ class TimeLogResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('user')
+                    ->relationship('user', 'name')
+                    ->searchable()
+                    ->preload(),
+                Tables\Filters\SelectFilter::make('project')
+                    ->relationship('project', 'name')
+                    ->searchable()
+                    ->preload(),
+                Tables\Filters\SelectFilter::make('task')
+                    ->relationship('task', 'name')
+                    ->searchable()
+                    ->preload()
+            ])
+            ->headerActions([
+                Tables\Actions\ExportAction::make()
+                    ->exporter(TimeLogExporter::class)
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -96,7 +126,6 @@ class TimeLogResource extends Resource
             'index' => Pages\ListTimeLogs::route('/'),
             'create' => Pages\CreateTimeLog::route('/create'),
             'edit' => Pages\EditTimeLog::route('/{record}/edit'),
-            'my' => Pages\MyTimeLogs::route('/my')
         ];
     }
 

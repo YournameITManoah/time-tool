@@ -83,12 +83,7 @@ const submit = async () => {
             </v-container>
         </v-form>
         <v-card-text class="text-center mt-4">
-            <router-link
-                :href="route('login')"
-                class="text-primary text-decoration-none"
-            >
-                Already registered?
-            </router-link>
+            <text-link :href="route('login')" label="Already registered?" />
         </v-card-text>
     </div>
 </template>

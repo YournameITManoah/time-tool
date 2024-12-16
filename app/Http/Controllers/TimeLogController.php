@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\TimeLog;
 use App\Http\Requests\StoreTimeLogRequest;
+use Illuminate\Support\Facades\Gate;
 
 class TimeLogController extends Controller
 {
@@ -12,6 +14,10 @@ class TimeLogController extends Controller
      */
     public function index()
     {
+        // Check if user is authorized
+        Gate::authorize('viewAny', TimeLog::class);
+
+        // Return view
         return hybridly(component: 'time.index');
     }
 
@@ -20,6 +26,10 @@ class TimeLogController extends Controller
      */
     public function create()
     {
+        // Check if user is authorized
+        Gate::authorize('create', TimeLog::class);
+
+        // return view
         return hybridly(component: 'time.create');
     }
 
@@ -28,11 +38,17 @@ class TimeLogController extends Controller
      */
     public function store(StoreTimeLogRequest $request)
     {
+        // Check if user is authorized
+        Gate::authorize('create', TimeLog::class);
+
         // Retrieve the validated input data
         $validated = $request->validated();
 
         // Store the time log
-        Logger('Create time log', $validated);
+        TimeLog::create([
+            ...$validated,
+            'user_id' => auth()->id(),
+        ]);
 
         // Redirect to overview
         return redirect()->route('time-log.index');
@@ -41,28 +57,47 @@ class TimeLogController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(TimeLog $timeLog)
     {
-        return hybridly(component: 'time.edit');
+        // Check if user is authorized
+        Gate::authorize('update', $timeLog);
+
+        // Return view
+        return hybridly(
+            component: 'time.edit',
+            properties: ['timeLog' => $timeLog]
+        );
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(StoreTimeLogRequest $request, TimeLog $timeLog)
     {
-        $message = sprintf('Successfully updated %s', 'Time Log');
+        // Check if user is authorized
+        Gate::authorize('update', $timeLog);
 
-        return redirect()->back()->with('success', $message);
+        // Retrieve the validated input data
+        $validated = $request->validated();
+
+        // Update the time log
+        $timeLog->updateOrFail($validated);
+
+        // Redirect back with success message
+        return redirect()->back()->with('success', sprintf('Successfully updated time log #%s', $timeLog->id));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(TimeLog $timeLog)
     {
-        $message = sprintf('Successfully deleted %s', 'Time Log');
+        // Check if user is authorized
+        Gate::authorize('delete', $timeLog);
 
-        return redirect()->back()->with('success', $message);
+        // Delete time log
+
+        // Redirect back with success message
+        return redirect()->back()->with('success', sprintf('Successfully deleted time log #%s', $timeLog->id));
     }
 }

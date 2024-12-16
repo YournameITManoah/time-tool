@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Models\UserTask;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 
-class ProjectApiController extends Controller
+class UserTaskApiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,14 +23,13 @@ class ProjectApiController extends Controller
             $perPage = '1000';
         };
 
-        $timeLogs = Project::query()
-            ->whereHas('users', function (Builder $query) {
-                $query->where('user_id', auth()->id());
-            })
+        $timeLogs = UserTask::query()
+            ->where('user_id', auth()->id())
             ->when($request->get('sort'), function ($query, $sortBy) {
                 return $query->orderBy($sortBy['key'], $sortBy['order']);
             })
-            ->with('client:id,name')
+            ->with('project:id,name')
+            ->with('task:id,name')
             ->paginate($perPage);
 
         return response()->json($timeLogs);

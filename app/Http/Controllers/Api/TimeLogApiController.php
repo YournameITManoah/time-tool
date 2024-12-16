@@ -30,7 +30,10 @@ class TimeLogApiController extends Controller
         $timeLogs = TimeLog::query()
             ->where('user_id', auth()->id())
             ->with('project:id,name')
+            ->with('task:id,name')
             ->orderBy($sortBy['key'], $sortBy['order'])
+            ->orderBy('date', 'desc')
+            ->orderBy('start_time', 'desc')
             ->paginate($perPage);
 
         return response()->json($timeLogs);

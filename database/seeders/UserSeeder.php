@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Project;
 use App\Models\TimeLog;
 use App\Models\User;
+use App\Models\UserTask;
 use App\Role;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -17,9 +18,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()
-            ->has(Project::factory(5))
-            ->has(TimeLog::factory(5))
+        User::factory()->has(UserTask::factory()->count(5))
             ->create([
                 'name' => 'Admin',
                 'email' => 'admin@example.com',
@@ -27,9 +26,7 @@ class UserSeeder extends Seeder
                 'role_id' => Role::ADMIN
             ]);
 
-        User::factory()
-            ->has(Project::factory(5))
-            ->has(TimeLog::factory(5))
+        User::factory()->has(UserTask::factory()->count(5))
             ->create([
                 'name' => 'User',
                 'email' => 'user@example.com',

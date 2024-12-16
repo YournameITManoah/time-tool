@@ -49,14 +49,13 @@ const submit = async () => {
                             v-if="canResetPassword"
                             class="d-flex align-center justify-end"
                         >
-                            <router-link
+                            <text-link
                                 :href="route('password.request')"
-                                class="text-caption text-decoration-none text-blue"
+                                class="text-caption"
+                                label="Forgot password?"
                                 rel="noopener noreferrer"
                                 target="_blank"
-                            >
-                                Forgot password?
-                            </router-link>
+                            />
                         </div>
                         <password-field
                             v-model="form.fields.password"
@@ -83,5 +82,8 @@ const submit = async () => {
                 </v-row>
             </v-container>
         </v-form>
+        <v-card-text class="text-center mt-4">
+            <text-link :href="route('register')" label="No account yet?" />
+        </v-card-text>
     </div>
 </template>

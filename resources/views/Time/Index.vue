@@ -22,14 +22,16 @@ const breadcrumbs = [
     },
 ]
 
-const groupBy = ref<any>([])
+const groupBy = ref<{ title: string; key: string }[]>([])
 const headers = computed(() => {
     return [
         { title: 'Project', key: 'project.name' },
+        { title: 'Task', key: 'task.name' },
         { title: 'Date', key: 'date' },
         { title: 'Start Time', key: 'start_time' },
         { title: 'Stop Time', key: 'stop_time' },
         { title: 'Duration', key: 'duration', sortable: false },
+        { title: 'Actions', key: 'actions', sortable: false },
     ].filter((h) => h.key !== groupBy.value[0]?.key)
 })
 
@@ -96,6 +98,20 @@ const loadItems = async ({
                     </template>
                     <template #item.duration="{ item }">
                         {{ formatDuration(item.start_time, item.stop_time) }}
+                    </template>
+                    <template #item.actions="{ item }">
+                        <router-link
+                            :href="
+                                route('time-log.edit', { time_log: item.id })
+                            "
+                        >
+                            <v-btn
+                                tabindex="-1"
+                                size="small"
+                                variant="text"
+                                icon="mdi-pencil"
+                            />
+                        </router-link>
                     </template>
                 </v-data-table-server>
             </v-card-text>
