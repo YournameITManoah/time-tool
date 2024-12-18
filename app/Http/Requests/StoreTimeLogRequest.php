@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Models\User;
 use App\Rules\Time;
 use App\Rules\UniqueTimeLogFrame;
+use App\Rules\ValidUserTask;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Database\Query\Builder;
@@ -24,9 +24,7 @@ class StoreTimeLogRequest extends FormRequest
             'project_id' => ['required', Rule::exists('user_tasks')->where(function (Builder $query) {
                 return $query->where('user_id', \Auth::id());
             })],
-            'task_id' => ['required', Rule::exists('user_tasks')->where(function (Builder $query) {
-                return $query->where('user_id', \Auth::id());
-            })],
+            'task_id' => ['required', new ValidUserTask()],
             'date' => ['required', 'date', 'after_or_equal:1 year ago', 'before_or_equal:now'],
             'start_time' => ['required', new Time(), new UniqueTimeLogFrame($id)],
             'stop_time' => ['required', new Time(), 'after:start_time', new UniqueTimeLogFrame($id)],
