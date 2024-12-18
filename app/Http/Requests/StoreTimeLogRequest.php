@@ -22,10 +22,10 @@ class StoreTimeLogRequest extends FormRequest
         $id = $this->route('time_log')?->id;
         return [
             'project_id' => ['required', Rule::exists('user_tasks')->where(function (Builder $query) {
-                return $query->where('user_id', auth()->id());
+                return $query->where('user_id', \Auth::id());
             })],
             'task_id' => ['required', Rule::exists('user_tasks')->where(function (Builder $query) {
-                return $query->where('user_id', auth()->id());
+                return $query->where('user_id', \Auth::id());
             })],
             'date' => ['required', 'date', 'after_or_equal:1 year ago', 'before_or_equal:now'],
             'start_time' => ['required', new Time(), new UniqueTimeLogFrame($id)],

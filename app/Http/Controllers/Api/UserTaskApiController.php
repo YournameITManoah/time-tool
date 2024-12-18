@@ -24,7 +24,7 @@ class UserTaskApiController extends Controller
         };
 
         $timeLogs = UserTask::query()
-            ->where('user_id', auth()->id())
+            ->where('user_id', \Auth::id())
             ->when($request->get('sort'), function ($query, $sortBy) {
                 return $query->orderBy($sortBy['key'], $sortBy['order']);
             })

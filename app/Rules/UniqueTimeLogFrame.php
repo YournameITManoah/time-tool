@@ -30,7 +30,7 @@ class UniqueTimeLogFrame implements DataAwareRule, ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (TimeLog::where('user_id', $this->data['user_id'] ?? auth()->id())
+        if (TimeLog::where('user_id', $this->data['user_id'] ?? \Auth::id())
             ->where('id', '!=', $this->currentId)
             ->whereDate('date', $this->data['date'])
             ->where(function (Builder $query) use ($value) {

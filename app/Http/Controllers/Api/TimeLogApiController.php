@@ -28,7 +28,7 @@ class TimeLogApiController extends Controller
         };
 
         $timeLogs = TimeLog::query()
-            ->where('user_id', auth()->id())
+            ->where('user_id', \Auth::id())
             ->with('project:id,name')
             ->with('task:id,name')
             ->orderBy($sortBy['key'], $sortBy['order'])

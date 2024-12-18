@@ -15,7 +15,7 @@ class HandleHybridRequests extends Middleware
      */
     public function share(): SharedData
     {
-        $user = auth()->user();
+        $user = \Auth::user();
         $can = null;
 
         if ($user !== null) {

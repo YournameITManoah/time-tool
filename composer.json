@@ -18,7 +18,7 @@
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^v3.3.0",
-        "fakerphp/faker": "^v1.24.1",
+        "fakerphp/faker": "^v1.24.1", 
         "friendsofphp/php-cs-fixer": "^v3.65.0",
         "laravel/pint": "^v1.18.3",
         "laravel/sail": "^v1.39.1",

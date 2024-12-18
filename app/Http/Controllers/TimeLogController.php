@@ -49,7 +49,7 @@ class TimeLogController extends Controller
         // Store the time log
         TimeLog::create([
             ...$validated,
-            'user_id' => auth()->id(),
+            'user_id' => \Auth::id(),
         ]);
 
         // Redirect to overview
