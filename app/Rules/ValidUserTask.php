@@ -25,9 +25,9 @@ class ValidUserTask implements DataAwareRule, ValidationRule
         if (UserTask::where('task_id', $value)
             ->where('project_id',  $this->data['project_id'])
             ->where('user_id', $this->data['user_id'] ?? \Auth::id())
-            ->exists()
+            ->doesntExist()
         ) {
-            $fail("You're not allowed to log time for the given {$attribute}.");
+            $fail("You're not allowed to log time for the given task.");
         }
     }
 
