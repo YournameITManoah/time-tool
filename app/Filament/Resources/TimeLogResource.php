@@ -8,9 +8,11 @@ use App\Rules\UniqueTimeLogFrame;
 use Filament\Forms;
 use Filament\Forms\Form;
 use App\Filament\Exports\TimeLogExporter;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class TimeLogResource extends Resource
 {
@@ -131,6 +133,6 @@ class TimeLogResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        return auth()->user()->isAdmin();
+        return \Auth::user()->isAdmin();
     }
 }

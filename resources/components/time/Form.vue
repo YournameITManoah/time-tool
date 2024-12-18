@@ -1,0 +1,254 @@
+<template>
+    <v-card>
+        <v-form
+            ref="formRef"
+            :disabled="form.processing"
+            @submit.prevent="submit"
+        >
+            <v-card-text>
+                <v-container>
+                    <v-row>
+                        <v-col
+                            :cols="sizes.cols"
+                            :sm="sizes.sm"
+                            :md="sizes.md"
+                            :lg="sizes.lg"
+                        >
+                            <v-select
+                                v-model="form.fields.project_id"
+                                label="Project"
+                                :items="projects"
+                                :error-messages="form.errors.project_id"
+                                :loading="fetchingUserTasks"
+                                :disabled="
+                                    variant === 'timer' &&
+                                    !!defaults?.start_time
+                                "
+                                prepend-icon="mdi-cards-variant"
+                                item-title="name"
+                                item-value="id"
+                                :rules="[isRequired]"
+                                required
+                                @update:model-value="
+                                    form.fields.task_id = undefined
+                                "
+                            />
+                        </v-col>
+                        <v-col
+                            :cols="sizes.cols"
+                            :sm="sizes.sm"
+                            :md="sizes.md"
+                            :lg="sizes.lg"
+                        >
+                            <v-select
+                                v-model="form.fields.task_id"
+                                label="Task"
+                                :items="tasks"
+                                :error-messages="form.errors.task_id"
+                                prepend-icon="mdi-format-list-bulleted"
+                                :disabled="
+                                    variant === 'timer' &&
+                                    !!defaults?.start_time
+                                "
+                                item-title="name"
+                                item-value="id"
+                                :rules="[isRequired]"
+                                required
+                            />
+                        </v-col>
+                        <template v-if="variant !== 'timer'">
+                            <v-col
+                                :cols="sizes.cols"
+                                :sm="sizes.sm"
+                                :md="sizes.md"
+                                :lg="sizes.lg"
+                            >
+                                <field-date
+                                    v-model="form.fields.date"
+                                    label="Date"
+                                    :min="lastYear.toISOString()"
+                                    :max="today"
+                                    :rules="[isRequired]"
+                                    :disabled="form.processing"
+                                    :error-messages="form.errors.date"
+                                    required
+                                />
+                            </v-col>
+                            <v-col
+                                :cols="sizes.cols"
+                                :sm="sizes.sm"
+                                :md="sizes.md"
+                                :lg="sizes.lg"
+                            >
+                                <field-time
+                                    v-model="form.fields.start_time"
+                                    label="Start Time"
+                                    :max="form.fields.stop_time"
+                                    :rules="[isRequired]"
+                                    :error-messages="form.errors.start_time"
+                                />
+                            </v-col>
+                            <v-col
+                                :cols="sizes.cols"
+                                :sm="sizes.sm"
+                                :md="sizes.md"
+                                :lg="sizes.lg"
+                            >
+                                <field-time
+                                    v-model="form.fields.stop_time"
+                                    label="Stop Time"
+                                    :min="form.fields.start_time"
+                                    :rules="[isRequired]"
+                                    :error-messages="form.errors.stop_time"
+                                />
+                            </v-col>
+                        </template>
+                    </v-row>
+                    <v-row v-if="variant !== 'timer'">
+                        <v-spacer />
+                        <router-link
+                            :disabled="form.processing"
+                            :href="route('time-log.index')"
+                        >
+                            <v-btn
+                                :disabled="form.processing"
+                                color="error"
+                                class="mr-4"
+                                tabindex="-1"
+                            >
+                                Cancel
+                            </v-btn>
+                        </router-link>
+                        <v-btn
+                            :loading="form.processing"
+                            color="primary"
+                            type="submit"
+                        >
+                            {{ variant === 'edit' ? 'Edit' : 'Create' }}
+                        </v-btn>
+                    </v-row>
+                </v-container>
+            </v-card-text>
+            <v-card-actions v-if="variant === 'timer'">
+                <v-spacer></v-spacer>
+                <v-btn
+                    color="error"
+                    type="reset"
+                    :disabled="form.processing"
+                    @click="emit('cancel')"
+                >
+                    Cancel
+                </v-btn>
+                <v-btn color="primary" type="submit" :loading="form.processing">
+                    {{ defaults?.start_time ? 'Save' : 'Start' }}
+                </v-btn>
+            </v-card-actions>
+        </v-form>
+    </v-card>
+</template>
+<script lang="ts" setup>
+import { useTimeLogStore } from '~/resources/stores/time-log'
+import { VFormRef, TimeLog, UserTaskExtended } from '~/resources/types'
+
+defineOptions({ name: 'TimeLogForm' })
+
+const props = defineProps<{
+    defaults?: Partial<TimeLog>
+    variant?: 'edit' | 'timer'
+}>()
+
+const emit = defineEmits<{
+    (e: 'cancel'): void
+    (e: 'start', project: number, task: number): void
+}>()
+
+const today = new Date().toISOString()
+const lastYear = new Date()
+lastYear.setFullYear(new Date().getFullYear() - 1)
+
+const sizes = computed(() => {
+    return {
+        cols: '12',
+        sm: props.variant === 'timer' ? undefined : '6',
+        md: undefined,
+        lg: props.variant === 'timer' ? undefined : '3',
+    }
+})
+
+const fetchingUserTasks = ref(false)
+const timeLogStore = useTimeLogStore()
+const userTasks = ref<UserTaskExtended[]>([])
+const fetchUserTasks = async () => {
+    try {
+        fetchingUserTasks.value = true
+        userTasks.value = await timeLogStore.getUserTasks()
+    } catch (e) {
+        console.error(e)
+    } finally {
+        fetchingUserTasks.value = false
+    }
+}
+
+const projects = computed(() => {
+    return [...new Set(userTasks.value.map((ut) => ut.project))]
+})
+
+const tasks = computed(() => {
+    return userTasks.value
+        .filter((ut) => ut.project.id === form.fields.project_id)
+        .map((ut) => ut.task)
+})
+
+onMounted(() => {
+    fetchUserTasks()
+    resetFields()
+})
+
+const resetFields = () => {
+    form.fields.project_id = props.defaults?.project_id
+    form.fields.task_id = props.defaults?.task_id
+    form.fields.date = props.defaults?.date
+    form.fields.start_time = formatTime(props.defaults?.start_time)
+    form.fields.stop_time = formatTime(props.defaults?.stop_time)
+}
+
+const form = useForm<Partial<TimeLog>>({
+    method: props.variant === 'edit' ? 'patch' : 'post',
+    url: route(`time-log.${props.variant === 'edit' ? 'update' : 'store'}`, {
+        time_log: props.defaults?.id,
+    }),
+    fields: {
+        project_id: undefined,
+        task_id: undefined,
+        date: undefined,
+        start_time: undefined,
+        stop_time: undefined,
+    },
+})
+
+const formRef = ref<VFormRef | null>(null)
+const submit = async () => {
+    const result = await formRef.value?.validate()
+    if (!result?.valid) return
+    if (
+        props.variant === 'timer' &&
+        !props.defaults?.start_time &&
+        form.fields.project_id &&
+        form.fields.task_id
+    ) {
+        emit('start', form.fields.project_id, form.fields.task_id)
+        resetFields()
+    } else {
+        if (props.variant === 'timer') {
+            form.fields.stop_time = new Date().toLocaleTimeString('nl')
+        }
+        form.submit().then((res) => {
+            console.log('res', res)
+            if (res.response?.status === 200) {
+                resetFields()
+                emit('cancel')
+            }
+        })
+    }
+}
+</script>

@@ -26,9 +26,10 @@ watchImmediate(flash, (val) => {
 <template>
     <v-app :class="{ 'bg-grey-lighten-4': !theme.current.value.dark }">
         <v-sonner position="top-right" expand />
-        <slot name="app" />
+        <slot name="header" />
         <v-main scrollable>
             <slot />
         </v-main>
+        <slot name="footer" />
     </v-app>
 </template>

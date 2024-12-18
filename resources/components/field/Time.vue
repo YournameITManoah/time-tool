@@ -25,6 +25,8 @@
     </v-text-field>
 </template>
 <script setup lang="ts">
+defineOptions({ name: 'FieldTime' })
+
 defineProps<{
     label?: string
     min?: string

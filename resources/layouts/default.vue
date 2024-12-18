@@ -39,7 +39,7 @@ onBeforeUnmount(() => {
 
 <template>
     <app-layout>
-        <template #app>
+        <template #header>
             <v-navigation-drawer
                 ref="nav"
                 v-model="drawer"
@@ -86,6 +86,10 @@ onBeforeUnmount(() => {
         </template>
         <v-container>
             <slot />
+            <div style="height: 48px" />
         </v-container>
+        <template #footer>
+            <timer-fab />
+        </template>
     </app-layout>
 </template>

@@ -126,6 +126,6 @@ class ProjectResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        return auth()->user()->isAdmin();
+        return \Auth::user()->isAdmin();
     }
 }

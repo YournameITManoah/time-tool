@@ -1,19 +1,3 @@
-<script setup lang="ts">
-defineOptions({ name: 'WelcomePage' })
-
-useHead({ title: 'Welcome' })
-
-defineProps<{
-    canLogin?: boolean
-    canRegister?: boolean
-    phpVersion: string
-    laravelVersion: string
-}>()
-
-const user = useProperty('auth.user')
-const name = import.meta.env.VITE_APP_NAME
-</script>
-
 <template layout="guest">
     <div>
         <v-card-title>Welcome to {{ name }}!</v-card-title>
@@ -44,3 +28,18 @@ const name = import.meta.env.VITE_APP_NAME
         </v-card-actions>
     </div>
 </template>
+<script setup lang="ts">
+defineOptions({ name: 'WelcomePage' })
+
+useHead({ title: 'Welcome' })
+
+defineProps<{
+    canLogin?: boolean
+    canRegister?: boolean
+    phpVersion: string
+    laravelVersion: string
+}>()
+
+const user = useProperty('auth.user')
+const name = import.meta.env.VITE_APP_NAME
+</script>
