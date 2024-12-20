@@ -1,6 +1,6 @@
 <template layout="guest">
     <div>
-        <v-card-title>Forgot Password</v-card-title>
+        <v-card-title>{{ t('Forgot Password') }}</v-card-title>
         <v-form
             ref="formRef"
             :disabled="form.processing"
@@ -30,9 +30,8 @@
                             block
                             color="primary"
                             type="submit"
-                        >
-                            Email Password Reset Link
-                        </v-btn>
+                            :text="t('Email Password Reset Link')"
+                        />
                     </v-col>
                 </v-row>
             </v-container>
@@ -40,9 +39,11 @@
     </div>
 </template>
 <script lang="ts" setup>
-import type { VFormRef } from '~/resources/types'
+import type { VFormRef } from '@/types'
 
-useHead({ title: 'Forgot Password' })
+const { t } = useI18n()
+
+useHead({ title: t('Forgot Password') })
 
 defineProps<{
     status?: string | null

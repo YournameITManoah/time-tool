@@ -2,7 +2,7 @@
     <v-text-field
         v-model="model"
         :error-messages="errors"
-        :label="label"
+        :label="label ? label : t('Email')"
         :prepend-inner-icon="icon"
         autocomplete="username"
         :rules="required ? [isRequired] : []"
@@ -12,6 +12,9 @@
 <script lang="ts" setup>
 defineOptions({ name: 'FieldEmail' })
 
+const { t } = useI18n()
+const { isRequired } = useValidation()
+
 withDefaults(
     defineProps<{
         label?: string
@@ -20,7 +23,7 @@ withDefaults(
         required?: boolean
     }>(),
     {
-        label: 'Email',
+        label: undefined,
         icon: 'mdi-email-outline',
         errors: undefined,
         required: true,

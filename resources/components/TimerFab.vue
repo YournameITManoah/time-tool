@@ -18,7 +18,7 @@
     </v-fab>
 </template>
 <script setup lang="ts">
-import { TimeLog } from '~/resources/types'
+import type { TimeLog } from '@/types'
 
 const name = import.meta.env.VITE_APP_NAME
 

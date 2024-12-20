@@ -29,6 +29,7 @@ class HandleHybridRequests extends Middleware
                 'user' => UserData::optional($user),
                 'can' => $can
             ]),
+            'locale' => session()->get('locale', 'en')
         ]);
     }
 }

@@ -2,11 +2,13 @@
     <time-page :edit="timeLog" />
 </template>
 <script lang="ts" setup>
-import { TimeLog } from '~/resources/types'
+import type { TimeLog } from '@/types'
 
 defineOptions({ name: 'TimeLogEdit' })
 
-useHead({ title: 'Edit Time Log' })
+const { t } = useI18n()
+
+useHead({ title: t('Edit Time Log') })
 
 defineProps<{
     timeLog: TimeLog

@@ -1,7 +1,7 @@
 <template layout>
     <div>
         <div class="mb-5">
-            <h5 class="text-h5 font-weight-bold">Time Logs</h5>
+            <h5 class="text-h5 font-weight-bold">{{ t('Time Logs') }}</h5>
             <Breadcrumbs :items="breadcrumbs" class="pa-0 mt-1" />
         </div>
         <v-card>
@@ -52,36 +52,38 @@ import type {
     PagedResult,
     TimeLogExtended,
     VDataTableOptions,
-} from '~/resources/types'
+} from '@/types'
 
 defineOptions({ name: 'TimeLogIndex' })
 
-useHead({ title: 'Time Logs' })
+const { t } = useI18n()
+
+useHead({ title: t('Time Logs') })
 
 const { formatDate, formatDuration } = useDate()
 
-const breadcrumbs = [
+const breadcrumbs = computed(() => [
     {
-        title: 'Dashboard',
+        title: t('Dashboard'),
         href: route('dashboard'),
     },
     {
-        title: 'Time Logs',
+        title: t('Time Logs'),
         href: route('time-log.index'),
         disabled: true,
     },
-]
+])
 
 const groupBy = ref<{ title: string; key: string }[]>([])
 const headers = computed(() => {
     return [
-        { title: 'Project', key: 'project.name' },
-        { title: 'Task', key: 'task.name' },
-        { title: 'Date', key: 'date' },
-        { title: 'Start Time', key: 'start_time' },
-        { title: 'Stop Time', key: 'stop_time' },
-        { title: 'Duration', key: 'duration', sortable: false },
-        { title: 'Actions', key: 'actions', sortable: false },
+        { title: t('Project'), key: 'project.name' },
+        { title: t('Task'), key: 'task.name' },
+        { title: t('Date'), key: 'date' },
+        { title: t('Start time'), key: 'start_time' },
+        { title: t('Stop time'), key: 'stop_time' },
+        { title: t('Duration'), key: 'duration', sortable: false },
+        { title: t('Actions'), key: 'actions', sortable: false },
     ].filter((h) => h.key !== groupBy.value[0]?.key)
 })
 

@@ -1,6 +1,6 @@
 <template layout="guest">
     <div>
-        <v-card-title>Email Verification</v-card-title>
+        <v-card-title>{{ t('Email Verification') }}</v-card-title>
         <v-form
             ref="formRef"
             :disabled="form.processing"
@@ -17,21 +17,26 @@
                 provided during registration.
             </v-alert>
             <v-card-actions>
-                <v-btn :loading="form.processing" color="primary" type="submit">
-                    Resend Verification Email
-                </v-btn>
+                <v-btn
+                    :loading="form.processing"
+                    color="primary"
+                    type="submit"
+                    :text="t('Resend Verification Email')"
+                />
                 <v-spacer />
                 <router-link :href="route('logout')" as="div" method="post">
-                    <v-btn color="error">Log Out</v-btn>
+                    <v-btn color="error" :text="t('Log Out')" />
                 </router-link>
             </v-card-actions>
         </v-form>
     </div>
 </template>
 <script lang="ts" setup>
-import type { VFormRef } from '~/resources/types'
+import type { VFormRef } from '@/types'
 
-useHead({ title: 'Email Verification' })
+const { t } = useI18n()
+
+useHead({ title: t('Email Verification') })
 
 const props = defineProps<{
     status?: string | null

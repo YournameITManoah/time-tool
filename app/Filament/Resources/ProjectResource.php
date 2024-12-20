@@ -61,32 +61,40 @@ class ProjectResource extends Resource
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('client.name')
+                    ->translateLabel()
                     ->sortable()
                     ->searchable()
                     ->hiddenOn(ClientProjectsRelationManager::class),
                 Tables\Columns\TextColumn::make('name')
+                    ->translateLabel()
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('start_date')
+                    ->translateLabel()
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('end_date')
+                    ->translateLabel()
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('available_hours')
+                    ->translateLabel()
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('client')
+                    ->translateLabel()
                     ->relationship('client', 'name')
                     ->searchable()
                     ->preload()
@@ -127,5 +135,15 @@ class ProjectResource extends Resource
     public static function shouldRegisterNavigation(): bool
     {
         return \Auth::user()->isAdmin();
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('Project');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Projects');
     }
 }

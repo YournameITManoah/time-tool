@@ -1,6 +1,6 @@
 <template layout="guest">
     <div>
-        <v-card-title>Confirm Password</v-card-title>
+        <v-card-title>{{ t('Confirm Password') }}</v-card-title>
         <v-form ref="formRef" @submit.prevent="submit">
             <v-container>
                 <v-row>
@@ -26,9 +26,8 @@
                             block
                             color="primary"
                             type="submit"
-                        >
-                            Confirm
-                        </v-btn>
+                            :text="t('Confirm')"
+                        />
                     </v-col>
                 </v-row>
             </v-container>
@@ -36,9 +35,11 @@
     </div>
 </template>
 <script lang="ts" setup>
-import type { VFormRef } from '~/resources/types'
+import type { VFormRef } from '@/types'
 
-useHead({ title: 'Confirm Password' })
+const { t } = useI18n()
+
+useHead({ title: t('Confirm Password') })
 
 defineProps<{
     status?: string | null

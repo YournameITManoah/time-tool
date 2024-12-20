@@ -14,15 +14,17 @@
 <script lang="ts" setup>
 defineOptions({ name: 'DashboardPage' })
 
-useHead({ title: 'Dashboard' })
+const { t } = useI18n()
+
+useHead({ title: t('Dashboard') })
 
 const user = useProperty('auth.user')
 
-const breadcrumbs = [
+const breadcrumbs = computed(() => [
     {
-        title: 'Dashboard',
+        title: t('Dashboard'),
         href: route('dashboard'),
         disabled: true,
     },
-]
+])
 </script>

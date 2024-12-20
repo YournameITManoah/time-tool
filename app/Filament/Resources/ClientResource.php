@@ -29,10 +29,12 @@ class ClientResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->translateLabel()
                     ->required()
                     ->maxLength(50)
                     ->unique(),
                 Forms\Components\TextInput::make('email')
+                    ->translateLabel()
                     ->email()
                     ->required()
                     ->maxLength(100)
@@ -46,16 +48,20 @@ class ClientResource extends Resource
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->translateLabel()
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
+                    ->translateLabel()
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -92,5 +98,15 @@ class ClientResource extends Resource
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('Client');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Clients');
     }
 }

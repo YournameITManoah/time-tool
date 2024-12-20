@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { PagedResult, UserTaskExtended } from '~/resources/types'
+import type { PagedResult, UserTaskExtended } from '@/types'
 
 interface State {
     userTasks: UserTaskExtended[]

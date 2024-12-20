@@ -28,7 +28,7 @@
 defineOptions({ name: 'FieldTime' })
 
 defineProps<{
-    label?: string
+    label: string
     min?: string
     max?: string
 }>()

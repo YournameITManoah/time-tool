@@ -1,5 +1,4 @@
 import { useDate as useVuetifyDate } from 'vuetify'
-import { formatTime } from '~/resources/utils/date'
 
 export function useDate() {
     const parseDate = (iso: string) => {

@@ -30,25 +30,30 @@ class UserResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->translateLabel()
                     ->required()
                     ->maxLength(50)
                     ->unique(),
                 Forms\Components\TextInput::make('email')
+                    ->translateLabel()
                     ->email()
                     ->required()
                     ->maxLength(100)
                     ->unique(),
                 Forms\Components\TextInput::make('password')
+                    ->translateLabel()
                     ->password()
                     ->revealable()
                     ->required()
                     ->rules([Rules\Password::defaults()]),
                 Forms\Components\TextInput::make('available_hours')
+                    ->translateLabel()
                     ->numeric()
                     ->required()
                     ->minValue(0)
                     ->maxValue(40),
                 Forms\Components\TextInput::make('planned_hours')
+                    ->translateLabel()
                     ->numeric()
                     ->required()
                     ->minValue(0)
@@ -63,24 +68,31 @@ class UserResource extends Resource
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->translateLabel()
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
+                    ->translateLabel()
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('available_hours')
+                    ->translateLabel()
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('planned_hours')
+                    ->translateLabel()
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('role.name')
+                    ->translateLabel()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -110,5 +122,15 @@ class UserResource extends Resource
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('User');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Users');
     }
 }

@@ -4,7 +4,7 @@
         :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
         :autocomplete="hint"
         :error-messages="errors"
-        :label="label"
+        :label="label ? label : t('Password')"
         :prepend-inner-icon="icon"
         :rules="required ? [isRequired] : []"
         :type="showPassword ? 'text' : 'password'"
@@ -13,6 +13,9 @@
 </template>
 <script lang="ts" setup>
 defineOptions({ name: 'FieldPassword' })
+
+const { t } = useI18n()
+const { isRequired } = useValidation()
 
 withDefaults(
     defineProps<{
@@ -23,7 +26,7 @@ withDefaults(
         required?: boolean
     }>(),
     {
-        label: 'Password',
+        label: undefined,
         icon: 'mdi-lock-outline',
         errors: undefined,
         required: true,

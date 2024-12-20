@@ -1,6 +1,6 @@
 <template layout="guest">
     <div>
-        <v-card-title>Register</v-card-title>
+        <v-card-title>{{ t('Register') }}</v-card-title>
         <v-form
             ref="formRef"
             :disabled="form.processing"
@@ -15,7 +15,7 @@
                         <v-text-field
                             v-model="form.fields.name"
                             :error-messages="form.errors.name"
-                            label="Name"
+                            :label="t('Name')"
                             prepend-inner-icon="mdi-account"
                             type="text"
                             :rules="[isRequired]"
@@ -39,7 +39,7 @@
                             v-model="form.fields.password_confirmation"
                             :errors="form.errors.password_confirmation"
                             hint="new-password"
-                            label="Password Confirmation"
+                            :label="t('Password Confirmation')"
                         />
                     </v-col>
                     <v-col cols="12">
@@ -48,24 +48,29 @@
                             block
                             color="primary"
                             type="submit"
-                        >
-                            Register
-                        </v-btn>
+                            :text="t('Register')"
+                        />
                     </v-col>
                 </v-row>
             </v-container>
         </v-form>
         <v-card-text class="text-center mt-4">
-            <text-link :href="route('login')" label="Already registered?" />
+            <text-link
+                :href="route('login')"
+                :label="t('Already registered?')"
+            />
         </v-card-text>
     </div>
 </template>
 <script lang="ts" setup>
-import type { VFormRef } from '~/resources/types'
+import type { VFormRef } from '@/types'
 
 defineOptions({ name: 'RegisterPage' })
 
-useHead({ title: 'Register' })
+const { t } = useI18n()
+const { isRequired } = useValidation()
+
+useHead({ title: t('Register') })
 
 defineProps<{
     status?: string | null

@@ -16,7 +16,7 @@
                         >
                             <v-select
                                 v-model="form.fields.project_id"
-                                label="Project"
+                                :label="t('Project')"
                                 :items="projects"
                                 :error-messages="form.errors.project_id"
                                 :loading="fetchingUserTasks"
@@ -42,7 +42,7 @@
                         >
                             <v-select
                                 v-model="form.fields.task_id"
-                                label="Task"
+                                :label="t('Task')"
                                 :items="tasks"
                                 :error-messages="form.errors.task_id"
                                 prepend-icon="mdi-format-list-bulleted"
@@ -65,7 +65,7 @@
                             >
                                 <field-date
                                     v-model="form.fields.date"
-                                    label="Date"
+                                    :label="t('Date')"
                                     :min="lastYear.toISOString()"
                                     :max="today"
                                     :rules="[isRequired]"
@@ -82,7 +82,7 @@
                             >
                                 <field-time
                                     v-model="form.fields.start_time"
-                                    label="Start Time"
+                                    :label="t('Start time')"
                                     :max="form.fields.stop_time"
                                     :rules="[isRequired]"
                                     :error-messages="form.errors.start_time"
@@ -96,7 +96,7 @@
                             >
                                 <field-time
                                     v-model="form.fields.stop_time"
-                                    label="Stop Time"
+                                    :label="t('Stop time')"
                                     :min="form.fields.start_time"
                                     :rules="[isRequired]"
                                     :error-messages="form.errors.stop_time"
@@ -115,17 +115,15 @@
                                 color="error"
                                 class="mr-4"
                                 tabindex="-1"
-                            >
-                                Cancel
-                            </v-btn>
+                                :text="t('Cancel')"
+                            />
                         </router-link>
                         <v-btn
                             :loading="form.processing"
                             color="primary"
                             type="submit"
-                        >
-                            {{ variant === 'edit' ? 'Edit' : 'Create' }}
-                        </v-btn>
+                            :text="variant === 'edit' ? t('Edit') : t('Create')"
+                        />
                     </v-row>
                 </v-container>
             </v-card-text>
@@ -135,22 +133,27 @@
                     color="error"
                     type="reset"
                     :disabled="form.processing"
+                    :text="t('Cancel')"
                     @click="emit('cancel')"
-                >
-                    Cancel
-                </v-btn>
-                <v-btn color="primary" type="submit" :loading="form.processing">
-                    {{ defaults?.start_time ? 'Save' : 'Start' }}
-                </v-btn>
+                />
+                <v-btn
+                    color="primary"
+                    type="submit"
+                    :loading="form.processing"
+                    :text="defaults?.start_time ? t('Save') : t('Start')"
+                />
             </v-card-actions>
         </v-form>
     </v-card>
 </template>
 <script lang="ts" setup>
-import { useTimeLogStore } from '~/resources/stores/time-log'
-import { VFormRef, TimeLog, UserTaskExtended } from '~/resources/types'
+import { useTimeLogStore } from '@/stores/time-log'
+import type { VFormRef, TimeLog, UserTaskExtended } from '@/types'
 
 defineOptions({ name: 'TimeLogForm' })
+
+const { t } = useI18n()
+const { isRequired } = useValidation()
 
 const props = defineProps<{
     defaults?: Partial<TimeLog>
@@ -213,7 +216,7 @@ const resetFields = () => {
 }
 
 const form = useForm<Partial<TimeLog>>({
-    method: props.variant === 'edit' ? 'patch' : 'post',
+    method: props.variant === 'edit' ? 'PATCH' : 'POST',
     url: route(`time-log.${props.variant === 'edit' ? 'update' : 'store'}`, {
         time_log: props.defaults?.id,
     }),

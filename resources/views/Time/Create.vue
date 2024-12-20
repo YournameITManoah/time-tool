@@ -4,5 +4,7 @@
 <script lang="ts" setup>
 defineOptions({ name: 'TimeLogCreate' })
 
-useHead({ title: 'Create Time Log' })
+const { t } = useI18n()
+
+useHead({ title: t('Create Time Log') })
 </script>

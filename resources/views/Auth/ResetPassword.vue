@@ -1,6 +1,6 @@
 <template layout="guest">
     <div>
-        <v-card-title>Reset Password</v-card-title>
+        <v-card-title>{{ t('Reset Password') }}</v-card-title>
         <v-form
             ref="formRef"
             :disabled="form.processing"
@@ -27,7 +27,7 @@
                             v-model="form.fields.password_confirmation"
                             :errors="form.errors.password_confirmation"
                             hint="new-password"
-                            label="Password Confirmation"
+                            :label="t('Password Confirmation')"
                         />
                     </v-col>
                     <v-col cols="12">
@@ -36,9 +36,8 @@
                             block
                             color="primary"
                             type="submit"
-                        >
-                            Reset Password
-                        </v-btn>
+                            :text="t('Reset Password')"
+                        />
                     </v-col>
                 </v-row>
             </v-container>
@@ -46,9 +45,11 @@
     </div>
 </template>
 <script lang="ts" setup>
-import type { VFormRef } from '~/resources/types'
+import type { VFormRef } from '@/types'
 
-useHead({ title: 'Reset Password' })
+const { t } = useI18n()
+
+useHead({ title: t('Reset Password') })
 
 const props = defineProps<{
     email: string

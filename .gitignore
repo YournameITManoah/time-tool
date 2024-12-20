@@ -24,5 +24,6 @@ yarn-error.log
 .hybridly
 _ide_helper*
 .phpstorm.meta.php
+public/css/bezhansalleh
 public/css/filament
 public/js/filament

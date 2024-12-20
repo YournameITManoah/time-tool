@@ -1,6 +1,6 @@
 <template layout="guest">
     <div>
-        <v-card-title>Login</v-card-title>
+        <v-card-title>{{ t('Login') }}</v-card-title>
         <v-form
             ref="formRef"
             :disabled="form.processing"
@@ -25,7 +25,7 @@
                             <text-link
                                 :href="route('password.request')"
                                 class="text-caption"
-                                label="Forgot password?"
+                                :label="t('Forgot password?')"
                                 rel="noopener noreferrer"
                                 target="_blank"
                             />
@@ -39,7 +39,7 @@
                     <v-col class="pa-0" cols="12">
                         <v-checkbox
                             v-model="form.fields.remember"
-                            label="Remember me"
+                            :label="t('Remember me')"
                         />
                     </v-col>
                     <v-col cols="12">
@@ -48,24 +48,28 @@
                             block
                             color="primary"
                             type="submit"
-                        >
-                            Login
-                        </v-btn>
+                            :text="t('Login')"
+                        />
                     </v-col>
                 </v-row>
             </v-container>
         </v-form>
         <v-card-text class="text-center mt-4">
-            <text-link :href="route('register')" label="No account yet?" />
+            <text-link
+                :href="route('register')"
+                :label="t('No account yet?')"
+            />
         </v-card-text>
     </div>
 </template>
 <script lang="ts" setup>
-import type { VFormRef } from '~/resources/types'
+import type { VFormRef } from '@/types'
 
 defineOptions({ name: 'LoginPage' })
 
-useHead({ title: 'Login' })
+const { t } = useI18n()
+
+useHead({ title: t('Login') })
 
 defineProps<{
     status?: string | null
