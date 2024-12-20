@@ -1,29 +1,6 @@
-<script lang="ts" setup>
-import type { VFormRef } from '~/resources/types'
-
-useHead({ title: 'Forgot Password' })
-
-defineProps<{
-    status?: string | null
-}>()
-
-const form = useForm({
-    fields: {
-        email: '',
-    },
-})
-
-const formRef = ref<VFormRef | null>(null)
-const submit = async () => {
-    const result = await formRef.value?.validate()
-    if (!result?.valid) return
-    form.submit()
-}
-</script>
-
 <template layout="guest">
     <div>
-        <v-card-title>Forgot Password</v-card-title>
+        <v-card-title>{{ t('Forgot Password') }}</v-card-title>
         <v-form
             ref="formRef"
             :disabled="form.processing"
@@ -42,7 +19,7 @@ const submit = async () => {
                         <v-alert :text="status" />
                     </v-col>
                     <v-col cols="12">
-                        <email-field
+                        <field-email
                             v-model="form.fields.email"
                             :errors="form.errors.email"
                         />
@@ -53,12 +30,35 @@ const submit = async () => {
                             block
                             color="primary"
                             type="submit"
-                        >
-                            Email Password Reset Link
-                        </v-btn>
+                            :text="t('Email Password Reset Link')"
+                        />
                     </v-col>
                 </v-row>
             </v-container>
         </v-form>
     </div>
 </template>
+<script lang="ts" setup>
+import type { VFormRef } from '@/types'
+
+const { t } = useI18n()
+
+useHead({ title: t('Forgot Password') })
+
+defineProps<{
+    status?: string | null
+}>()
+
+const form = useForm({
+    fields: {
+        email: '',
+    },
+})
+
+const formRef = ref<VFormRef | null>(null)
+const submit = async () => {
+    const result = await formRef.value?.validate()
+    if (!result?.valid) return
+    form.submit()
+}
+</script>

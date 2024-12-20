@@ -7,17 +7,19 @@ interface NavItem {
     external?: boolean
 }
 
+const { t } = useI18n()
+
 const can = useProperty('auth.can')
 
 const navigation = computed((): NavItem[] => {
     const items: NavItem[] = [
         {
-            title: 'Dashboard',
+            title: t('Dashboard'),
             icon: 'mdi-view-dashboard',
             href: route('dashboard'),
         },
         {
-            title: 'Time Logs',
+            title: t('Time Log'),
             icon: 'mdi-clock-outline',
             href: route('time-log.index'),
         },
@@ -25,7 +27,7 @@ const navigation = computed((): NavItem[] => {
 
     if (can.value?.['view-admin']) {
         items.push({
-            title: 'Admin Panel',
+            title: t('Admin Panel'),
             icon: 'mdi-security',
             href: '/admin',
             external: true,

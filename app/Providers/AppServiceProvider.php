@@ -13,6 +13,7 @@ use Illuminate\Foundation\Http\HtmlDumper;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
+use BezhanSalleh\FilamentLanguageSwitch\LanguageSwitch;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -49,6 +50,19 @@ class AppServiceProvider extends ServiceProvider
 
         Table::configureUsing(function (Table $table): void {
             $table->deferLoading()->extremePaginationLinks();
+        });
+
+        LanguageSwitch::configureUsing(function (LanguageSwitch $switch) {
+            $switch
+                ->locales(['en', 'nl'])
+                ->labels([
+                    'en' => 'English',
+                    'nl' => 'Nederlands',
+                ])
+                ->flags([
+                    'en' => asset('img/flags/en.svg'),
+                    'nl' => asset('img/flags/nl.svg'),
+                ]);
         });
     }
 }

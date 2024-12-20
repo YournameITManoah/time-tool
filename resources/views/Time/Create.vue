@@ -1,9 +1,10 @@
+<template layout>
+    <time-page />
+</template>
 <script lang="ts" setup>
 defineOptions({ name: 'TimeLogCreate' })
 
-useHead({ title: 'Create Time Log' })
-</script>
+const { t } = useI18n()
 
-<template layout>
-    <time-log-form />
-</template>
+useHead({ title: t('Create Time Log') })
+</script>

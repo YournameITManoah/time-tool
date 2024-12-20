@@ -38,6 +38,8 @@ class TimeLogController extends Controller
      */
     public function store(StoreTimeLogRequest $request)
     {
+        \Log::info('store');
+
         // Check if user is authorized
         Gate::authorize('create', TimeLog::class);
 
@@ -47,7 +49,7 @@ class TimeLogController extends Controller
         // Store the time log
         TimeLog::create([
             ...$validated,
-            'user_id' => auth()->id(),
+            'user_id' => \Auth::id(),
         ]);
 
         // Redirect to overview

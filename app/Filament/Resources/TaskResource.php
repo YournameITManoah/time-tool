@@ -29,9 +29,11 @@ class TaskResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->translateLabel()
                     ->required()
                     ->maxLength(100),
                 Forms\Components\Toggle::make('billable')
+                    ->translateLabel()
                     ->required(),
             ]);
     }
@@ -42,21 +44,26 @@ class TaskResource extends Resource
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->translateLabel()
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\IconColumn::make('billable')
+                    ->translateLabel()
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\TernaryFilter::make('billable')
+                    ->translateLabel()
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -87,5 +94,15 @@ class TaskResource extends Resource
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('Task');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Tasks');
     }
 }

@@ -65,8 +65,7 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->navigationItems([
-                NavigationItem::make()
-                    ->label('User Panel')
+                NavigationItem::make(fn(): string => __('User Panel'))
                     ->icon('heroicon-o-user-circle')
                     ->url('/dashboard')
             ]);

@@ -5,13 +5,11 @@ import 'vuetify-sonner/style.css'
 
 defineOptions({ name: 'AppLayout' })
 
+const i18n = useI18n()
 const theme = useTheme()
 const flash = useProperty('flash')
+const locale = useProperty('locale')
 const prefersDark = usePreferredDark()
-
-watchImmediate(prefersDark, (val) => {
-    theme.global.name.value = val ? 'dark' : 'light'
-})
 
 watchImmediate(flash, (val) => {
     if (val) {
@@ -21,14 +19,23 @@ watchImmediate(flash, (val) => {
         })
     }
 })
+
+watchImmediate(locale, (val) => {
+    i18n.locale.value = val
+})
+
+watchImmediate(prefersDark, (val) => {
+    theme.global.name.value = val ? 'dark' : 'light'
+})
 </script>
 
 <template>
     <v-app :class="{ 'bg-grey-lighten-4': !theme.current.value.dark }">
         <v-sonner position="top-right" expand />
-        <slot name="app" />
+        <slot name="header" />
         <v-main scrollable>
             <slot />
         </v-main>
+        <slot name="footer" />
     </v-app>
 </template>

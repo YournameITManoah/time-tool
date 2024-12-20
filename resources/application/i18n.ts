@@ -1,19 +1,36 @@
-import { createI18n } from 'vue-i18n'
+import { createI18n, type I18nOptions } from 'vue-i18n'
+import { en as enVuetify, nl as nlVuetify } from 'vuetify/locale'
 import messages from '#/locales.json'
 
-export type MessageSchema = (typeof messages)['en']
-
-declare module 'vue-i18n' {
-    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-    export interface DefineLocaleMessage extends MessageSchema {}
+export type SupportedLocale = keyof typeof messages
+export type MessageSchema = (typeof messages)['en'] & {
+    $vuetify: typeof enVuetify
 }
 
-const i18n = createI18n<[MessageSchema], 'en'>({
+const options: I18nOptions = {
+    legacy: false,
     locale: 'en',
-    messages,
-})
+    messages: {
+        en: { ...messages.en, $vuetify: { ...enVuetify } },
+        nl: {
+            ...messages.nl,
+            $vuetify: {
+                ...nlVuetify,
+                dismiss: 'Sluiten',
+                timePicker: {
+                    ...nlVuetify.timePicker,
+                    title: 'Selecteer tijd',
+                },
+                fileUpload: {
+                    title: 'Sleep en zet bestanden hier neer',
+                    divider: 'of',
+                    browse: 'Blader door bestanden',
+                },
+            },
+        },
+    },
+}
 
-const { t } = i18n.global
-export { t }
+const i18n = createI18n<false, typeof options>(options)
 
 export default i18n

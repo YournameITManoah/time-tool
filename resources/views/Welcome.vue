@@ -1,19 +1,3 @@
-<script setup lang="ts">
-defineOptions({ name: 'WelcomePage' })
-
-useHead({ title: 'Welcome' })
-
-defineProps<{
-    canLogin?: boolean
-    canRegister?: boolean
-    phpVersion: string
-    laravelVersion: string
-}>()
-
-const user = useProperty('auth.user')
-const name = import.meta.env.VITE_APP_NAME
-</script>
-
 <template layout="guest">
     <div>
         <v-card-title>Welcome to {{ name }}!</v-card-title>
@@ -26,7 +10,11 @@ const name = import.meta.env.VITE_APP_NAME
         <v-card-actions>
             <template v-if="user">
                 <router-link :href="route('dashboard')">
-                    <v-btn tabindex="-1" color="primary"> Dashboard </v-btn>
+                    <v-btn
+                        tabindex="-1"
+                        color="primary"
+                        :text="t('Dashboard')"
+                    />
                 </router-link>
             </template>
             <template v-else>
@@ -35,12 +23,33 @@ const name = import.meta.env.VITE_APP_NAME
                     :href="route('login')"
                     class="mr-2"
                 >
-                    <v-btn tabindex="-1" color="primary"> Login </v-btn>
+                    <v-btn tabindex="-1" color="primary" :text="t('Login')" />
                 </router-link>
                 <router-link v-if="canRegister" :href="route('register')">
-                    <v-btn tabindex="-1" color="success"> Sign Up </v-btn>
+                    <v-btn
+                        tabindex="-1"
+                        color="success"
+                        :text="t('Register')"
+                    />
                 </router-link>
             </template>
         </v-card-actions>
     </div>
 </template>
+<script setup lang="ts">
+defineOptions({ name: 'WelcomePage' })
+
+const { t } = useI18n()
+
+useHead({ title: t('Welcome') })
+
+defineProps<{
+    canLogin?: boolean
+    canRegister?: boolean
+    phpVersion: string
+    laravelVersion: string
+}>()
+
+const user = useProperty('auth.user')
+const name = import.meta.env.VITE_APP_NAME
+</script>

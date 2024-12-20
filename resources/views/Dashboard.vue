@@ -1,19 +1,3 @@
-<script lang="ts" setup>
-defineOptions({ name: 'DashboardPage' })
-
-useHead({ title: 'Dashboard' })
-
-const user = useProperty('auth.user')
-
-const breadcrumbs = [
-    {
-        title: 'Dashboard',
-        href: route('dashboard'),
-        disabled: true,
-    },
-]
-</script>
-
 <template layout>
     <div>
         <div class="mb-5">
@@ -27,3 +11,20 @@ const breadcrumbs = [
         </v-card>
     </div>
 </template>
+<script lang="ts" setup>
+defineOptions({ name: 'DashboardPage' })
+
+const { t } = useI18n()
+
+useHead({ title: t('Dashboard') })
+
+const user = useProperty('auth.user')
+
+const breadcrumbs = computed(() => [
+    {
+        title: t('Dashboard'),
+        href: route('dashboard'),
+        disabled: true,
+    },
+])
+</script>
