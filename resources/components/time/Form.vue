@@ -56,6 +56,7 @@
                                 required
                             />
                         </v-col>
+                        <!-- If not timer, show date/time fields -->
                         <template v-if="variant !== 'timer'">
                             <v-col
                                 :cols="sizes.cols"
@@ -165,10 +166,12 @@ const emit = defineEmits<{
     (e: 'start', project: number, task: number): void
 }>()
 
+// Dates
 const today = new Date().toISOString()
 const lastYear = new Date()
 lastYear.setFullYear(new Date().getFullYear() - 1)
 
+// Column sizes
 const sizes = computed(() => {
     return {
         cols: '12',
@@ -178,6 +181,7 @@ const sizes = computed(() => {
     }
 })
 
+// User tasks
 const fetchingUserTasks = ref(false)
 const timeLogStore = useTimeLogStore()
 const userTasks = ref<UserTaskExtended[]>([])
@@ -192,10 +196,12 @@ const fetchUserTasks = async () => {
     }
 }
 
+// Projects of current user
 const projects = computed(() => {
     return [...new Set(userTasks.value.map((ut) => ut.project))]
 })
 
+// Tasks of selected project
 const tasks = computed(() => {
     return userTasks.value
         .filter((ut) => ut.project.id === form.fields.project_id)
@@ -207,6 +213,7 @@ onMounted(() => {
     resetFields()
 })
 
+// Reset fields to default values
 const resetFields = () => {
     form.fields.project_id = props.defaults?.project_id
     form.fields.task_id = props.defaults?.task_id
@@ -233,6 +240,8 @@ const formRef = ref<VFormRef | null>(null)
 const submit = async () => {
     const result = await formRef.value?.validate()
     if (!result?.valid) return
+
+    // If timer has no start time yet, start the timer
     if (
         props.variant === 'timer' &&
         !props.defaults?.start_time &&
@@ -242,11 +251,12 @@ const submit = async () => {
         emit('start', form.fields.project_id, form.fields.task_id)
         resetFields()
     } else {
+        // If timer, stop the timer
         if (props.variant === 'timer') {
             form.fields.stop_time = new Date().toLocaleTimeString('nl')
         }
         form.submit().then((res) => {
-            console.log('res', res)
+            // If submission was successful, reset the form
             if (res.response?.status === 200) {
                 resetFields()
                 emit('cancel')

@@ -1,9 +1,3 @@
-<script setup lang="ts">
-import AppLayout from '@/layouts/app.vue'
-
-defineOptions({ name: 'GuestLayout' })
-</script>
-
 <template>
     <app-layout
         style="
@@ -36,3 +30,8 @@ defineOptions({ name: 'GuestLayout' })
         </v-container>
     </app-layout>
 </template>
+<script setup lang="ts">
+import AppLayout from '@/layouts/app.vue'
+
+defineOptions({ name: 'GuestLayout' })
+</script>

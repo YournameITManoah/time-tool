@@ -21,14 +21,8 @@ const props = defineProps<{
 }>()
 
 const breadcrumbs = [
-    {
-        title: t('Dashboard'),
-        href: route('dashboard'),
-    },
-    {
-        title: t('Time Logs'),
-        href: route('time-log.index'),
-    },
+    { title: t('Dashboard'), href: route('dashboard') },
+    { title: t('Time Logs'), href: route('time-log.index') },
     {
         title: props.edit ? t('Edit') : t('Create'),
         href: route(`time-log.${props.edit ? 'edit' : 'create'}`, {

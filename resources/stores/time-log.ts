@@ -6,8 +6,15 @@ interface State {
 }
 
 export const useTimeLogStore = defineStore('time-log', {
-    state: (): State => ({ userTasks: [] }),
+    state: (): State => ({
+        userTasks: [],
+    }),
     actions: {
+        /**
+         * Fetch all user tasks trough API
+         * @param refresh Whether to refresh when already fetched
+         * @returns The user tasks
+         */
         async getUserTasks(refresh?: boolean) {
             if (this.userTasks.length && !refresh) return this.userTasks
             try {

@@ -1,3 +1,27 @@
+<template>
+    <v-list nav>
+        <template v-for="item in navigation" :key="item.href">
+            <v-list-item
+                v-if="item.external"
+                :prepend-icon="item.icon"
+                :title="item.title"
+                :href="item.href"
+                link
+            />
+            <router-link v-else :href="item.href" as="div">
+                <v-list-item
+                    :class="{
+                        'v-list-item--active': false,
+                    }"
+                    :exact="item.exact"
+                    :prepend-icon="item.icon"
+                    :title="item.title"
+                    link
+                />
+            </router-link>
+        </template>
+    </v-list>
+</template>
 <script lang="ts" setup>
 interface NavItem {
     title: string
@@ -9,7 +33,7 @@ interface NavItem {
 
 const { t } = useI18n()
 
-const can = useProperty('auth.can')
+const can = useProperty<Partial<Record<string, boolean>>>('auth.can')
 
 const navigation = computed((): NavItem[] => {
     const items: NavItem[] = [
@@ -37,28 +61,3 @@ const navigation = computed((): NavItem[] => {
     return items
 })
 </script>
-
-<template>
-    <v-list nav>
-        <template v-for="item in navigation" :key="item.href">
-            <v-list-item
-                v-if="item.external"
-                :prepend-icon="item.icon"
-                :title="item.title"
-                :href="item.href"
-                link
-            />
-            <router-link v-else :href="item.href" as="div">
-                <v-list-item
-                    :class="{
-                        'v-list-item--active': false,
-                    }"
-                    :exact="item.exact"
-                    :prepend-icon="item.icon"
-                    :title="item.title"
-                    link
-                />
-            </router-link>
-        </template>
-    </v-list>
-</template>

@@ -11,6 +11,7 @@ const options: I18nOptions = {
     legacy: false,
     locale: 'en',
     messages: {
+        // Combine messages from the `lang` directory with Vuetify messages
         ...(Object.fromEntries(
             (Object.keys(messages) as SupportedLocale[]).map(
                 (locale): [SupportedLocale, MessageSchema] => [

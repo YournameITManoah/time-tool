@@ -65,16 +65,24 @@ import AppLayout from '@/layouts/app.vue'
 
 defineOptions({ name: 'DefaultLayout' })
 
-const { mobile } = useDisplay()
-const drawer = ref(!mobile.value)
-const nav = ref<any>(null)
-const hasFocus = ref(false)
-const user = useProperty('auth.user')
+// Product name
 const name = import.meta.env.VITE_APP_NAME
 
+// Composables
+const { mobile } = useDisplay()
+const user = useProperty('auth.user')
+
+// Refs
+const hasFocus = ref(false)
+const nav = useTemplateRef('nav')
+const drawer = ref(!mobile.value)
+
+// Open navigation on mobile
 watch(mobile, (val) => {
     if (!val) drawer.value = true
 })
+
+// Fix keyboard accessibility
 
 const onFocusIn = () => {
     hasFocus.value = true
@@ -85,14 +93,13 @@ const onFocusOut = () => {
     hasFocus.value = false
     if (mobile.value) drawer.value = false
 }
-
 onMounted(() => {
-    nav.value.$el.nextSibling.addEventListener('focusin', onFocusIn)
-    nav.value.$el.nextSibling.addEventListener('focusout', onFocusOut)
+    nav.value?.$el.nextSibling.addEventListener('focusin', onFocusIn)
+    nav.value?.$el.nextSibling.addEventListener('focusout', onFocusOut)
 })
 
 onBeforeUnmount(() => {
-    nav.value.$el.nextSibling.removeEventListener('focusin', onFocusIn)
-    nav.value.$el.nextSibling.removeEventListener('focusout', onFocusOut)
+    nav.value?.$el.nextSibling.removeEventListener('focusin', onFocusIn)
+    nav.value?.$el.nextSibling.removeEventListener('focusout', onFocusOut)
 })
 </script>

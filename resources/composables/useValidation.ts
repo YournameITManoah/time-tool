@@ -1,3 +1,7 @@
+/**
+ * Use validation rules with i18n
+ * @returns Validation rules
+ */
 export function useValidation() {
     const { t } = useI18n()
 

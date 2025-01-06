@@ -66,13 +66,13 @@ Ensure you have the following tools installed:
    php artisan migrate
    ```
 
-7. **Start the Development Frontend Server**:
+7. **Start the Development Vite Server**:
 
    ```bash
    npm run dev
    ```
 
-8. **Start the Development Server**:
+8. **Start the Development PHP Server**:
 
    ```bash
    php artisan serve
@@ -123,7 +123,7 @@ Localization files are located in the `lang` directory. Each language has its ow
 
 ### New locale
 
-To add a new locale, you need to first copy `lang/en` to `lang/{locale}` and `lang/nl.json` to `lang/{locale}.json`. Then modify the translations strings of the newly created files. When a locale is ready for release you need to define it in two places:
+To add a new locale, you need to first copy `lang/en` to `lang/{locale}` and `lang/nl.json` to `lang/{locale}.json`. Then modify the translations strings of the newly created files. When a locale is ready for release you need to define it in three places:
 
 1. `app/SupportedLocale.php`
 
@@ -132,7 +132,7 @@ To add a new locale, you need to first copy `lang/en` to `lang/{locale}` and `la
     {
         case ENGLISH = 'en';
         case DUTCH = 'nl';
-        // New language here
+        // New locale here
     }
     ```
 
@@ -142,8 +142,28 @@ To add a new locale, you need to first copy `lang/en` to `lang/{locale}` and `la
     'locales' => [
             'en' => 'English',
             'nl' => 'Nederlands',
-            // New language here
+            // New locale here
         ]
+    ```
+
+3. `resources/application/vuetify.ts`
+
+    ```javascript
+    import DateFnsAdapter from '@date-io/date-fns'
+    import { enUS as enDateFns } from 'date-fns/locale/en-US'
+    import { nl as nlDateFns } from 'date-fns/locale/nl'
+    // Import date-fns language pack for new locale here
+
+    const vuetify = createVuetify({
+        date: {
+            adapter: DateFnsAdapter,
+            locale: {
+                en: enDateFns,
+                nl: nlDateFns,
+                // New locale here
+            },
+        },
+    })
     ```
 
 Finally, you need to add a flag, representing the language, to the public assets (`public/img/flags/{locale}.svg`). You can retrieve flags from the [Blade Flags repository](https://github.com/MohmmedAshraf/blade-flags/tree/main/resources/svg).

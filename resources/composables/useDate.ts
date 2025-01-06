@@ -1,5 +1,9 @@
 import { useDate as useVuetifyDate } from 'vuetify'
 
+/**
+ * Use Vuetify date utils
+ * @returns Date utils
+ */
 export function useDate() {
     const parseDate = (iso: string) => {
         return useVuetifyDate().parseISO(iso)

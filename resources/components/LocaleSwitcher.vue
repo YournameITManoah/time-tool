@@ -34,6 +34,7 @@ defineProps<{
     button?: boolean
 }>()
 
+// List of locales
 const localeList = computed(() => {
     return (Object.keys(locales.value) as SupportedLocale[]).map((value) => ({
         value,
@@ -41,6 +42,7 @@ const localeList = computed(() => {
     }))
 })
 
+// TODO: refactor to work with more than 2 locales
 const otherLocale = useArrayFind(localeList, (l) => l.value !== locale.value)
 
 const form = useForm<{ locale: SupportedLocale }>({
