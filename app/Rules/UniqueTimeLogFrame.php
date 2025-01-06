@@ -16,11 +16,11 @@ class UniqueTimeLogFrame implements DataAwareRule, ValidationRule
      * @var array<string, mixed>
      */
     protected $data = [];
-    protected $currentId;
+    protected $currentTimeLog;
 
-    public function __construct(?int $currentId = null)
+    public function __construct(?TimeLog $currentTimeLog = null)
     {
-        $this->currentId = $currentId;
+        $this->currentTimeLog = $currentTimeLog;
     }
 
     /**
@@ -31,12 +31,12 @@ class UniqueTimeLogFrame implements DataAwareRule, ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         // Time logs should not overlap
-        if (TimeLog::where('user_id', $this->data['user_id'] ?? \Auth::id())
-            ->where('id', '!=', $this->currentId)
-            ->whereDate('date', $this->data['date'])
+        if (TimeLog::where('user_id', $this->data['user_id'] ?? $this->currentTimeLog?->user_id ?? \Auth::id())
+            ->where('id', '!=', $this->currentTimeLog?->id)
+            ->whereDate('date', $this->data['date'] ?? $this->currentTimeLog?->date)
             ->where(function (Builder $query) use ($value) {
                 $query->contains($value)->orWhere(function (Builder $query) {
-                    $query->partOf($this->data['start_time'], $this->data['stop_time']);
+                    $query->partOf($this->data['start_time'] ?? $this->currentTimeLog?->start_time, $this->data['stop_time'] ?? $this->currentTimeLog?->stop_time);
                 });
             })
             ->exists()

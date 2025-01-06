@@ -76,6 +76,9 @@ class TimeLogApiController extends ApiController
     {
         // Check if user is authorized
         \Gate::authorize('view', $timeLog);
+
+        // Return requested time log
+        return $timeLog;
     }
 
     /**
@@ -85,6 +88,14 @@ class TimeLogApiController extends ApiController
     {
         // Check if user is authorized
         \Gate::authorize('update', $timeLog);
+
+        // Retrieve the validated input data
+        $validated = $request->validated();
+
+        // Update the time log
+        $timeLog->updateOrFail($validated);
+
+        return $timeLog;
     }
 
     /**

@@ -19,15 +19,15 @@ class StoreTimeLogRequest extends FormRequest
      */
     public function rules(): array
     {
-        $id = $this->route('time_log')?->id;
+        $current = $this->route('time_log');
         return [
-            'project_id' => ['required', Rule::exists('user_tasks')->where(function (Builder $query) {
+            'project_id' => [$this->getMethod() == 'PATCH' ? 'sometimes' : 'required', Rule::exists('user_tasks')->where(function (Builder $query) {
                 return $query->where('user_id', \Auth::id());
             })],
-            'task_id' => ['required', new ValidUserTask()],
-            'date' => ['required', 'date', 'after_or_equal:1 year ago', 'before_or_equal:now'],
-            'start_time' => ['required', new Time(), new UniqueTimeLogFrame($id)],
-            'stop_time' => ['required', new Time(), 'after:start_time', new UniqueTimeLogFrame($id)],
+            'task_id' => [$this->getMethod() == 'PATCH' ? 'sometimes' : 'required', new ValidUserTask()],
+            'date' => [$this->getMethod() == 'PATCH' ? 'sometimes' : 'required', 'date', 'after_or_equal:1 year ago', 'before_or_equal:now'],
+            'start_time' => [$this->getMethod() == 'PATCH' ? 'sometimes' : 'required', new Time(), new UniqueTimeLogFrame($current)],
+            'stop_time' => [$this->getMethod() == 'PATCH' ? 'sometimes' : 'required', new Time(), 'after:start_time', new UniqueTimeLogFrame($current)],
         ];
     }
 }
