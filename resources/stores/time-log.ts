@@ -20,7 +20,7 @@ export const useTimeLogStore = defineStore('time-log', {
             try {
                 const result = await window.axios<
                     PagedResult<UserTaskExtended>
-                >('/api/user-task/my', { params: { limit: -1 } })
+                >('/api/user-task', { params: { limit: -1 } })
 
                 this.userTasks = result.data.data
             } catch (e) {

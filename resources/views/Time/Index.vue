@@ -109,7 +109,7 @@ const loadItems = async ({
 
     try {
         const result = await window.axios<PagedResult<TimeLogExtended>>(
-            '/api/time-log/my',
+            '/api/time-log',
             { params },
         )
         items.value = result.data.data

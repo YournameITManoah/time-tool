@@ -16,5 +16,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('/time-log', TimeLogController::class)->except('show');
 });
 
-require __DIR__ . '/api.php';
 require __DIR__ . '/auth.php';

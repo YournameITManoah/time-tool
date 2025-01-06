@@ -1,30 +1,27 @@
 <?php
 
+use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\Api\UserTaskApiController;
 use App\Http\Controllers\Api\TimeLogApiController;
+use App\Http\Controllers\Api\TokenApiController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
 
-// All api routes start with /api/
-Route::prefix('api')->group(function () {
+// For changing the current locale
+Route::put('locale', function (Request $request) {
+    $request->validate(['locale' => 'required|string|min:2']);
+    app()->setLocale($request->locale);
+    session()->put('locale', $request->locale);
+    return redirect()->back();
+})->name('locale.update');
 
-    // For changing the current locale
-    Route::put('locale', function (Request $request) {
-        $request->validate(['locale' => 'required|string|min:2']);
-        app()->setLocale($request->locale);
-        session()->put('locale', $request->locale);
-        return redirect()->back();
-    })->name('locale.update');
-
-    // Protected api routes
-    Route::middleware(['auth'])->group(function () {
-        Route::get('/time-log/my', [TimeLogApiController::class, 'index']);
-        Route::get('/user-task/my', [UserTaskApiController::class, 'index']);
-    });
-
-    // Fallback to 404 Not Found should be the last route
-    Route::fallback(function () {
-        return response()->json(['message' => 'Not Found.'], 404);
-    });
+// Protected api routes
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::resource('token', TokenApiController::class)->only(['index', 'store']);
+    Route::resource('time-log', TimeLogApiController::class)->except(['create', 'edit']);
+    Route::resource('user-task', UserTaskApiController::class)->only('index');
 });
+
+// Fallback to 404 Not Found should be the last route
+Route::fallback([ApiController::class, 'notFound']);
