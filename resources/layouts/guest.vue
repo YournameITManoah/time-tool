@@ -27,7 +27,7 @@ defineOptions({ name: 'GuestLayout' })
                             <router-link href="/" style="width: 50%">
                                 <ApplicationLogo style="width: 100%" />
                             </router-link>
-                            <locale-switcher />
+                            <locale-switcher button />
                         </div>
                         <slot />
                     </v-card>
