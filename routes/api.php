@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 // All api routes start with /api/
 Route::prefix('api')->group(function () {
 
+    // For changing the current locale
     Route::put('locale', function (Request $request) {
         $request->validate(['locale' => 'required|string|min:2']);
         app()->setLocale($request->locale);
@@ -22,6 +23,7 @@ Route::prefix('api')->group(function () {
         Route::get('/user-task/my', [UserTaskApiController::class, 'index']);
     });
 
+    // Fallback to 404 Not Found should be the last route
     Route::fallback(function () {
         return response()->json(['message' => 'Not Found.'], 404);
     });

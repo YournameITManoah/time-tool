@@ -16,6 +16,7 @@ class Time implements ValidationRule
     {
         $formats = ['H:i:s', 'H:i'];
 
+        // Time entries should be in an accepted format
         foreach ($formats as $format) {
             $parsed = date_parse_from_format($format, $value);
 

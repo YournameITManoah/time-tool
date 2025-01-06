@@ -14,16 +14,28 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
+/**
+ * A task which users can log time for
+ */
 class TaskResource extends Resource
 {
+    // The related model
     protected static ?string $model = Task::class;
 
-    protected static ?int $navigationSort = 2;
-
+    // The icon to use in the navigation menu
     protected static ?string $navigationIcon = 'heroicon-o-list-bullet';
 
+    // The navigation order of the resource
+    protected static ?int $navigationSort = 2;
+
+    // The navigation group of the resource
     protected static ?string $navigationGroup = 'Admin';
 
+    /**
+     * The fields required to create/update the resource
+     * @param \Filament\Forms\Form $form The base form
+     * @return \Filament\Forms\Form The defined form
+     */
     public static function form(Form $form): Form
     {
         return $form
@@ -38,6 +50,11 @@ class TaskResource extends Resource
             ]);
     }
 
+    /**
+     * The columns, filters and actions of the table that displays the resource
+     * @param \Filament\Tables\Table $table The base table
+     * @return \Filament\Tables\Table The defined table
+     */
     public static function table(Table $table): Table
     {
         return $table
@@ -75,6 +92,10 @@ class TaskResource extends Resource
             ]);
     }
 
+    /**
+     * Relationships to be displayed on the detail page of the resource
+     * @return array The relations
+     */
     public static function getRelations(): array
     {
         return [
@@ -82,6 +103,10 @@ class TaskResource extends Resource
         ];
     }
 
+    /**
+     * The pages of the resource
+     * @return array The pages
+     */
     public static function getPages(): array
     {
         return [
@@ -91,16 +116,28 @@ class TaskResource extends Resource
         ];
     }
 
+    /**
+     * The navigation badge of the resource
+     * @return mixed The value of the badge
+     */
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
     }
 
+    /**
+     * The label of the resource
+     * @return string The label
+     */
     public static function getModelLabel(): string
     {
         return __('Task');
     }
 
+    /**
+     * The plural form of the resource label
+     * @return string The label
+     */
     public static function getPluralModelLabel(): string
     {
         return __('Tasks');

@@ -8,6 +8,9 @@ use App\Models\UserTask;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * API controller user user tasks
+ */
 class UserTaskApiController extends Controller
 {
     /**
@@ -15,6 +18,7 @@ class UserTaskApiController extends Controller
      */
     public function index(Request $request)
     {
+        // Defaults
         $defaultLimit = 10;
         $perPage = $request->get('limit', $defaultLimit);
 
@@ -23,7 +27,8 @@ class UserTaskApiController extends Controller
             $perPage = '1000';
         };
 
-        $timeLogs = UserTask::query()
+        // Get the user tasks of the logged in user
+        $userTasks = UserTask::query()
             ->where('user_id', \Auth::id())
             ->when($request->get('sort'), function ($query, $sortBy) {
                 return $query->orderBy($sortBy['key'], $sortBy['order']);
@@ -32,7 +37,7 @@ class UserTaskApiController extends Controller
             ->with('task:id,name')
             ->paginate($perPage);
 
-        return response()->json($timeLogs);
+        return response()->json($userTasks);
     }
 
     /**

@@ -14,16 +14,28 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
+/**
+ * A client which users can log time for
+ */
 class ClientResource extends Resource
 {
+    // The related model
     protected static ?string $model = Client::class;
 
+    // The icon to use in the navigation menu
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
 
+    // The navigation order of the resource
     protected static ?int $navigationSort = 4;
 
+    // The navigation group of the resource
     protected static ?string $navigationGroup = 'Admin';
 
+    /**
+     * The fields required to create/update the resource
+     * @param \Filament\Forms\Form $form The base form
+     * @return \Filament\Forms\Form The defined form
+     */
     public static function form(Form $form): Form
     {
         return $form
@@ -42,6 +54,11 @@ class ClientResource extends Resource
             ]);
     }
 
+    /**
+     * The columns, filters and actions of the table that displays the resource
+     * @param \Filament\Tables\Table $table The base table
+     * @return \Filament\Tables\Table The defined table
+     */
     public static function table(Table $table): Table
     {
         return $table
@@ -79,6 +96,10 @@ class ClientResource extends Resource
             ]);
     }
 
+    /**
+     * Relationships to be displayed on the detail page of the resource
+     * @return array The relations
+     */
     public static function getRelations(): array
     {
         return [
@@ -86,6 +107,10 @@ class ClientResource extends Resource
         ];
     }
 
+    /**
+     * The pages of the resource
+     * @return array The pages
+     */
     public static function getPages(): array
     {
         return [
@@ -95,16 +120,28 @@ class ClientResource extends Resource
         ];
     }
 
+    /**
+     * The navigation badge of the resource
+     * @return mixed The value of the badge
+     */
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
     }
 
+    /**
+     * The label of the resource
+     * @return string The label
+     */
     public static function getModelLabel(): string
     {
         return __('Client');
     }
 
+    /**
+     * The plural form of the resource label
+     * @return string The label
+     */
     public static function getPluralModelLabel(): string
     {
         return __('Clients');

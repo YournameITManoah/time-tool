@@ -4,6 +4,9 @@ namespace App\Data;
 
 use Spatie\LaravelData\Data;
 
+/**
+ * Messages to display to the user
+ */
 final class FlashBagData extends Data
 {
     public function __construct(

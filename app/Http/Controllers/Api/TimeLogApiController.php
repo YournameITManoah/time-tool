@@ -6,6 +6,9 @@ use App\Models\TimeLog;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+/**
+ * API controller for time logs
+ */
 class TimeLogApiController extends Controller
 {
     /**
@@ -13,12 +16,14 @@ class TimeLogApiController extends Controller
      */
     public function index(Request $request)
     {
+        // Defaults
         $defaultLimit = 10;
         $defaultSort = [
             'key' => 'date',
             'order' => 'desc'
         ];
 
+        // Query params
         $perPage = $request->get('limit', $defaultLimit);
         $sortBy = $request->get('sort', $defaultSort);
 
@@ -27,6 +32,7 @@ class TimeLogApiController extends Controller
             $perPage = '1000';
         };
 
+        // Get the time logs of the logged in user
         $timeLogs = TimeLog::query()
             ->where('user_id', \Auth::id())
             ->with('project:id,name')
