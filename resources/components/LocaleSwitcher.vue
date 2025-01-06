@@ -28,17 +28,20 @@ import type { SupportedLocale } from '@/application/i18n'
 import type { VFormRef } from '@/types'
 
 const { locale } = useI18n()
+const locales = useProperty<Record<SupportedLocale, string>>('locales')
 
 defineProps<{
     button?: boolean
 }>()
 
-const locales: { title: string; value: SupportedLocale }[] = [
-    { title: 'English', value: 'en' },
-    { title: 'Nederlands', value: 'nl' },
-]
+const localeList = computed(() => {
+    return (Object.keys(locales.value) as SupportedLocale[]).map((value) => ({
+        value,
+        title: locales.value[value],
+    }))
+})
 
-const otherLocale = useArrayFind(locales, (l) => l.value !== locale.value)
+const otherLocale = useArrayFind(localeList, (l) => l.value !== locale.value)
 
 const form = useForm<{ locale: SupportedLocale }>({
     method: 'PUT',
