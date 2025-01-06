@@ -27,7 +27,7 @@ class ValidUserTask implements DataAwareRule, ValidationRule
             ->where('user_id', $this->data['user_id'] ?? \Auth::id())
             ->doesntExist()
         ) {
-            $fail("You're not allowed to log time for the given task.");
+            $fail('messages.valid_user_task')->translate(['attribute' => $attribute]);
         }
     }
 

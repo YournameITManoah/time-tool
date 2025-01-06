@@ -40,7 +40,7 @@ class UniqueTimeLogFrame implements DataAwareRule, ValidationRule
             })
             ->exists()
         ) {
-            $fail("The {$attribute} conflicts with an existing time log.");
+            $fail('messages.valid_time_log_frame')->translate(['attribute' => $attribute]);
         }
     }
 

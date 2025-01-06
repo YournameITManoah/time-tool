@@ -24,6 +24,6 @@ class Time implements ValidationRule
             }
         }
 
-        $fail("The {$attribute} field must match the format H:i or H:i:s.");
+        $fail('messages.valid_time_format')->translate(['attribute' => $attribute]);
     }
 }
