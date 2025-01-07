@@ -6,7 +6,9 @@
         </div>
         <v-card>
             <v-card-text>
-                <v-card-title> Welcome back, {{ user?.name }}! </v-card-title>
+                <v-card-title>
+                    {{ t('messages.welcome_back', { name: user?.name }) }}
+                </v-card-title>
             </v-card-text>
         </v-card>
     </div>

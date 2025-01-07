@@ -7,14 +7,10 @@
             @submit.prevent="submit"
         >
             <div class="text-subtitle-2 text-medium-emphasis mb-4">
-                Thanks for signing up! Before getting started, could you verify
-                your email address by clicking on the link we just emailed to
-                you? If you didn't receive the email, we will gladly send you
-                another.
+                {{ t('messages.verify_email_text') }}
             </div>
             <v-alert v-if="verificationLinkSent" class="mb-4">
-                A new verification link has been sent to the email address you
-                provided during registration.
+                {{ t('messages.verify_email_sent') }}
             </v-alert>
             <v-card-actions>
                 <v-btn

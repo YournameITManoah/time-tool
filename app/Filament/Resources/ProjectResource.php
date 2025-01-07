@@ -3,20 +3,14 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProjectResource\Pages;
-use App\Filament\Resources\ProjectResource\RelationManagers;
-use App\Filament\Resources\ProjectResource\RelationManagers\TimeLogsRelationManager;
-use App\Filament\Resources\ProjectResource\RelationManagers\UsersRelationManager;
 use App\Filament\Resources\ClientResource\RelationManagers\ProjectsRelationManager as ClientProjectsRelationManager;
 use App\Filament\Resources\ProjectResource\RelationManagers\TasksRelationManager;
 use App\Models\Project;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 /**
  * A project which users can log time for
@@ -135,7 +129,7 @@ class ProjectResource extends Resource
     public static function getRelations(): array
     {
         return [
-            TasksRelationManager::class,
+            //TasksRelationManager::class,
         ];
     }
 
