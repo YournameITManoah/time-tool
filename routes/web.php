@@ -25,3 +25,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 require __DIR__ . '/auth.php';
+
+// Fallback to 404 Not Found should be the last route
+Route::fallback(fn() => hybridly('error', ['status' => 404]));
