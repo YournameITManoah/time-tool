@@ -105,8 +105,9 @@ Hybridly enhances the integration between Laravel and Vue.js, providing features
 ## Working with Vue.js
 
 - **Application configuration**: Located in `resources/application`.
-- **Assets, Components, Composables, Layouts, Types, Utils and Views**: Located in `resources`.
+- **Assets, components, composables, layouts, types, utils and views**: Located in `resources`.
 - **State Management**: Managed using [Pinia](https://pinia.vuejs.org/), with store files in `resources/stores`.
+- **UI**: UI is created with [Vuetify](https://vuetifyjs.com/en/) components and [Material Design Icons](https://pictogrammers.com/library/mdi/).
 
 Refer to the [Vue.js documentation](https://vuejs.org/guide/) for more information.
 
