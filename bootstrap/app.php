@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Foundation\Application;
-use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Hybridly\Exceptions\HandleHybridExceptions;
+use Symfony\Component\HttpFoundation\Response;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -16,4 +17,13 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->prependToGroup('api', [\App\Http\Middleware\Localization::class, \App\Http\Middleware\ForceJsonResponse::class]);
         $middleware->appendToGroup('web', [\App\Http\Middleware\Localization::class, \App\Http\Middleware\HandleHybridRequests::class]);
     })
-    ->withExceptions(function (Exceptions $exceptions) {})->create();
+    ->withExceptions(
+        HandleHybridExceptions::register()
+            ->inEnvironments('local')
+            ->renderUsing(fn(Response $response) => hybridly('error', [
+                'status' => $response->getStatusCode(),
+            ]))
+            ->expireSessionUsing(fn() => back()->with([
+                'error' => 'Your session has expired. Please refresh the page.',
+            ]))
+    )->create();
