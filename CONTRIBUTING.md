@@ -202,7 +202,7 @@ Commit messages should be completely lowercase and be written in the imperative 
 
 - **Scopes**
 
-Scopes are not required, but can improve the clarity of the commit message, common scopes include: `deps`, `i18n`, `api`, `auth`, `admin`.
+    Scopes are not required, but can improve the clarity of the commit message, common scopes include: `deps`, `i18n`, `api`, `auth`, `admin`.
 
 - **Examples**:
 
