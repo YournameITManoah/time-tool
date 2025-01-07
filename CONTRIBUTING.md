@@ -82,10 +82,15 @@ Ensure you have the following tools installed:
 
 ## Working with Laravel
 
-- **Routing**: Defined in the `routes` directory.
-- **Controllers**: Located in `app/Http/Controllers`.
+- **Configuration**: located in `app/Providers/AppServiceProvider.php` and `config`.
+- **Controllers, Middleware and Form Requests**: Located in `app/Http`.
 - **Models**: Located in `app/Models`.
-- **Migrations**: Located in `database/migrations`.
+- **Policies**: Located in `app/Policies`.
+- **Rules**: Located in `app/Rules`.
+- **Factories, migrations and seeders**: Located in `database`.
+- **Localization**: Defined in the `lang` directory.
+- **Public Assets**: Defined in the `public` directory.
+- **Routing**: Defined in the `routes` directory.
 
 Refer to the [Laravel documentation](https://laravel.com/docs/11.x) for detailed information.
 
@@ -100,10 +105,8 @@ Hybridly enhances the integration between Laravel and Vue.js, providing features
 ## Working with Vue.js
 
 - **Application configuration**: Located in `resources/application`.
-- **Components**: Located in `resources/components`.
-- **Layouts**: Located in `resources/layouts`.
-- **Views**: Located in `resources/views`.
-- **State Management**: Managed using Pinia, with store files in `resources/stores`.
+- **Assets, Components, Composables, Layouts, Types, Utils and Views**: Located in `resources`.
+- **State Management**: Managed using [Pinia](https://pinia.vuejs.org/), with store files in `resources/stores`.
 
 Refer to the [Vue.js documentation](https://vuejs.org/guide/) for more information.
 
@@ -112,8 +115,10 @@ Refer to the [Vue.js documentation](https://vuejs.org/guide/) for more informati
 Filament is used for building the admin panel.
 
 - **Configuration**: Located in `app/providers/Filament/AdminPanelProvider.php`.
+- **Exporters**: Located in `app/Filament/Exports`.
 - **Resources**: Located in `app/Filament/Resources`.
 - **Pages**: Located in `app/Filament/{Resource}/Pages`.
+- **Relation Managers**: Located in `app/Filament/{Resource}/RelationManagers`.
 
 Refer to the [Filament documentation](https://filamentphp.com/docs/) for detailed information.
 
