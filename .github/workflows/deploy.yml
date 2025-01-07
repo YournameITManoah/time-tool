@@ -87,6 +87,7 @@ jobs:
                       **/node_modules/**
                       **/vendor/**
                       .hybridly/**
+                      .vscode/**
                       public/**
                       !public/build/manifest.json
                       tests/**
