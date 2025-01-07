@@ -18,6 +18,7 @@ Route::put('locale', function (Request $request) {
 
 // Protected api routes
 Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('csrf-cookie', fn() => response()->noContent());
     Route::resource('token', TokenApiController::class)->only(['index', 'store']);
     Route::resource('time-log', TimeLogApiController::class)->except(['create', 'edit']);
     Route::resource('user-task', UserTaskApiController::class)->only('index');

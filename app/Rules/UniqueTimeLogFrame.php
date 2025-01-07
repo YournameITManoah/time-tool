@@ -30,6 +30,12 @@ class UniqueTimeLogFrame implements DataAwareRule, ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
+        // If required values are missing, skip validation
+        $values = array_filter([$this->data['date'] ?? null, $this->data['start_time'] ?? null, $this->data['stop_time'] ?? null]);
+        if (!$this->currentTimeLog && count($values) < 3) {
+            return;
+        }
+
         // Time logs should not overlap
         if (TimeLog::where('user_id', $this->data['user_id'] ?? $this->currentTimeLog?->user_id ?? \Auth::id())
             ->where('id', '!=', $this->currentTimeLog?->id)

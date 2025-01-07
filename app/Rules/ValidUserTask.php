@@ -29,6 +29,12 @@ class ValidUserTask implements DataAwareRule, ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
+        // If required values are missing, skip validation
+        $values = array_filter([$value ?? null, $this->data['project_id'] ?? null]);
+        if (!$this->currentTimeLog && count($values) < 2) {
+            return;
+        }
+
         // Tasks should be linked to the specified project and user
         if (UserTask::where('task_id', $value)
             ->where('project_id',  $this->data['project_id'] ?? $this->currentTimeLog?->project_id)
