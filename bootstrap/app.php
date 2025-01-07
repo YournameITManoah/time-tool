@@ -13,6 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->statefulApi();
+        $middleware->prependToGroup('api', [\App\Http\Middleware\ForceJsonResponse::class]);
         $middleware->appendToGroup('web', [\App\Http\Middleware\HandleHybridRequests::class, \App\Http\Middleware\Localization::class]);
     })
     ->withExceptions(function (Exceptions $exceptions) {})->create();
