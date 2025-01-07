@@ -1,10 +1,9 @@
 <template layout="guest">
     <div>
-        <v-card-title>Welcome to {{ name }}!</v-card-title>
+        <v-card-title>{{ t('messages.welcome', { app: name }) }}</v-card-title>
         <v-card-text>
             <p class="text-body-2">
-                This tool is meant to simplify time registration for all parties
-                involved.
+                {{ t('messages.welcome_text') }}
             </p>
         </v-card-text>
         <v-card-actions>

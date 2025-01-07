@@ -6,8 +6,7 @@
                 <v-row>
                     <v-col cols="12">
                         <div class="text-subtitle-2 text-medium-emphasis">
-                            This is a secure area of the application. Please
-                            confirm your password before continuing.
+                            {{ t('messages.confirm_password_text') }}
                         </div>
                     </v-col>
                     <v-col v-if="status" cols="12">

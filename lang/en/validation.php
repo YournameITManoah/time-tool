@@ -189,6 +189,15 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'name' => 'Name',
+        'email' => 'Email',
+        'password' => 'Password',
+        'project_id' => 'Project',
+        'task_id' => 'Task',
+        'date' => 'Date',
+        'start_time' => 'Start time',
+        'stop_time' => 'Stop time'
+    ],
 
 ];

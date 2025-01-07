@@ -10,9 +10,7 @@
                 <v-row>
                     <v-col class="py-0" cols="12">
                         <div class="text-subtitle-2 text-medium-emphasis">
-                            Forgot your password? No problem. Just let us know
-                            your email address and we will email you a password
-                            reset link that will allow you to choose a new one.
+                            {{ t('messages.forgot_password_text') }}
                         </div>
                     </v-col>
                     <v-col v-if="status" cols="12">
