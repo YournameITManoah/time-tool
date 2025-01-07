@@ -1,17 +1,3 @@
-<script lang="ts" setup>
-defineOptions({ name: 'BreadcrumbsComponent' })
-
-interface BreadcrumbItem {
-    title: string
-    href: string
-    disabled?: boolean
-}
-
-defineProps<{
-    items: BreadcrumbItem[]
-}>()
-</script>
-
 <template>
     <v-breadcrumbs :items="items">
         <template #item="{ item }">
@@ -26,3 +12,16 @@ defineProps<{
         </template>
     </v-breadcrumbs>
 </template>
+<script lang="ts" setup>
+defineOptions({ name: 'BreadcrumbsComponent' })
+
+interface BreadcrumbItem {
+    title: string
+    href: string
+    disabled?: boolean
+}
+
+defineProps<{
+    items: BreadcrumbItem[]
+}>()
+</script>

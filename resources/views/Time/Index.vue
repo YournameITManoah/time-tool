@@ -1,79 +1,7 @@
-<script lang="ts" setup>
-import type {
-    PagedParams,
-    PagedResult,
-    TimeLogWithProject,
-    VDataTableOptions,
-} from '~/resources/types'
-
-defineOptions({ name: 'TimeLogIndex' })
-
-useHead({ title: 'Time Logs' })
-
-const breadcrumbs = [
-    {
-        title: 'Dashboard',
-        href: route('dashboard'),
-    },
-    {
-        title: 'Time Logs',
-        href: route('time-log.index'),
-        disabled: true,
-    },
-]
-
-const groupBy = ref<{ title: string; key: string }[]>([])
-const headers = computed(() => {
-    return [
-        { title: 'Project', key: 'project.name' },
-        { title: 'Task', key: 'task.name' },
-        { title: 'Date', key: 'date' },
-        { title: 'Start Time', key: 'start_time' },
-        { title: 'Stop Time', key: 'stop_time' },
-        { title: 'Duration', key: 'duration', sortable: false },
-        { title: 'Actions', key: 'actions', sortable: false },
-    ].filter((h) => h.key !== groupBy.value[0]?.key)
-})
-
-const items = ref<TimeLogWithProject[]>([])
-const totalItems = ref(0)
-const isLoadingTable = ref(false)
-const search = ref<string | undefined>()
-
-const loadItems = async ({
-    page,
-    itemsPerPage,
-    sortBy,
-    search,
-}: VDataTableOptions) => {
-    isLoadingTable.value = true
-    const params: PagedParams = {
-        page,
-        limit: itemsPerPage,
-        sort: sortBy[0],
-    }
-
-    if (search) params.search = search
-
-    try {
-        const result = await window.axios<PagedResult<TimeLogWithProject>>(
-            '/api/time-log/my',
-            { params },
-        )
-        items.value = result.data.data
-        totalItems.value = result.data.total
-    } catch (e) {
-        console.error(e)
-    } finally {
-        isLoadingTable.value = false
-    }
-}
-</script>
-
 <template layout>
     <div>
         <div class="mb-5">
-            <h5 class="text-h5 font-weight-bold">Time Logs</h5>
+            <h5 class="text-h5 font-weight-bold">{{ t('Time Logs') }}</h5>
             <Breadcrumbs :items="breadcrumbs" class="pa-0 mt-1" />
         </div>
         <v-card>
@@ -118,3 +46,78 @@ const loadItems = async ({
         </v-card>
     </div>
 </template>
+<script lang="ts" setup>
+import type {
+    PagedParams,
+    PagedResult,
+    TimeLogExtended,
+    VDataTableOptions,
+} from '@/types'
+
+defineOptions({ name: 'TimeLogIndex' })
+
+const { t } = useI18n()
+
+useHead({ title: t('Time Logs') })
+
+const { formatDate, formatDuration } = useDate()
+
+const breadcrumbs = computed(() => [
+    {
+        title: t('Dashboard'),
+        href: route('dashboard'),
+    },
+    {
+        title: t('Time Logs'),
+        href: route('time-log.index'),
+        disabled: true,
+    },
+])
+
+const groupBy = ref<{ title: string; key: string }[]>([])
+const headers = computed(() => {
+    return [
+        { title: t('Project'), key: 'project.name' },
+        { title: t('Task'), key: 'task.name' },
+        { title: t('Date'), key: 'date' },
+        { title: t('Start time'), key: 'start_time' },
+        { title: t('Stop time'), key: 'stop_time' },
+        { title: t('Duration'), key: 'duration', sortable: false },
+        { title: t('Actions'), key: 'actions', sortable: false },
+    ].filter((h) => h.key !== groupBy.value[0]?.key)
+})
+
+const items = ref<TimeLogExtended[]>([])
+const totalItems = ref(0)
+const isLoadingTable = ref(false)
+const search = ref<string | undefined>()
+
+const loadItems = async ({
+    page,
+    itemsPerPage,
+    sortBy,
+    search,
+}: VDataTableOptions) => {
+    isLoadingTable.value = true
+    const params: PagedParams = {
+        page,
+        limit: itemsPerPage,
+        sort: sortBy[0],
+    }
+
+    if (search) params.search = search
+
+    try {
+        const result = await window.axios<PagedResult<TimeLogExtended>>(
+            '/api/time-log',
+            { params },
+        )
+        items.value = result.data.data
+        totalItems.value = result.data.total
+    } catch (e) {
+        console.error(e)
+    } finally {
+        isLoadingTable.value = false
+    }
+}
+</script>
