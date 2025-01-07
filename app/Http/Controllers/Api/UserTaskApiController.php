@@ -2,19 +2,23 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Models\Project;
 use App\Models\UserTask;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\Builder;
 
-class UserTaskApiController extends Controller
+/**
+ * API controller user user tasks
+ */
+class UserTaskApiController extends ApiController
 {
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        // Check if user is authorized
+        \Gate::authorize('viewAny', userTask::class);
+
+        // Defaults
         $defaultLimit = 10;
         $perPage = $request->get('limit', $defaultLimit);
 
@@ -23,8 +27,9 @@ class UserTaskApiController extends Controller
             $perPage = '1000';
         };
 
-        $timeLogs = UserTask::query()
-            ->where('user_id', auth()->id())
+        // Get the user tasks of the logged in user
+        $userTasks = UserTask::query()
+            ->where('user_id', \Auth::id())
             ->when($request->get('sort'), function ($query, $sortBy) {
                 return $query->orderBy($sortBy['key'], $sortBy['order']);
             })
@@ -32,46 +37,6 @@ class UserTaskApiController extends Controller
             ->with('task:id,name')
             ->paginate($perPage);
 
-        return response()->json($timeLogs);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return $userTasks;
     }
 }

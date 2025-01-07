@@ -1,41 +1,3 @@
-<script lang="ts" setup>
-interface NavItem {
-    title: string
-    icon: string
-    href: string
-    exact?: boolean
-    external?: boolean
-}
-
-const can = useProperty('auth.can')
-
-const navigation = computed((): NavItem[] => {
-    const items: NavItem[] = [
-        {
-            title: 'Dashboard',
-            icon: 'mdi-view-dashboard',
-            href: route('dashboard'),
-        },
-        {
-            title: 'Time Logs',
-            icon: 'mdi-clock-outline',
-            href: route('time-log.index'),
-        },
-    ]
-
-    if (can.value?.['view-admin']) {
-        items.push({
-            title: 'Admin Panel',
-            icon: 'mdi-security',
-            href: '/admin',
-            external: true,
-        })
-    }
-
-    return items
-})
-</script>
-
 <template>
     <v-list nav>
         <template v-for="item in navigation" :key="item.href">
@@ -60,3 +22,42 @@ const navigation = computed((): NavItem[] => {
         </template>
     </v-list>
 </template>
+<script lang="ts" setup>
+interface NavItem {
+    title: string
+    icon: string
+    href: string
+    exact?: boolean
+    external?: boolean
+}
+
+const { t } = useI18n()
+
+const can = useProperty<Partial<Record<string, boolean>>>('auth.can')
+
+const navigation = computed((): NavItem[] => {
+    const items: NavItem[] = [
+        {
+            title: t('Dashboard'),
+            icon: 'mdi-view-dashboard',
+            href: route('dashboard'),
+        },
+        {
+            title: t('Time Log'),
+            icon: 'mdi-clock-outline',
+            href: route('time-log.index'),
+        },
+    ]
+
+    if (can.value?.['view-admin']) {
+        items.push({
+            title: t('Admin Panel'),
+            icon: 'mdi-security',
+            href: '/admin',
+            external: true,
+        })
+    }
+
+    return items
+})
+</script>

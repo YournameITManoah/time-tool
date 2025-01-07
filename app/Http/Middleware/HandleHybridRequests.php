@@ -15,7 +15,7 @@ class HandleHybridRequests extends Middleware
      */
     public function share(): SharedData
     {
-        $user = auth()->user();
+        $user = \Auth::user();
         $can = null;
 
         if ($user !== null) {
@@ -29,6 +29,8 @@ class HandleHybridRequests extends Middleware
                 'user' => UserData::optional($user),
                 'can' => $can
             ]),
+            'locale' => session()->get('locale', 'en'),
+            'locales' => \Config::get('app.locales')
         ]);
     }
 }

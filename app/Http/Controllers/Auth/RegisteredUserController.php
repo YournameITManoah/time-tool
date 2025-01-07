@@ -28,12 +28,16 @@ class RegisteredUserController extends Controller
             'password' => ['required', Rules\Password::defaults(), 'confirmed'],
         ]);
 
+        /**
+         * @var User The new user
+         */
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'available_hours' => 40,
             'planned_hours' => 0,
             'role_id' => Role::USER,
+            'email_verified_at' => now(), // TODO: Require email verification
             'password' => Hash::make($request->password),
         ]);
 

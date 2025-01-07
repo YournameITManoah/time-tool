@@ -24,6 +24,9 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
+/**
+ * Configuration of the admin panel
+ */
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
@@ -65,8 +68,7 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->navigationItems([
-                NavigationItem::make()
-                    ->label('User Panel')
+                NavigationItem::make(fn(): string => __('User Panel'))
                     ->icon('heroicon-o-user-circle')
                     ->url('/dashboard')
             ]);

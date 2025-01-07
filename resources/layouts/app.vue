@@ -1,3 +1,13 @@
+<template>
+    <v-app :class="{ 'bg-grey-lighten-4': !theme.current.value.dark }">
+        <v-sonner position="top-right" expand />
+        <slot name="header" />
+        <v-main scrollable>
+            <slot />
+        </v-main>
+        <slot name="footer" />
+    </v-app>
+</template>
 <script setup lang="ts">
 import { useTheme } from 'vuetify'
 import { VSonner, toast } from 'vuetify-sonner'
@@ -5,14 +15,14 @@ import 'vuetify-sonner/style.css'
 
 defineOptions({ name: 'AppLayout' })
 
+// Composables
+const i18n = useI18n()
 const theme = useTheme()
 const flash = useProperty('flash')
+const locale = useProperty('locale')
 const prefersDark = usePreferredDark()
 
-watchImmediate(prefersDark, (val) => {
-    theme.global.name.value = val ? 'dark' : 'light'
-})
-
+// When notifications change, display them
 watchImmediate(flash, (val) => {
     if (val) {
         Object.keys(val).forEach((key) => {
@@ -21,14 +31,14 @@ watchImmediate(flash, (val) => {
         })
     }
 })
-</script>
 
-<template>
-    <v-app :class="{ 'bg-grey-lighten-4': !theme.current.value.dark }">
-        <v-sonner position="top-right" expand />
-        <slot name="app" />
-        <v-main scrollable>
-            <slot />
-        </v-main>
-    </v-app>
-</template>
+// Update internal locale
+watchImmediate(locale, (val) => {
+    i18n.locale.value = val
+})
+
+// Update internal theme
+watchImmediate(prefersDark, (val) => {
+    theme.global.name.value = val ? 'dark' : 'light'
+})
+</script>

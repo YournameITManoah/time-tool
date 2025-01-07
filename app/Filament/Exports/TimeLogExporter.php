@@ -7,6 +7,9 @@ use Filament\Actions\Exports\ExportColumn;
 use Filament\Actions\Exports\Exporter;
 use Filament\Actions\Exports\Models\Export;
 
+/**
+ * Export time logs to CSV/Excel
+ */
 class TimeLogExporter extends Exporter
 {
     protected static ?string $model = TimeLog::class;

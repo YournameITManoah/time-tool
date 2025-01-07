@@ -1,28 +1,46 @@
-import '@mdi/font/css/materialdesignicons.css'
-import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
+
+// Components
 import * as components from 'vuetify/components'
 import { VDateInput } from 'vuetify/labs/VDateInput'
 import { VTimePicker } from 'vuetify/labs/VTimePicker'
-import * as directives from 'vuetify/directives'
-import { aliases, mdi } from 'vuetify/iconsets/mdi'
-import DateFnsAdapter from '@date-io/date-fns'
-import { enUS } from 'date-fns/locale/en-US'
 
+// Directives
+import * as directives from 'vuetify/directives'
+
+// Icons
+import { aliases, mdi } from 'vuetify/iconsets/mdi'
+
+// I18n
+import { useI18n } from 'vue-i18n'
+import { createVueI18nAdapter } from 'vuetify/locale/adapters/vue-i18n'
+import i18n from './i18n'
+
+// date-fns
+import DateFnsAdapter from '@date-io/date-fns'
+import { enUS as enDateFns } from 'date-fns/locale/en-US'
+import { nl as nlDateFns } from 'date-fns/locale/nl'
+
+// CSS
+import 'vuetify/styles'
+import '@mdi/font/css/materialdesignicons.css'
+
+// Shared input defaults
 const input = { color: 'primary', hideDetails: 'auto' }
 
 const vuetify = createVuetify({
+    locale: { adapter: createVueI18nAdapter({ i18n, useI18n }) },
     date: {
         adapter: DateFnsAdapter,
+        // Define date-fns language packs for all supported locales here
         locale: {
-            en: enUS,
+            en: enDateFns,
+            nl: nlDateFns,
         },
     },
-    components: {
-        ...components,
-        VDateInput,
-        VTimePicker,
-    },
+    components: { ...components, VDateInput, VTimePicker },
+
+    // Theme colors
     theme: {
         defaultTheme: 'light',
         themes: {
@@ -49,13 +67,9 @@ const vuetify = createVuetify({
         },
     },
     directives,
-    icons: {
-        defaultSet: 'mdi',
-        aliases,
-        sets: {
-            mdi,
-        },
-    },
+    icons: { defaultSet: 'mdi', aliases, sets: { mdi } },
+
+    // Component defaults
     defaults: {
         VAlert: { ...input, type: 'info' },
         VAutocomplete: { ...input },
