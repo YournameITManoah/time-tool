@@ -24,6 +24,6 @@ return Application::configure(basePath: dirname(__DIR__))
                 'status' => $response->getStatusCode(),
             ]))
             ->expireSessionUsing(fn() => back()->with([
-                'error' => 'Your session has expired. Please refresh the page.',
+                'error' => __('messages.error_session_expired'),
             ]))
     )->create();

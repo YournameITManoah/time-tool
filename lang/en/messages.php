@@ -12,6 +12,7 @@ return [
     */
 
     'confirm_password_text' => 'This is a secure area of the application. Please confirm your password before continuing.',
+    'error_session_expired' => 'Your session has expired. Please refresh the page.',
     'forgot_password_text' => 'Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.',
     'unexpected_error_text' => 'Something went wrong. Please try again later or go back to the dashboard.',
     'valid_time_format' => 'The :attribute field must match the format H:i or H:i:s.',
