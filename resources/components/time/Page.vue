@@ -20,7 +20,7 @@ const props = defineProps<{
     edit?: TimeLog
 }>()
 
-const breadcrumbs = [
+const breadcrumbs = computed(() => [
     { title: t('Dashboard'), href: route('dashboard') },
     { title: t('Time Logs'), href: route('time-log.index') },
     {
@@ -30,5 +30,5 @@ const breadcrumbs = [
         }),
         disabled: true,
     },
-]
+])
 </script>
