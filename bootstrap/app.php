@@ -2,7 +2,8 @@
 
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Middleware;
-use Hybridly\Exceptions\HandleHybridExceptions;
+use Illuminate\Foundation\Configuration\Exceptions;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -17,13 +18,17 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->prependToGroup('api', [\App\Http\Middleware\Localization::class, \App\Http\Middleware\ForceJsonResponse::class]);
         $middleware->appendToGroup('web', [\App\Http\Middleware\Localization::class, \App\Http\Middleware\HandleHybridRequests::class]);
     })
-    ->withExceptions(
-        HandleHybridExceptions::register()
-            ->inEnvironments('local')
-            ->renderUsing(fn(Response $response) => hybridly('error', [
-                'status' => $response->getStatusCode(),
-            ]))
-            ->expireSessionUsing(fn() => back()->with([
-                'error' => __('messages.error_session_expired'),
-            ]))
-    )->create();
+    ->withExceptions(function (Exceptions $exceptions) {
+        $exceptions->respond(function (Response $response, Throwable $exception, Request $request) {
+            if (!$request->is('api*') && !$request->is('admin*') && in_array($response->getStatusCode(), [401, 403, 404, 500, 503])) {
+                $globals = new \App\Http\Middleware\HandleHybridRequests();
+                return hybridly()->share($globals->share())->view('error', ['status' => $response->getStatusCode()])
+                    ->toResponse($request)
+                    ->setStatusCode($response->getStatusCode());
+            } elseif (!$request->is('api*') && !$request->is('admin*') && $response->getStatusCode() === 419) {
+                return back()->with(['error' => __('messages.error_session_expired')]);
+            }
+
+            return $response;
+        });
+    })->create();

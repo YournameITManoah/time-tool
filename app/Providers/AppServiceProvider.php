@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\User;
 use Filament\Tables\Table;
 use Carbon\CarbonImmutable;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -14,6 +15,9 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use BezhanSalleh\FilamentLanguageSwitch\LanguageSwitch;
+use Dedoc\Scramble\Scramble;
+use Dedoc\Scramble\Support\Generator\OpenApi;
+use Dedoc\Scramble\Support\Generator\SecurityScheme;
 
 /**
  * Apply a mapping callback receiving key and value as arguments.
@@ -85,6 +89,14 @@ class AppServiceProvider extends ServiceProvider
                     fn($key) => asset("img/flags/$key.svg"),
                     \Config::get('app.locales')
                 ));
+        });
+
+        Gate::define('viewApiDocs', function (User $user) {
+            return true;
+        });
+
+        Scramble::afterOpenApiGenerated(function (OpenApi $openApi) {
+            $openApi->secure(SecurityScheme::http('bearer'));
         });
     }
 }

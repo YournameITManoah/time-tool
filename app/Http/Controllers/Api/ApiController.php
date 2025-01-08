@@ -3,31 +3,28 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Dedoc\Scramble\Attributes\ExcludeRouteFromDocs;
 
 class ApiController extends Controller
 {
     private function response(int $status, string $message)
     {
-        return response()->json(['status' => $status, 'message' => $message], $status);
+        return response()->json(['message' => $message], $status);
     }
 
-    public function badRequest()
+    public function unauthorized()
     {
-        return $this->response(400, 'Bad Request');
+        return $this->response(401, 'Unauthenticated.');
     }
 
     public function forbidden()
     {
-        return $this->response(403, 'Forbidden');
+        return $this->response(403, 'Forbidden.');
     }
 
+    #[ExcludeRouteFromDocs]
     public function notFound()
     {
-        return $this->response(404, 'Not Found');
-    }
-
-    public function conflict()
-    {
-        return $this->response(409, 'Conflict');
+        return $this->response(404, 'Not Found.');
     }
 }
