@@ -95,6 +95,8 @@ class AppServiceProvider extends ServiceProvider
             return true;
         });
 
+        Scramble::ignoreDefaultRoutes();
+
         Scramble::afterOpenApiGenerated(function (OpenApi $openApi) {
             $openApi->secure(SecurityScheme::http('bearer'));
         });

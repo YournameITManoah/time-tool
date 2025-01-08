@@ -5,6 +5,7 @@ use App\Http\Controllers\TimeLogController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use Dedoc\Scramble\Scramble;
 
 // Home
 Route::get('/', [WelcomeController::class, 'index'])->name('home');
@@ -16,6 +17,9 @@ Route::put('locale', function (Request $request) {
     session()->put('locale', $request->locale);
     return redirect()->back();
 })->name('locale.update');
+
+Scramble::registerUiRoute('api');
+Scramble::registerJsonSpecificationRoute('api.json');
 
 // Protected routes
 Route::middleware(['auth', 'verified'])->group(function () {

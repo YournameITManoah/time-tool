@@ -56,6 +56,7 @@ jobs:
                   APP_KEY: ${{ secrets.APP_KEY }}
                   APP_DEBUG: ${{ vars.APP_DEBUG }}
                   APP_URL: ${{ vars.SERVER }}
+                  API_KEY: ${{ secrets.API_KEY }}
                   DB_USERNAME: ${{ secrets.DB_USERNAME }}
                   DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
                   MAIL_MAILER: ${{ secrets.MAIL_MAILER }}
