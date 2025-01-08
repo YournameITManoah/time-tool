@@ -48,15 +48,6 @@ The following steps are required to be able to connect to the API:
 
 The API uses the `Accept-Language` header to determine what language the API responses should be in.
 
-### Endpoints
+### Documentation
 
-All API endpoints are prefixed with `/api/`.
-
-- GET `csrf-cookie`: Start a session with the API.
-- POST `auth/token`: Request a User Access Token.
-- GET `time-log`: Get a paginated list of time logs for the current user.
-- POST `time-log`: Create a new time log for the current user.
-- GET `time-log/{id}`: Get a specific time log.
-- PATCH/PUT `time-log/{id}`: Update a specific time log.
-- DELETE `time-log/{id}`: Delete a specific time log.
-- GET `user-task`: Get a paginated list of the projects and tasks that the current user can write time logs for.
+All API endpoints are documented at `/docs/api`.

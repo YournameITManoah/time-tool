@@ -5,14 +5,14 @@ namespace App\Http\Controllers\Api;
 use App\Models\TimeLog;
 use App\Http\Requests\StoreTimeLogRequest;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 
-/**
- * API controller for time logs
- */
 class TimeLogApiController extends ApiController
 {
     /**
      * Display a listing of the resource.
+     *
+     * @response LengthAwarePaginator<TimeLog>
      */
     public function index(Request $request)
     {
@@ -59,14 +59,18 @@ class TimeLogApiController extends ApiController
         // Retrieve the validated input data
         $validated = $request->validated();
 
-        // Store the time log
-        $timeLog = TimeLog::create([
+        // Store the time log and return it
+
+        /**
+         * A time log resource.
+         *
+         * @status 201
+         * @body TimeLog
+         */
+        return TimeLog::create([
             ...$validated,
             'user_id' => \Auth::id(),
         ]);
-
-        // Return the created time log
-        return response()->json($timeLog, 201);
     }
 
     /**

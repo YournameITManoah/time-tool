@@ -4,19 +4,19 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\UserTask;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 
-/**
- * API controller user user tasks
- */
 class UserTaskApiController extends ApiController
 {
     /**
      * Display a listing of the resource.
+     *
+     * @response LengthAwarePaginator<UserTask>
      */
     public function index(Request $request)
     {
         // Check if user is authorized
-        \Gate::authorize('viewAny', userTask::class);
+        \Gate::authorize('viewAny', UserTask::class);
 
         // Defaults
         $defaultLimit = 10;
