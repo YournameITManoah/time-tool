@@ -50,4 +50,4 @@ The API uses the `Accept-Language` header to determine what language the API res
 
 ### Documentation
 
-All API endpoints are documented at `/docs/api`.
+All API endpoints are documented at `/api/`.
