@@ -126,6 +126,8 @@ return [
     'locales' => [
         'en' => 'English',
         'nl' => 'Nederlands',
-    ]
+    ],
+
+    'api_key' => env('API_KEY')
 
 ];

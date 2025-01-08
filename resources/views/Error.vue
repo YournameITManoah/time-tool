@@ -11,7 +11,7 @@
         >
             <v-card-actions>
                 <router-link :href="route('home')">
-                    <v-btn tabindex="-1" color="primary" :text="t('Go Home')" />
+                    <v-btn tabindex="-1" color="primary" :text="t('Go Back')" />
                 </router-link>
             </v-card-actions>
         </v-card>
