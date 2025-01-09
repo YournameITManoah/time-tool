@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
 use Symfony\Component\HttpFoundation\Response;
 
-class ForceJsonResponse
+class ApiMiddleware
 {
     /**
      * Handle an incoming request.
@@ -17,8 +17,16 @@ class ForceJsonResponse
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $request->headers->set('Origin', $request->headers->get('origin') ?? $request->getHttpHost());
         $request->headers->set('Accept', 'application/json');
+        $request->headers->set('Origin', $request->header('Origin', $request->getHttpHost()));
+
+        if (!$request->isMethod('POST')) return $next($request);
+
+        $contentType = $request->header('Content-Type');
+        if ($contentType != 'application/json') {
+            return response()->json(['message' => 'Unsupported Media Type'], 415, ['Accept-Post' => 'application/json; charset=UTF-8']);
+        }
+
         return $next($request);;
     }
 }
