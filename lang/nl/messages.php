@@ -19,7 +19,7 @@ return [
     'valid_time_log_frame' => 'Het veld :attribute overlapt met een bestaande tijdregistratie.',
     'valid_user_task' => 'Je hebt onvoldoende rechten om tijd te registeren voor dit :attribute veld.',
     'verify_email_sent' => 'Er is een nieuwe verificatie link gestuurd naar het e-mailadres dat is opgegeven tijdens de registratie.',
-    'verify_email_text' => 'Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.',
+    'verify_email_text' => 'Bedankt voor jouw aanmelding! Voordat je begint, verifieer jouw e-mailadres door op de link te klikken die we je zojuist hebben gemaild. Als je de e-mail niet hebt ontvangen, sturen we graag een andere.',
     'welcome' => 'Welkom bij :app!',
     'welcome_back' => 'Welkom terug, :name!',
     'welcome_text' => 'Deze tool is bedoeld om tijd registratie te versimpelen voor alle betrokken partijen.',
