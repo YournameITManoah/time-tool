@@ -37,7 +37,6 @@ class RegisteredUserController extends Controller
             'available_hours' => 40,
             'planned_hours' => 0,
             'role_id' => Role::USER,
-            'email_verified_at' => now(), // TODO: Require email verification
             'password' => Hash::make($request->password),
         ]);
 
