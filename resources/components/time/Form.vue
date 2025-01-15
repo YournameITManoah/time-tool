@@ -148,18 +148,25 @@
     </v-card>
 </template>
 <script lang="ts" setup>
+import type { TimeLog, UserTaskExtended, VFormRef } from '@/types'
+
 import { useTimeLogStore } from '@/stores/time-log'
-import type { VFormRef, TimeLog, UserTaskExtended } from '@/types'
 
 defineOptions({ name: 'TimeLogForm' })
 
 const { t } = useI18n()
 const { isRequired } = useValidation()
 
-const props = defineProps<{
-    defaults?: Partial<TimeLog>
-    variant?: 'edit' | 'timer'
-}>()
+const props = withDefaults(
+    defineProps<{
+        defaults?: Partial<TimeLog>
+        variant?: 'create' | 'edit' | 'timer'
+    }>(),
+    {
+        defaults: undefined,
+        variant: 'create',
+    },
+)
 
 const emit = defineEmits<{
     (e: 'cancel'): void
@@ -175,9 +182,9 @@ lastYear.setFullYear(new Date().getFullYear() - 1)
 const sizes = computed(() => {
     return {
         cols: '12',
-        sm: props.variant === 'timer' ? undefined : '6',
-        md: undefined,
         lg: props.variant === 'timer' ? undefined : '3',
+        md: undefined,
+        sm: props.variant === 'timer' ? undefined : '6',
     }
 })
 
@@ -227,20 +234,20 @@ const resetFields = () => {
 }
 
 const form = useForm<Partial<TimeLog>>({
+    fields: {
+        date: undefined,
+        project_id: undefined,
+        start_time: undefined,
+        stop_time: undefined,
+        task_id: undefined,
+    },
     method: props.variant === 'edit' ? 'PATCH' : 'POST',
     url: route(`time-log.${props.variant === 'edit' ? 'update' : 'store'}`, {
         time_log: props.defaults?.id,
     }),
-    fields: {
-        project_id: undefined,
-        task_id: undefined,
-        date: undefined,
-        start_time: undefined,
-        stop_time: undefined,
-    },
 })
 
-const formRef = ref<VFormRef | null>(null)
+const formRef = ref<null | VFormRef>(null)
 const submit = async () => {
     const result = await formRef.value?.validate()
     if (!result?.valid) return

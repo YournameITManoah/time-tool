@@ -10,7 +10,7 @@
 </template>
 <script setup lang="ts">
 import { useTheme } from 'vuetify'
-import { VSonner, toast } from 'vuetify-sonner'
+import { toast, VSonner } from 'vuetify-sonner'
 import 'vuetify-sonner/style.css'
 
 defineOptions({ name: 'AppLayout' })

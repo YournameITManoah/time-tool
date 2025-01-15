@@ -4,6 +4,7 @@
             <v-list-item
                 v-if="item.external"
                 :prepend-icon="item.icon"
+                append-icon="mdi-open-in-new"
                 :title="item.title"
                 :href="item.href"
                 link
@@ -24,11 +25,11 @@
 </template>
 <script lang="ts" setup>
 interface NavItem {
-    title: string
-    icon: string
-    href: string
     exact?: boolean
     external?: boolean
+    href: string
+    icon: string
+    title: string
 }
 
 const { t } = useI18n()
@@ -38,23 +39,23 @@ const can = useProperty<Partial<Record<string, boolean>>>('auth.can')
 const navigation = computed((): NavItem[] => {
     const items: NavItem[] = [
         {
-            title: t('Dashboard'),
-            icon: 'mdi-view-dashboard',
             href: route('dashboard'),
+            icon: 'mdi-view-dashboard',
+            title: t('Dashboard'),
         },
         {
-            title: t('Time Log'),
-            icon: 'mdi-clock-outline',
             href: route('time-log.index'),
+            icon: 'mdi-clock-outline',
+            title: t('Time Log'),
         },
     ]
 
     if (can.value?.['view-admin']) {
         items.push({
-            title: t('Admin Panel'),
-            icon: 'mdi-security',
-            href: '/admin',
             external: true,
+            href: '/admin',
+            icon: 'mdi-security',
+            title: t('Admin Panel'),
         })
     }
 

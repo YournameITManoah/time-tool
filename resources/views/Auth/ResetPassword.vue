@@ -57,16 +57,16 @@ const props = defineProps<{
 }>()
 
 const form = useForm({
-    url: route('password.store'),
     fields: {
-        token: props.token,
         email: props.email,
         password: '',
         password_confirmation: '',
+        token: props.token,
     },
+    url: route('password.store'),
 })
 
-const formRef = ref<VFormRef | null>(null)
+const formRef = ref<null | VFormRef>(null)
 const submit = async () => {
     const result = await formRef.value?.validate()
     if (!result?.valid) return

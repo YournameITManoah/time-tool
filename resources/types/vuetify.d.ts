@@ -1,8 +1,11 @@
 import type DateFnsAdapter from '@date-io/date-fns'
 
-interface VFormRefError {
-    id: string | number
-    errorMessages: string[]
+export interface VDataTableOptions {
+    groupBy: never[]
+    itemsPerPage: number
+    page: number
+    search: string | undefined
+    sortBy: { key: string; order: 'asc' | 'desc' }[]
 }
 
 export interface VFormRef {
@@ -12,28 +15,25 @@ export interface VFormRef {
     isValid: boolean
     isValidating: boolean
     items: {
-        id: string | number
-        validate: () => Promise<string[]>
+        errorMessages: string[]
+        id: number | string
+        isValid: boolean | null
         reset: () => Promise<void>
         resetValidation: () => Promise<void>
+        validate: () => Promise<string[]>
         vm: Raw<ComponentInternalInstance>
-        isValid: boolean | null
-        errorMessages: string[]
     }[]
     reset: () => void
     resetValidation: () => void
     validate: () => Promise<{
-        valid: boolean
         errors: VFormRefError[]
+        valid: boolean
     }>
 }
 
-export interface VDataTableOptions {
-    groupBy: never[]
-    itemsPerPage: number
-    page: number
-    search: string | undefined
-    sortBy: { key: string; order: 'asc' | 'desc' }[]
+interface VFormRefError {
+    errorMessages: string[]
+    id: number | string
 }
 
 declare module 'vuetify' {

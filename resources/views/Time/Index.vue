@@ -64,26 +64,26 @@ const { formatDate, formatDuration } = useDate()
 
 const breadcrumbs = computed(() => [
     {
-        title: t('Dashboard'),
         href: route('dashboard'),
+        title: t('Dashboard'),
     },
     {
-        title: t('Time Logs'),
-        href: route('time-log.index'),
         disabled: true,
+        href: route('time-log.index'),
+        title: t('Time Logs'),
     },
 ])
 
-const groupBy = ref<{ title: string; key: string }[]>([])
+const groupBy = ref<{ key: string; title: string; }[]>([])
 const headers = computed(() => {
     return [
-        { title: t('Project'), key: 'project.name' },
-        { title: t('Task'), key: 'task.name' },
-        { title: t('Date'), key: 'date' },
-        { title: t('Start time'), key: 'start_time' },
-        { title: t('Stop time'), key: 'stop_time' },
-        { title: t('Duration'), key: 'duration', sortable: false },
-        { title: t('Actions'), key: 'actions', sortable: false },
+        { key: 'project.name', title: t('Project') },
+        { key: 'task.name', title: t('Task') },
+        { key: 'date', title: t('Date') },
+        { key: 'start_time', title: t('Start time') },
+        { key: 'stop_time', title: t('Stop time') },
+        { key: 'duration', sortable: false, title: t('Duration') },
+        { key: 'actions', sortable: false, title: t('Actions') },
     ].filter((h) => h.key !== groupBy.value[0]?.key)
 })
 
@@ -93,15 +93,15 @@ const isLoadingTable = ref(false)
 const search = ref<string | undefined>()
 
 const loadItems = async ({
-    page,
     itemsPerPage,
-    sortBy,
+    page,
     search,
+    sortBy,
 }: VDataTableOptions) => {
     isLoadingTable.value = true
     const params: PagedParams = {
-        page,
         limit: itemsPerPage,
+        page,
         sort: sortBy[0],
     }
 

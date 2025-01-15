@@ -1,8 +1,9 @@
-import globals from 'globals'
 import pluginJs from '@eslint/js'
-import tslint from 'typescript-eslint'
-import pluginVue from 'eslint-plugin-vue'
 import eslintConfigPrettier from 'eslint-config-prettier'
+import perfectionist from 'eslint-plugin-perfectionist'
+import pluginVue from 'eslint-plugin-vue'
+import globals from 'globals'
+import tslint from 'typescript-eslint'
 
 export default [
     { ignores: ['node_modules/', 'vendor/', 'public/'] },
@@ -15,6 +16,7 @@ export default [
     pluginJs.configs.recommended,
     ...tslint.configs.strict,
     ...pluginVue.configs['flat/recommended'],
+    perfectionist.configs['recommended-natural'],
     eslintConfigPrettier,
     { rules: { 'no-undef': 'off' } },
 ]

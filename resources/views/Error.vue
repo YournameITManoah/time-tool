@@ -31,8 +31,8 @@
     </guest-layout>
 </template>
 <script lang="ts" setup>
-import GuestLayout from '@/layouts/guest.vue'
 import DefaultLayout from '@/layouts/default.vue'
+import GuestLayout from '@/layouts/guest.vue'
 
 defineOptions({ name: 'ErrorPage' })
 

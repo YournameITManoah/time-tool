@@ -1,9 +1,11 @@
-import { initializeHybridly } from 'virtual:hybridly/config'
 import { createHead } from '@unhead/vue'
+import { initializeHybridly } from 'virtual:hybridly/config'
+
 import i18n from './i18n'
-import vuetify from './vuetify'
 import pinia from './pinia'
+import vuetify from './vuetify'
 import './axios'
+
 import '@/assets/css/main.scss'
 
 // Product name

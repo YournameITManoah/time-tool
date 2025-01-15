@@ -16,9 +16,9 @@
 defineOptions({ name: 'BreadcrumbsComponent' })
 
 interface BreadcrumbItem {
-    title: string
-    href: string
     disabled?: boolean
+    href: string
+    title: string
 }
 
 defineProps<{
