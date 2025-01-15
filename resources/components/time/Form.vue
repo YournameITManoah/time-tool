@@ -258,11 +258,15 @@ const submit = async () => {
         // If timer, stop the timer
         if (props.variant === 'timer') {
             form.fields.stop_time = new Date().toLocaleTimeString('nl')
+            emit('cancel')
         }
         form.submit().then((res) => {
-            if (!res.response?.data?.view?.properties?.errors) {
+            // If submission was successful, reset the form
+            if (
+                !Object.keys(res.response?.data?.view?.properties?.errors ?? {})
+                    .length
+            ) {
                 resetFields()
-                emit('cancel')
             }
         })
     }
