@@ -26,7 +26,6 @@ class UserTaskApiController extends ApiController
         if ($perPage === '-1') {
             $perPage = '1000';
         }
-        ;
 
         // Get the user tasks of the logged in user
         $userTasks = UserTask::query()
