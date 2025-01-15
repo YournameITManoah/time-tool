@@ -1,26 +1,57 @@
 <template>
     <v-form
-        v-if="otherLocale"
+        v-if="localeList.length > 1"
         ref="formRef"
         :disabled="form.processing"
-        @submit.prevent="submit"
+        @submit.prevent
     >
-        <v-btn
-            v-if="button"
-            variant="text"
-            type="submit"
-            :disabled="form.processing"
-            :loading="form.processing"
-        >
-            <v-img :src="`/img/flags/${otherLocale.value}.svg`" width="32px" />
-        </v-btn>
-        <v-list-item
-            v-else
-            :prepend-avatar="`/img/flags/${otherLocale.value}.svg`"
-            :title="otherLocale.title"
-            :disabled="form.processing"
-            @click="submit"
-        />
+        <v-menu>
+            <template #activator="{ props: menuProps }">
+                <v-btn
+                    v-if="button && currentLocale"
+                    variant="text"
+                    :disabled="form.processing"
+                    :loading="form.processing"
+                    v-bind="menuProps"
+                >
+                    <v-img
+                        :src="`/img/flags/${currentLocale.value}.svg`"
+                        :alt="currentLocale.title"
+                        width="32px"
+                    />
+                    <v-tooltip
+                        activator="parent"
+                        :text="currentLocale.title"
+                        location="top"
+                    />
+                </v-btn>
+                <v-list-item
+                    v-else-if="!button && currentLocale"
+                    :prepend-avatar="`/img/flags/${currentLocale.value}.svg`"
+                    :title="currentLocale.title"
+                    :disabled="form.processing"
+                    v-bind="menuProps"
+                />
+            </template>
+            <v-list>
+                <template v-for="item in localeList" :key="item.value">
+                    <v-list-item
+                        v-if="currentLocale?.value !== item.value"
+                        :title="item.title"
+                        @click="submit(item.value)"
+                    >
+                        <template #prepend>
+                            <v-avatar size="small">
+                                <v-img
+                                    :src="`/img/flags/${item.value}.svg`"
+                                    :alt="item.title"
+                                />
+                            </v-avatar>
+                        </template>
+                    </v-list-item>
+                </template>
+            </v-list>
+        </v-menu>
     </v-form>
 </template>
 <script setup lang="ts">
@@ -42,8 +73,7 @@ const localeList = computed(() => {
     }))
 })
 
-// TODO: refactor to work with more than 2 locales
-const otherLocale = useArrayFind(localeList, (l) => l.value !== locale.value)
+const currentLocale = useArrayFind(localeList, (l) => l.value === locale.value)
 
 const form = useForm<{ locale: SupportedLocale }>({
     method: 'PUT',
@@ -52,8 +82,8 @@ const form = useForm<{ locale: SupportedLocale }>({
 })
 
 const formRef = ref<VFormRef | null>(null)
-const submit = async () => {
-    form.fields.locale = otherLocale.value?.value ?? 'en'
+const submit = async (newLocale: SupportedLocale = 'en') => {
+    form.fields.locale = newLocale
     form.submit()
 }
 </script>
