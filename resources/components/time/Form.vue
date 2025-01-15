@@ -198,7 +198,11 @@ const fetchUserTasks = async () => {
 
 // Projects of current user
 const projects = computed(() => {
-    return [...new Set(userTasks.value.map((ut) => ut.project))]
+    return [...new Set(userTasks.value.map((ut) => ut.project))].filter(
+        (p) =>
+            (!p.start_date || p.start_date < today) &&
+            (!p.end_date || p.end_date > today),
+    )
 })
 
 // Tasks of selected project
@@ -256,8 +260,7 @@ const submit = async () => {
             form.fields.stop_time = new Date().toLocaleTimeString('nl')
         }
         form.submit().then((res) => {
-            // If submission was successful, reset the form
-            if (res.response?.status === 200) {
+            if (!res.response?.data?.view?.properties?.errors) {
                 resetFields()
                 emit('cancel')
             }

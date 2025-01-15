@@ -25,6 +25,6 @@ class Time implements ValidationRule
             }
         }
 
-        $fail('messages.valid_time_format')->translate(['attribute' => $attribute]);
+        $fail('messages.valid_time_format')->translate(['attribute' => __("validation.attributes.$attribute")]);
     }
 }

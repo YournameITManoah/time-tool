@@ -39,22 +39,27 @@ class ProjectResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('client_id')
+                    ->translateLabel()
                     ->relationship('client', 'name')
                     ->searchable()
                     ->preload()
                     ->required()
                     ->hiddenOn(ClientProjectsRelationManager::class),
                 Forms\Components\TextInput::make('name')
+                    ->translateLabel()
                     ->required()
                     ->maxLength(50),
                 Forms\Components\DatePicker::make('start_date')
+                    ->translateLabel()
                     ->minDate('today')
                     ->maxDate('+10 years'),
                 Forms\Components\DatePicker::make('end_date')
+                    ->translateLabel()
                     ->minDate('today')
                     ->maxDate('+10 years')
                     ->afterOrEqual('start_date'),
                 Forms\Components\TextInput::make('available_hours')
+                    ->translateLabel()
                     ->numeric()
                     ->minValue(0)
                     ->default(null),
