@@ -11,6 +11,8 @@ export interface UserTaskExtended extends UserTask {
     project: {
         id: number
         name: string
+        start_date: string | null
+        end_date: string | null
     }
     task: {
         id: number

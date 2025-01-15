@@ -39,6 +39,7 @@
     "Role": "Rol",
     "Start date": "Startdatum",
     "Start time": "Starttijd",
+    "Start": "Start",
     "Stop time": "Stoptijd",
     "Task": "Taak",
     "Tasks": "Taken",
@@ -50,5 +51,6 @@
     "User Panel": "Gebruikersportaal",
     "User Tasks": "Gebruikerstaken",
     "User": "Gebruiker",
-    "Users": "Gebruikers"
+    "Users": "Gebruikers",
+    "Welcome": "Welkom"
 }
