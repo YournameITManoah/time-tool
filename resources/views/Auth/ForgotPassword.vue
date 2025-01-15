@@ -44,7 +44,7 @@ const { t } = useI18n()
 useHead({ title: t('Forgot Password') })
 
 defineProps<{
-    status?: string | null
+    status?: null | string
 }>()
 
 const form = useForm({
@@ -53,7 +53,7 @@ const form = useForm({
     },
 })
 
-const formRef = ref<VFormRef | null>(null)
+const formRef = ref<null | VFormRef>(null)
 const submit = async () => {
     const result = await formRef.value?.validate()
     if (!result?.valid) return

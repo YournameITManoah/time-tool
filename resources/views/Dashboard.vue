@@ -24,9 +24,9 @@ const user = useProperty('auth.user')
 
 const breadcrumbs = computed(() => [
     {
-        title: t('Dashboard'),
-        href: route('dashboard'),
         disabled: true,
+        href: route('dashboard'),
+        title: t('Dashboard'),
     },
 ])
 </script>

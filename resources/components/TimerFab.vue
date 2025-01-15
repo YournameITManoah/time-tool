@@ -18,18 +18,32 @@
     </v-fab>
 </template>
 <script setup lang="ts">
-import type { TimeLog } from '@/types'
+import { useTimerStore } from '@/stores/timer'
+import { storeToRefs } from 'pinia'
 
 // Application name
 const name = import.meta.env.VITE_APP_NAME
 
-// State
+const { t } = useI18n()
+
+// Persisted state
+const { startTime, timeLog } = storeToRefs(useTimerStore())
+
+// Local State
 const menu = ref(false)
 const duration = ref('')
-const interval = ref<number | null>(null)
-const startTime = ref<Date | null>(null)
+const interval = ref<null | number>(null)
 const date = new Date().toLocaleDateString('en-CA')
-const timeLog = ref<Partial<TimeLog>>({ date })
+
+onMounted(() => {
+    if (startTime.value && timeLog.value.project_id && timeLog.value.task_id) {
+        startTimer(
+            timeLog.value.project_id,
+            timeLog.value.task_id,
+            startTime.value,
+        )
+    }
+})
 
 // Calculate how many minutes and seconds the timer has been running
 const calculateDuration = () => {
@@ -38,13 +52,13 @@ const calculateDuration = () => {
     const secs = Math.floor((diff / 1000) % 60)
     const mins = Math.floor(diff / 60000)
     duration.value = `${pad(mins)}:${pad(secs)}`
-    document.title = `Working: ${duration.value}`
+    document.title = `${t('Working')}: ${duration.value}`
 }
 
 // Start the timer
-const startTimer = (project: number, task: number) => {
+const startTimer = (project: number, task: number, start?: Date) => {
     // Set time log properties
-    startTime.value = new Date()
+    startTime.value = start ?? new Date()
     timeLog.value.start_time = startTime.value.toLocaleTimeString('nl')
     timeLog.value.project_id = project
     timeLog.value.task_id = task
@@ -77,8 +91,9 @@ const resetTimer = () => {
 // Ask confirmation before closing the tab
 const beforeUnloadHandler = (e: BeforeUnloadEvent) => {
     e.preventDefault()
-    e.returnValue = 'You still have a timer running. Are you sure?'
-    return 'You still have a timer running. Are you sure?'
+    const msg = t('messages.timer_running')
+    e.returnValue = msg
+    return msg
 }
 
 // Cleanup

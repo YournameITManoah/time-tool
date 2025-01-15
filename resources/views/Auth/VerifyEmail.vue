@@ -35,19 +35,19 @@ const { t } = useI18n()
 useHead({ title: t('Email Verification') })
 
 const props = defineProps<{
-    status?: string | null
+    status?: null | string
 }>()
 
 const form = useForm({
-    url: route('verification.send'),
     fields: [],
+    url: route('verification.send'),
 })
 
 const verificationLinkSent = computed(
     () => props.status === 'verification-link-sent',
 )
 
-const formRef = ref<VFormRef | null>(null)
+const formRef = ref<null | VFormRef>(null)
 const submit = async () => {
     const result = await formRef.value?.validate()
     if (!result?.valid) return

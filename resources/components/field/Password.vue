@@ -19,20 +19,20 @@ const { isRequired } = useValidation()
 
 withDefaults(
     defineProps<{
-        hint: 'current-password' | 'new-password' | 'cc-number' | 'cc-csc'
-        label?: string
-        icon?: string
         errors?: string
+        hint: 'cc-csc' | 'cc-number' | 'current-password' | 'new-password'
+        icon?: string
+        label?: string
         required?: boolean
     }>(),
     {
-        label: undefined,
-        icon: 'mdi-lock-outline',
         errors: undefined,
+        icon: 'mdi-lock-outline',
+        label: undefined,
         required: true,
     },
 )
 
-const model = defineModel<string | null>()
+const model = defineModel<null | string>()
 const showPassword = ref(false)
 </script>

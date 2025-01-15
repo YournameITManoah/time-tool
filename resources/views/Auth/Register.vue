@@ -73,19 +73,19 @@ const { isRequired } = useValidation()
 useHead({ title: t('Register') })
 
 defineProps<{
-    status?: string | null
+    status?: null | string
 }>()
 
 const form = useForm({
     fields: {
-        name: '',
         email: '',
+        name: '',
         password: '',
         password_confirmation: '',
     },
 })
 
-const formRef = ref<VFormRef | null>(null)
+const formRef = ref<null | VFormRef>(null)
 const submit = async () => {
     const result = await formRef.value?.validate()
     if (!result?.valid) return

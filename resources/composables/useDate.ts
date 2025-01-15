@@ -39,5 +39,5 @@ export function useDate() {
         return `${pad(h)}:${pad(m)}${s ? ':' + pad(s) : ''}`
     }
 
-    return { parseDate, formatDate, parseTime, formatDuration }
+    return { formatDate, formatDuration, parseDate, parseTime }
 }

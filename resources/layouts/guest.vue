@@ -21,7 +21,7 @@
                             <router-link href="/" style="width: 50%">
                                 <ApplicationLogo style="width: 100%" />
                             </router-link>
-                            <locale-switcher button />
+                            <locale-switcher variant="button" />
                         </div>
                         <slot />
                     </v-card>
