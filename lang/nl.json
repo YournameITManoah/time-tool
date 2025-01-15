@@ -2,11 +2,13 @@
     "Actions": "Acties",
     "Admin Panel": "Beheerpaneel",
     "Already registered?": "Al een account?",
+    "Are you sure?": "Weet je het zeker?",
     "Available hours": "Beschikbare uren",
     "Billable": "Factureerbaar",
     "Cancel": "Annuleer",
     "Client": "Klant",
     "Clients": "Klanten",
+    "Confirm": "Bevestig",
     "Confirm Password": "Bevestig wachtwoord",
     "Create Time Log": "Maak tijdregistratie aan",
     "Create": "Maak aan",
@@ -37,6 +39,7 @@
     "Resend Verification Email": "Verstuur verificatie e-mail opnieuw",
     "Reset Password": "Wachtwoord herstellen",
     "Role": "Rol",
+    "Save": "Opslaan",
     "Start date": "Startdatum",
     "Start time": "Starttijd",
     "Start": "Start",
@@ -52,5 +55,6 @@
     "User Tasks": "Gebruikerstaken",
     "User": "Gebruiker",
     "Users": "Gebruikers",
-    "Welcome": "Welkom"
+    "Welcome": "Welkom",
+    "Working": "Aan het werk"
 }

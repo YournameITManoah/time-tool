@@ -1,5 +1,11 @@
 <template>
     <app-layout>
+        <dialog-confirm
+            v-model="confirmLogout"
+            :message="t('messages.timer_running')"
+            confirm-label="Log Out"
+            :on-confirm="() => router.post('logout')"
+        />
         <template #header>
             <v-navigation-drawer
                 ref="nav"
@@ -16,15 +22,14 @@
                     >
                         <template #append>
                             <v-list-item-action>
-                                <router-link
-                                    :href="route('logout')"
-                                    as="div"
-                                    method="post"
+                                <v-btn
+                                    icon
+                                    size="small"
+                                    variant="text"
+                                    @click="onLogout"
                                 >
-                                    <v-btn icon size="small" variant="text">
-                                        <v-icon icon="mdi-logout" />
-                                    </v-btn>
-                                </router-link>
+                                    <v-icon icon="mdi-logout" />
+                                </v-btn>
                             </v-list-item-action>
                         </template>
                     </v-list-item>
@@ -33,7 +38,7 @@
                 <navigation-menu />
                 <template #append>
                     <v-list>
-                        <locale-switcher />
+                        <locale-switcher variant="list" />
                     </v-list>
                 </template>
             </v-navigation-drawer>
@@ -60,8 +65,9 @@
     </app-layout>
 </template>
 <script setup lang="ts">
-import { useDisplay } from 'vuetify'
 import AppLayout from '@/layouts/app.vue'
+import { useTimerStore } from '@/stores/timer'
+import { useDisplay } from 'vuetify'
 
 defineOptions({ name: 'DefaultLayout' })
 
@@ -69,6 +75,7 @@ defineOptions({ name: 'DefaultLayout' })
 const name = import.meta.env.VITE_APP_NAME
 
 // Composables
+const { t } = useI18n()
 const { mobile } = useDisplay()
 const user = useProperty('auth.user')
 
@@ -76,11 +83,21 @@ const user = useProperty('auth.user')
 const hasFocus = ref(false)
 const nav = useTemplateRef('nav')
 const drawer = ref(!mobile.value)
+const confirmLogout = ref(false)
 
 // Open navigation on mobile
 watch(mobile, (val) => {
     if (!val) drawer.value = true
 })
+
+// Ask logout confirmation when timer is active
+
+const timerStore = useTimerStore()
+
+const onLogout = () => {
+    if (timerStore.startTime) confirmLogout.value = true
+    else router.post('logout')
+}
 
 // Fix keyboard accessibility
 
