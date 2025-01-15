@@ -2,13 +2,13 @@
 
 namespace App\Rules;
 
-use App\Models\UserTask;
+use App\Models\Project;
 use App\Models\TimeLog;
 use Closure;
 use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class ValidUserTask implements DataAwareRule, ValidationRule
+class ValidProjectDate implements DataAwareRule, ValidationRule
 {
     /**
      * All of the data under validation.
@@ -30,19 +30,19 @@ class ValidUserTask implements DataAwareRule, ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         // If required values are missing, skip validation
-        $values = array_filter([$value ?? null, $this->data['project_id'] ?? null]);
-        if (!$this->currentTimeLog && count($values) < 2) {
+        $values = array_filter([$value ?? null]);
+        if (!$this->currentTimeLog && count($values) < 1) {
             return;
         }
 
-        // Tasks should be linked to the specified project and user
-        if (
-            UserTask::where('task_id', $value)
-                ->where('project_id', $this->data['project_id'] ?? $this->currentTimeLog?->project_id)
-                ->where('user_id', $this->data['user_id'] ?? $this->currentTimeLog?->user_id ?? \Auth::id())
-                ->doesntExist()
-        ) {
-            $fail('messages.valid_user_task')->translate(['attribute' => __("validation.attributes.$attribute")]);
+        $project = Project::find($this->data['project_id'] ?? $this->currentTimeLog?->project_id);
+
+        if ($project->start_date !== null && $project->start_date > $this->data['date'] ?? $this->currentTimeLog?->date) {
+            $fail('validation.after_or_equal')->translate(['attribute' => __("validation.attributes.$attribute"), 'date' => $project->start_date->format('d-m-Y')]);
+        }
+
+        if ($project->end_date !== null && $project->end_date < $this->data['date'] ?? $this->currentTimeLog?->date) {
+            $fail('validation.before_or_equal')->translate(['attribute' => __("validation.attributes.$attribute"), 'date' => $project->end_date->format('d-m-Y')]);
         }
     }
 

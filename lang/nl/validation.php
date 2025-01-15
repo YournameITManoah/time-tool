@@ -190,14 +190,14 @@ return [
     */
 
     'attributes' => [
-        'name' => 'Naam',
+        'date' => 'Datum',
         'email' => 'E-mail',
+        'name' => 'Naam',
         'password' => 'Wachtwoord',
         'project_id' => 'Project',
-        'task_id' => 'Taak',
-        'date' => 'Datum',
         'start_time' => 'Starttijd',
-        'stop_time' => 'Stoptijd'
+        'stop_time' => 'Stoptijd',
+        'task_id' => 'Taak'
     ],
 
 ];

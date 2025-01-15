@@ -25,7 +25,8 @@ class UserTaskApiController extends ApiController
         // -1 means fetch all
         if ($perPage === '-1') {
             $perPage = '1000';
-        };
+        }
+        ;
 
         // Get the user tasks of the logged in user
         $userTasks = UserTask::query()
@@ -33,7 +34,7 @@ class UserTaskApiController extends ApiController
             ->when($request->get('sort'), function ($query, $sortBy) {
                 return $query->orderBy($sortBy['key'], $sortBy['order']);
             })
-            ->with('project:id,name')
+            ->with('project:id,name,start_date,end_date')
             ->with('task:id,name')
             ->paginate($perPage);
 

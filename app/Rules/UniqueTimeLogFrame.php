@@ -37,17 +37,18 @@ class UniqueTimeLogFrame implements DataAwareRule, ValidationRule
         }
 
         // Time logs should not overlap
-        if (TimeLog::where('user_id', $this->data['user_id'] ?? $this->currentTimeLog?->user_id ?? \Auth::id())
-            ->where('id', '!=', $this->currentTimeLog?->id)
-            ->whereDate('date', $this->data['date'] ?? $this->currentTimeLog?->date)
-            ->where(function (Builder $query) use ($value) {
-                $query->contains($value)->orWhere(function (Builder $query) {
-                    $query->partOf($this->data['start_time'] ?? $this->currentTimeLog?->start_time, $this->data['stop_time'] ?? $this->currentTimeLog?->stop_time);
-                });
-            })
-            ->exists()
+        if (
+            TimeLog::where('user_id', $this->data['user_id'] ?? $this->currentTimeLog?->user_id ?? \Auth::id())
+                ->where('id', '!=', $this->currentTimeLog?->id)
+                ->whereDate('date', $this->data['date'] ?? $this->currentTimeLog?->date)
+                ->where(function (Builder $query) use ($value) {
+                    $query->contains($value)->orWhere(function (Builder $query) {
+                        $query->partOf($this->data['start_time'] ?? $this->currentTimeLog?->start_time, $this->data['stop_time'] ?? $this->currentTimeLog?->stop_time);
+                    });
+                })
+                ->exists()
         ) {
-            $fail('messages.valid_time_log_frame')->translate(['attribute' => $attribute]);
+            $fail('messages.valid_time_log_frame')->translate(['attribute' => __("validation.attributes.$attribute")]);
         }
     }
 

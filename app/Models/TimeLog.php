@@ -43,7 +43,7 @@ class TimeLog extends Model
 
     public function getDurationAttribute()
     {
-        return 0;
+        return strtotime($this->stop_time) - strtotime($this->start_time);
     }
 
     public function user(): BelongsTo

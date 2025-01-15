@@ -21,13 +21,13 @@ class ProjectFactory extends Factory
      */
     public function definition(): array
     {
-        $start = $this->faker->date();
+        $start = $this->faker->boolean() ? $this->faker->dateTimeBetween('- 2 years', '+ 1 year') : null;
         return [
             'client_id' => Client::factory(),
             'name' => $this->faker->unique()->word(),
-            'start_date' => $this->faker->date(),
-            'end_date' => $this->faker->dateTimeBetween($start)->format('Y-m-d'),
-            'available_hours' => $this->faker->numberBetween(),
+            'start_date' => $start,
+            'end_date' => $start ? $this->faker->dateTimeBetween($start, $start->format('d-m-Y') . '+ 1 year')->format('Y-m-d') : null,
+            'available_hours' => $this->faker->randomElement([null, 16, 32, 64, 128]),
         ];
     }
 }

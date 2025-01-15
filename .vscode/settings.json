@@ -1,4 +1,8 @@
 {
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "explicit",
+        "source.fixAll.markdownlint": "explicit"
+    },
     "cSpell.ignoreWords": ["bootstrap", "date-"],
     "cSpell.words": [
         "ansi",
