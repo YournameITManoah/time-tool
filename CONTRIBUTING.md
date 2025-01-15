@@ -20,11 +20,13 @@ Thank you for considering contributing to the Time Tool project! This guide prov
 
 Ensure you have the following tools installed:
 
+- **Git**: Version control system. Download it from the [official Git website](https://git-scm.com/downloads).
 - **PHP**: Version 8.2 or higher. You can install PHP using the [official installation guide](https://laravel.com/docs/11.x/installation#installing-php).
 - **Composer**: Version 2.8 or higher. Installation instructions are available on the [Composer website](https://getcomposer.org/download/).
 - **Node.js**: Version 20 or higher. Download it from the [official Node.js website](https://nodejs.org/).
 - **npm**: Comes bundled with Node.js.
-- **Git**: Version control system. Download it from the [official Git website](https://git-scm.com/downloads).
+- **VS Code**: Version 1.96 or higher. Install from the [official VS Code website](https://code.visualstudio.com/).
+  - **VS Code Extensions**: Install the recommended extensions. See [.vscode/extensions.json](./.vscode/extensions.json).
 
 ## Project Setup
 
