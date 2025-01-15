@@ -45,8 +45,8 @@ useHead({ title: t('Welcome') })
 defineProps<{
     canLogin?: boolean
     canRegister?: boolean
-    phpVersion: string
     laravelVersion: string
+    phpVersion: string
 }>()
 
 const user = useProperty('auth.user')

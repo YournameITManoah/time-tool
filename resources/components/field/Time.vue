@@ -29,10 +29,10 @@ defineOptions({ name: 'FieldTime' })
 
 defineProps<{
     label: string
-    min?: string
     max?: string
+    min?: string
 }>()
 
 const menu = ref(false)
-const model = defineModel<string | null>({ default: null })
+const model = defineModel<null | string>({ default: null })
 </script>

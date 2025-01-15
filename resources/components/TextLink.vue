@@ -5,8 +5,8 @@
 </template>
 <script setup lang="ts">
 defineProps<{
+    color?: string
     href: string
     label: string
-    color?: string
 }>()
 </script>

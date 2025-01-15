@@ -5,7 +5,7 @@
 defineOptions({ name: 'FieldDate' })
 
 const local = ref<Date | null>(null)
-const model = defineModel<string | null | undefined>({ required: true })
+const model = defineModel<null | string | undefined>({ required: true })
 
 watch(local, (val) => {
     model.value = val ? val.toLocaleDateString('en-CA') : null

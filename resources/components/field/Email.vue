@@ -17,18 +17,18 @@ const { isRequired } = useValidation()
 
 withDefaults(
     defineProps<{
-        label?: string
-        icon?: string
         errors?: string
+        icon?: string
+        label?: string
         required?: boolean
     }>(),
     {
-        label: undefined,
-        icon: 'mdi-email-outline',
         errors: undefined,
+        icon: 'mdi-email-outline',
+        label: undefined,
         required: true,
     },
 )
 
-const model = defineModel<string | null>()
+const model = defineModel<null | string>()
 </script>

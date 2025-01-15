@@ -1,12 +1,7 @@
-export interface Resource {
-    created_at: string
-    updated_at: string
-}
-
 export interface PagedParams {
+    limit: number
     page: number
     search?: string
-    limit: number
     sort: { key: string; order: 'asc' | 'desc' }
 }
 
@@ -17,11 +12,16 @@ export interface PagedResult<T> {
     from: number
     last_page: number
     last_page_url: string
-    links: { url: string | null; label: string; active: boolean }[]
-    next_page_url: string | null
+    links: { active: boolean; label: string; url: null | string; }[]
+    next_page_url: null | string
     path: string
     per_page: number
-    prev_page_url: string | null
+    prev_page_url: null | string
     to: number
     total: number
+}
+
+export interface Resource {
+    created_at: string
+    updated_at: string
 }

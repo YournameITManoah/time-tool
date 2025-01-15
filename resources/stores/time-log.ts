@@ -1,14 +1,12 @@
-import { defineStore } from 'pinia'
 import type { PagedResult, UserTaskExtended } from '@/types'
+
+import { defineStore } from 'pinia'
 
 interface State {
     userTasks: UserTaskExtended[]
 }
 
 export const useTimeLogStore = defineStore('time-log', {
-    state: (): State => ({
-        userTasks: [],
-    }),
     actions: {
         /**
          * Fetch all user tasks trough API
@@ -29,4 +27,7 @@ export const useTimeLogStore = defineStore('time-log', {
             return this.userTasks
         },
     },
+    state: (): State => ({
+        userTasks: [],
+    }),
 })
