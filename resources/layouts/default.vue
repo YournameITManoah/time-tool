@@ -12,7 +12,7 @@
                 v-model="drawer"
                 v-model:rail="rail"
                 :permanent="!mobile"
-                expand-on-hover
+                :expand-on-hover="!mobile"
             >
                 <v-list>
                     <v-list-item
