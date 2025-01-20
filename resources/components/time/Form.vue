@@ -110,12 +110,14 @@
                         <router-link
                             :disabled="form.processing"
                             :href="route('time-log.index')"
+                            :aria-label="t('Cancel')"
                         >
                             <v-btn
                                 :disabled="form.processing"
                                 color="error"
                                 class="mr-4"
                                 tabindex="-1"
+                                aria-hidden="true"
                                 :text="t('Cancel')"
                             />
                         </router-link>

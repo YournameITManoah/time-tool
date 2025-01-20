@@ -18,11 +18,15 @@
                     <template #top>
                         <v-row no-gutters>
                             <v-spacer />
-                            <router-link :href="route('time-log.create')">
+                            <router-link
+                                :href="route('time-log.create')"
+                                :aria-label="t('Create Time Log')"
+                            >
                                 <v-btn
                                     color="primary"
                                     prepend-icon="mdi-plus"
                                     tabindex="-1"
+                                    aria-hidden="true"
                                     :text="t('Create Time Log')"
                                 />
                             </router-link>
@@ -45,10 +49,12 @@
                             :href="
                                 route('time-log.edit', { time_log: item.id })
                             "
+                            :aria-label="t('Edit Time Log')"
                         >
                             <v-btn
                                 tabindex="-1"
                                 size="small"
+                                aria-hidden="true"
                                 variant="text"
                                 icon="mdi-pencil"
                             />
