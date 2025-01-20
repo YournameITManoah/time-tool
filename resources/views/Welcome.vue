@@ -8,9 +8,13 @@
         </v-card-text>
         <v-card-actions>
             <template v-if="user">
-                <router-link :href="route('dashboard')">
+                <router-link
+                    :href="route('dashboard')"
+                    :aria-label="t('Dashboard')"
+                >
                     <v-btn
                         tabindex="-1"
+                        aria-hidden="true"
                         color="primary"
                         :text="t('Dashboard')"
                     />
@@ -20,13 +24,24 @@
                 <router-link
                     v-if="canLogin"
                     :href="route('login')"
+                    :aria-label="t('Login')"
                     class="mr-2"
                 >
-                    <v-btn tabindex="-1" color="primary" :text="t('Login')" />
-                </router-link>
-                <router-link v-if="canRegister" :href="route('register')">
                     <v-btn
                         tabindex="-1"
+                        aria-hidden="true"
+                        color="primary"
+                        :text="t('Login')"
+                    />
+                </router-link>
+                <router-link
+                    v-if="canRegister"
+                    :href="route('register')"
+                    :aria-label="t('Register')"
+                >
+                    <v-btn
+                        tabindex="-1"
+                        aria-hidden="true"
                         color="success"
                         :text="t('Register')"
                     />

@@ -48,8 +48,11 @@
                 </template>
                 <v-toolbar-title :text="name" />
                 <v-spacer />
-                <router-link :href="route('time-log.create')">
-                    <v-btn icon tabindex="-1">
+                <router-link
+                    :href="route('time-log.create')"
+                    :aria-label="t('Create Time Log')"
+                >
+                    <v-btn icon tabindex="-1" aria-hidden="true">
                         <v-icon icon="mdi-plus" />
                     </v-btn>
                 </router-link>

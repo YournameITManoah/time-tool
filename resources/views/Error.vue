@@ -10,8 +10,13 @@
             :text="t('messages.unexpected_error_text')"
         >
             <v-card-actions>
-                <router-link :href="route('home')">
-                    <v-btn tabindex="-1" color="primary" :text="t('Go Back')" />
+                <router-link :href="route('home')" :aria-label="t('Go Back')">
+                    <v-btn
+                        tabindex="-1"
+                        color="primary"
+                        aria-hidden="true"
+                        :text="t('Go Back')"
+                    />
                 </router-link>
             </v-card-actions>
         </v-card>
@@ -24,8 +29,13 @@
             </p>
         </v-card-text>
         <v-card-actions>
-            <router-link :href="route('dashboard')">
-                <v-btn tabindex="-1" color="primary" :text="t('Go Back')" />
+            <router-link :href="route('dashboard')" :aria-label="t('Go Back')">
+                <v-btn
+                    tabindex="-1"
+                    aria-hidden="true"
+                    color="primary"
+                    :text="t('Go Back')"
+                />
             </router-link>
         </v-card-actions>
     </guest-layout>
