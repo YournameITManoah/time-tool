@@ -51,7 +51,7 @@ class TimeLogController extends Controller
         ]);
 
         // Redirect to overview
-        return redirect()->route('time-log.index');
+        return redirect()->route('time-log.index')->with('success', __('messages.time_log_saved'));
     }
 
     /**
@@ -84,7 +84,7 @@ class TimeLogController extends Controller
         $timeLog->updateOrFail($validated);
 
         // Redirect back with success message
-        return redirect()->back()->with('success', sprintf('Successfully updated time log #%s', $timeLog->id));
+        return redirect()->back()->with('success', __('messages.time_log_saved'));
     }
 
     /**
@@ -98,6 +98,6 @@ class TimeLogController extends Controller
         // Delete time log
 
         // Redirect back with success message
-        return redirect()->back()->with('success', sprintf('Successfully deleted time log #%s', $timeLog->id));
+        return redirect()->route('time-log.index');
     }
 }

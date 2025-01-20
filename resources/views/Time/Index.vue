@@ -54,6 +54,8 @@ import type {
     VDataTableOptions,
 } from '@/types'
 
+import { emitter } from '~/resources/application/mitt'
+
 defineOptions({ name: 'TimeLogIndex' })
 
 const { t } = useI18n()
@@ -74,7 +76,7 @@ const breadcrumbs = computed(() => [
     },
 ])
 
-const groupBy = ref<{ key: string; title: string; }[]>([])
+const groupBy = ref<{ key: string; title: string }[]>([])
 const headers = computed(() => {
     return [
         { key: 'project.name', title: t('Project') },
@@ -84,7 +86,9 @@ const headers = computed(() => {
         { key: 'stop_time', title: t('Stop time') },
         { key: 'duration', sortable: false, title: t('Duration') },
         { key: 'actions', sortable: false, title: t('Actions') },
-    ].filter((h) => h.key !== groupBy.value[0]?.key)
+    ]
+        .filter((h) => h.key !== groupBy.value[0]?.key)
+        .map((h) => ({ ...h, headerProps: { class: 'font-weight-bold' } }))
 })
 
 const items = ref<TimeLogExtended[]>([])
@@ -120,4 +124,8 @@ const loadItems = async ({
         isLoadingTable.value = false
     }
 }
+
+emitter.on('time-log:refresh', () => {
+    search.value = Date.now().toString()
+})
 </script>

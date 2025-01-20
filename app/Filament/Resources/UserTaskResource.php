@@ -2,6 +2,9 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\TaskResource\RelationManagers\UserTasksRelationManager as TaskUserTasksRelationManager;
+use App\Filament\Resources\UserResource\RelationManagers\UserTasksRelationManager as UserUserTasksRelationManager;
+use App\Filament\Resources\ProjectResource\RelationManagers\UserTasksRelationManager as ProjectUserTasksRelationManager;
 use App\Filament\Resources\UserTaskResource\Pages;
 use App\Filament\Resources\UserTaskResource\RelationManagers;
 use App\Models\UserTask;
@@ -44,19 +47,22 @@ class UserTaskResource extends Resource
                     ->relationship('user', 'name')
                     ->searchable()
                     ->preload()
-                    ->required(),
+                    ->required()
+                    ->hiddenOn(UserUserTasksRelationManager::class),
                 Forms\Components\Select::make('project_id')
                     ->translateLabel()
                     ->relationship('project', 'name')
                     ->searchable()
                     ->preload()
-                    ->required(),
+                    ->required()
+                    ->hiddenOn(ProjectUserTasksRelationManager::class),
                 Forms\Components\Select::make('task_id')
                     ->translateLabel()
                     ->relationship('task', 'name')
                     ->searchable()
                     ->preload()
-                    ->required(),
+                    ->required()
+                    ->hiddenOn(TaskUserTasksRelationManager::class),
             ]);
     }
 
@@ -74,17 +80,20 @@ class UserTaskResource extends Resource
                     ->translateLabel()
                     ->numeric()
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->hiddenOn(UserUserTasksRelationManager::class),
                 Tables\Columns\TextColumn::make('project.name')
                     ->translateLabel()
                     ->numeric()
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->hiddenOn(ProjectUserTasksRelationManager::class),
                 Tables\Columns\TextColumn::make('task.name')
                     ->translateLabel()
                     ->numeric()
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->hiddenOn(TaskUserTasksRelationManager::class),
                 Tables\Columns\TextColumn::make('created_at')
                     ->translateLabel()
                     ->dateTime()

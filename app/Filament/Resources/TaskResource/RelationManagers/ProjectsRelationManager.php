@@ -7,6 +7,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use \Illuminate\Database\Eloquent\Model;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -34,5 +35,28 @@ class ProjectsRelationManager extends RelationManager
                     Tables\Actions\DetachBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function getTitle(Model $ownerRecord, string $pageClass): string
+    {
+        return __('Projects');
+    }
+
+    /**
+     * The label of the resource
+     * @return string The label
+     */
+    public static function getModelLabel(): string
+    {
+        return __('Project');
+    }
+
+    /**
+     * The plural form of the resource label
+     * @return string The label
+     */
+    public static function getPluralModelLabel(): string
+    {
+        return __('Projects');
     }
 }

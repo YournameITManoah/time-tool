@@ -1,29 +1,29 @@
 <?php
 
-namespace App\Filament\Resources\ClientResource\RelationManagers;
+namespace App\Filament\Resources\UserResource\RelationManagers;
 
-use App\Filament\Resources\ProjectResource;
+use App\Filament\Resources\UserTaskResource;
 use Filament\Forms;
 use Filament\Forms\Form;
-use \Illuminate\Database\Eloquent\Model;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use \Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ProjectsRelationManager extends RelationManager
+class UserTasksRelationManager extends RelationManager
 {
-    protected static string $relationship = 'projects';
+    protected static string $relationship = 'userTasks';
 
     public function form(Form $form): Form
     {
-        return ProjectResource::form($form);
+        return UserTaskResource::form($form);
     }
 
     public function table(Table $table): Table
     {
-        return ProjectResource::table($table)
+        return UserTaskResource::table($table)
             ->headerActions([
                 Tables\Actions\CreateAction::make(),
             ]);
@@ -31,7 +31,7 @@ class ProjectsRelationManager extends RelationManager
 
     public static function getTitle(Model $ownerRecord, string $pageClass): string
     {
-        return __('Projects');
+        return __('User Tasks');
     }
 
     /**
@@ -40,7 +40,7 @@ class ProjectsRelationManager extends RelationManager
      */
     public static function getModelLabel(): string
     {
-        return __('Project');
+        return __('User Task');
     }
 
     /**
@@ -49,6 +49,6 @@ class ProjectsRelationManager extends RelationManager
      */
     public static function getPluralModelLabel(): string
     {
-        return __('Projects');
+        return __('User Tasks');
     }
 }
