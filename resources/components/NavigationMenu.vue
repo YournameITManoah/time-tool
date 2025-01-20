@@ -9,7 +9,12 @@
                 :href="item.href"
                 link
             />
-            <router-link v-else :href="item.href" as="div">
+            <router-link
+                v-else
+                :href="item.href"
+                as="div"
+                @click="emit('close')"
+            >
                 <v-list-item
                     :class="{
                         'v-list-item--active': false,
@@ -35,6 +40,10 @@ interface NavItem {
 const { t } = useI18n()
 
 const can = useProperty<Partial<Record<string, boolean>>>('auth.can')
+
+const emit = defineEmits<{
+    (e: 'close'): void
+}>()
 
 const navigation = computed((): NavItem[] => {
     const items: NavItem[] = [

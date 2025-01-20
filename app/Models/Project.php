@@ -55,4 +55,9 @@ class Project extends Model
     {
         return $this->hasMany(TimeLog::class);
     }
+
+    public function userTasks(): HasMany
+    {
+        return $this->hasMany(UserTask::class);
+    }
 }

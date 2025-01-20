@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProjectResource\Pages;
 use App\Filament\Resources\ClientResource\RelationManagers\ProjectsRelationManager as ClientProjectsRelationManager;
-use App\Filament\Resources\ProjectResource\RelationManagers\TasksRelationManager;
+use App\Filament\Resources\ProjectResource\RelationManagers;
 use App\Models\Project;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -118,7 +118,6 @@ class ProjectResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -134,7 +133,8 @@ class ProjectResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //TasksRelationManager::class,
+                //TasksRelationManager::class,
+            RelationManagers\UserTasksRelationManager::class,
         ];
     }
 

@@ -10,8 +10,8 @@
             <v-navigation-drawer
                 ref="nav"
                 v-model="drawer"
+                v-model:rail="rail"
                 :permanent="!mobile"
-                :rail="!mobile && !hasFocus"
                 expand-on-hover
             >
                 <v-list>
@@ -35,7 +35,7 @@
                     </v-list-item>
                 </v-list>
                 <v-divider />
-                <navigation-menu />
+                <navigation-menu @close="closeNav" />
                 <template #append>
                     <v-list>
                         <locale-switcher variant="list" />
@@ -83,12 +83,26 @@ const user = useProperty('auth.user')
 const hasFocus = ref(false)
 const nav = useTemplateRef('nav')
 const drawer = ref(!mobile.value)
+const rail = ref(!mobile.value && !hasFocus.value)
 const confirmLogout = ref(false)
 
 // Open navigation on mobile
 watch(mobile, (val) => {
     if (!val) drawer.value = true
+    rail.value = !val && !hasFocus.value
 })
+
+watch(hasFocus, (val) => {
+    rail.value = !mobile.value && !val
+})
+
+watch(drawer, () => {
+    rail.value = !mobile.value && !hasFocus.value
+})
+
+const closeNav = () => {
+    if (mobile.value) drawer.value = false
+}
 
 // Ask logout confirmation when timer is active
 
