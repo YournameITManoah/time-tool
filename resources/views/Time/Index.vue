@@ -15,6 +15,19 @@
                     :search="search"
                     @update:options="loadItems"
                 >
+                    <template #top>
+                        <v-row no-gutters>
+                            <v-spacer />
+                            <router-link :href="route('time-log.create')">
+                                <v-btn
+                                    color="primary"
+                                    prepend-icon="mdi-plus"
+                                    tabindex="-1"
+                                    :text="t('Create Time Log')"
+                                />
+                            </router-link>
+                        </v-row>
+                    </template>
                     <template #item.date="{ value }">
                         {{ formatDate(value) }}
                     </template>
