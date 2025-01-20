@@ -26,6 +26,7 @@
                                     icon
                                     size="small"
                                     variant="text"
+                                    :aria-label="t('Log Out')"
                                     @click="onLogout"
                                 >
                                     <v-icon icon="mdi-logout" />
@@ -44,7 +45,10 @@
             </v-navigation-drawer>
             <v-app-bar color="primary">
                 <template v-if="mobile" #prepend>
-                    <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+                    <v-app-bar-nav-icon
+                        aria-hidden="true"
+                        @click.stop="drawer = !drawer"
+                    />
                 </template>
                 <v-toolbar-title :text="name" />
                 <v-spacer />

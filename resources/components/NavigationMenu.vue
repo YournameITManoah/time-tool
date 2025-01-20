@@ -9,12 +9,7 @@
                 :href="item.href"
                 link
             />
-            <router-link
-                v-else
-                :href="item.href"
-                as="div"
-                @click="emit('close')"
-            >
+            <router-link v-else :href="item.href" @click="emit('close')">
                 <v-list-item
                     :class="{
                         'v-list-item--active': false,
@@ -55,7 +50,7 @@ const navigation = computed((): NavItem[] => {
         {
             href: route('time-log.index'),
             icon: 'mdi-clock-outline',
-            title: t('Time Log'),
+            title: t('Time Logs'),
         },
     ]
 
