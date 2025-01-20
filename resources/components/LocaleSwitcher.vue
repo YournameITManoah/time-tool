@@ -41,7 +41,7 @@
                         @click="submit(item.value)"
                     >
                         <template #prepend>
-                            <v-avatar size="small">
+                            <v-avatar size="small" aria-hidden="true">
                                 <v-img
                                     :src="`/img/flags/${item.value}.svg`"
                                     :alt="item.title"
