@@ -37,6 +37,9 @@ class MaxProjectHours implements DataAwareRule, ValidationRule
 
         $projectId = $this->data['project_id'] ?? $this->currentTimeLog?->project_id;
         $project = Project::find($projectId);
+        if ($project->available_hours == null) {
+            return;
+        }
 
         $newTime = (strtotime($this->data['stop_time'] ?? $this->currentTimeLog?->stop_time) - strtotime($this->data['start_time'] ?? $this->currentTimeLog?->start_time)) / 3600;
         $usedHours = array_sum(TimeLog::where('project_id', '=', $projectId)->where('id', '!=', $this->currentTimeLog?->id)->get()->map(fn($timeLog) => $timeLog->duration)->toArray()) / 3600;
