@@ -14,6 +14,7 @@ return [
     'confirm_password_text' => 'This is a secure area of the application. Please confirm your password before continuing.',
     'error_session_expired' => 'Your session has expired. Please refresh the page.',
     'forgot_password_text' => 'Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.',
+    'time_log_saved' => 'Time log has been saved successfully.',
     'timer_running' => 'You still have a timer running. Are you sure?',
     'unexpected_error_text' => 'Something went wrong. Please try again later or go back home.',
     'valid_project_hours' => 'The logged project hours must not be greater than :max. Remaining: :remaining hours.',

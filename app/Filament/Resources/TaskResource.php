@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\TaskResource\RelationManagers\ProjectsRelationManager;
+use App\Filament\Resources\TaskResource\RelationManagers;
 use App\Filament\Resources\TaskResource\Pages;
 use App\Models\Task;
 use Filament\Forms;
@@ -96,7 +96,8 @@ class TaskResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //ProjectsRelationManager::class,
+                //ProjectsRelationManager::class,
+            RelationManagers\UserTasksRelationManager::class,
         ];
     }
 

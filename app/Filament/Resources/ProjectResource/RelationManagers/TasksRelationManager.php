@@ -5,6 +5,7 @@ namespace App\Filament\Resources\ProjectResource\RelationManagers;
 use App\Filament\Resources\TaskResource;
 use Filament\Forms;
 use Filament\Forms\Form;
+use \Illuminate\Database\Eloquent\Model;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -34,5 +35,28 @@ class TasksRelationManager extends RelationManager
                     Tables\Actions\DetachBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function getTitle(Model $ownerRecord, string $pageClass): string
+    {
+        return __('Tasks');
+    }
+
+    /**
+     * The label of the resource
+     * @return string The label
+     */
+    public static function getModelLabel(): string
+    {
+        return __('Task');
+    }
+
+    /**
+     * The plural form of the resource label
+     * @return string The label
+     */
+    public static function getPluralModelLabel(): string
+    {
+        return __('Tasks');
     }
 }

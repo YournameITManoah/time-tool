@@ -152,6 +152,8 @@ import type { TimeLog, UserTaskExtended, VFormRef } from '@/types'
 
 import { useTimeLogStore } from '@/stores/time-log'
 
+import { emitter } from '~/resources/application/mitt'
+
 defineOptions({ name: 'TimeLogForm' })
 
 const { t } = useI18n()
@@ -277,6 +279,7 @@ const submit = async () => {
                     .length
             ) {
                 resetFields()
+                emitter.emit('time-log:refresh', true)
             }
         })
     }
