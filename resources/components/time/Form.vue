@@ -138,13 +138,21 @@
                 </v-container>
             </v-card-text>
             <v-card-actions v-if="variant === 'timer'">
+                <dialog-confirm
+                    v-model="confirmCancel"
+                    :message="t('messages.confirm_timer_cancel')"
+                    :on-confirm="() => emit('cancel')"
+                />
                 <v-spacer></v-spacer>
                 <v-btn
                     color="error"
-                    type="reset"
                     :disabled="form.processing"
                     :text="t('Cancel')"
-                    @click="emit('cancel')"
+                    @click="
+                        defaults?.start_time
+                            ? (confirmCancel = true)
+                            : emit('cancel')
+                    "
                 />
                 <v-btn
                     color="primary"
@@ -167,6 +175,8 @@ defineOptions({ name: 'TimeLogForm' })
 
 const { t } = useI18n()
 const { isRequired } = useValidation()
+
+const confirmCancel = ref(false)
 
 const props = withDefaults(
     defineProps<{
@@ -219,11 +229,6 @@ const projects = computed(() => {
     return userTasks.value
         .map((ut) => ut.project)
         .filter((p, i, s) => s.findIndex((p2) => p2.id === p.id) === i)
-        .filter(
-            (p) =>
-                (!p.start_date || p.start_date < today) &&
-                (!p.end_date || p.end_date > today),
-        )
 })
 
 // Tasks of selected project
