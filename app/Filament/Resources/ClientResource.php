@@ -44,13 +44,13 @@ class ClientResource extends Resource
                     ->translateLabel()
                     ->required()
                     ->maxLength(50)
-                    ->unique(),
+                    ->unique(ignoreRecord: true),
                 Forms\Components\TextInput::make('email')
                     ->translateLabel()
                     ->email()
                     ->required()
                     ->maxLength(100)
-                    ->unique(),
+                    ->unique(ignoreRecord: true),
             ]);
     }
 
