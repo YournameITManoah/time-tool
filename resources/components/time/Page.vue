@@ -24,7 +24,7 @@ const breadcrumbs = computed(() => [
     { href: route('dashboard'), title: t('Dashboard') },
     { href: route('time-log.index'), title: t('Time Logs') },
     {
-        disabled: true,
+        current: true,
         href: route(`time-log.${props.edit ? 'edit' : 'create'}`, {
             time_log: props.edit?.id,
         }),
