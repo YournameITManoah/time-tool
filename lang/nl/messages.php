@@ -12,6 +12,7 @@ return [
     */
 
     'confirm_password_text' => 'Dit is een beveiligd deel van de applicatie. Bevestig alsjeblieft je wachtwoord voordat je doorgaat.',
+    'confirm_timer_cancel' => 'Je staat op het punt om de timer te annuleren. Weet je het zeker?',
     'error_session_expired' => 'Jouw sessie is verlopen. Ververs alsjeblieft de pagina.',
     'forgot_password_text' => 'Wachtwoord vergeten? Geen probleem. Laat ons je e-mailadres weten en we zullen je een e-mail sturen met een link om je wachtwoord te resetten en een nieuwe in te stellen.',
     'time_log_saved' => 'Tijdregistratie is succesvol opgeslagen.',

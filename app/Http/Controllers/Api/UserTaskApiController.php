@@ -30,10 +30,18 @@ class UserTaskApiController extends ApiController
         // Get the user tasks of the logged in user
         $userTasks = UserTask::query()
             ->where('user_id', \Auth::id())
+            ->with(['project:id,name,client_id,start_date,end_date', 'task:id,name', 'project.client:id,name'])
+            ->whereHas('project', function ($query) {
+                return $query->where(function ($query) {
+                    return $query->whereNull('start_date')->orWhereDate('start_date', '<=', now());
+                })
+                    ->where(function ($query) {
+                        return $query->whereNull('end_date')->orWhereDate('end_date', '>=', now());
+                    });
+            })
             ->when($request->get('sort'), function ($query, $sortBy) {
                 return $query->orderBy($sortBy['key'], $sortBy['order']);
             })
-            ->with(['project:id,name,client_id,start_date,end_date', 'task:id,name', 'project.client:id,name'])
             ->paginate($perPage);
 
         return $userTasks;

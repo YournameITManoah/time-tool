@@ -7,6 +7,7 @@
                 append-icon="mdi-open-in-new"
                 :title="item.title"
                 :href="item.href"
+                tabindex="0"
                 link
             />
             <router-link
