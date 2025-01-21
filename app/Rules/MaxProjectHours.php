@@ -35,7 +35,7 @@ class MaxProjectHours implements DataAwareRule, ValidationRule
             return;
         }
 
-        $projectId = $this->data['project_id'] ?? $this->currentTimeLog?->project_id;
+        $projectId = $value ?? $this->currentTimeLog?->project_id;
         $project = Project::find($projectId);
         if ($project->available_hours == null) {
             return;

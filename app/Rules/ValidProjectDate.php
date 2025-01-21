@@ -30,8 +30,8 @@ class ValidProjectDate implements DataAwareRule, ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         // If required values are missing, skip validation
-        $values = array_filter([$value ?? null]);
-        if (!$this->currentTimeLog && count($values) < 1) {
+        $values = array_filter([$value ?? null, $this->data['project_id'] ?? null]);
+        if (!$this->currentTimeLog && count($values) < 2) {
             return;
         }
 

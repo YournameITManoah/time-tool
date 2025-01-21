@@ -18,7 +18,13 @@
                             class="d-flex justify-space-between align-center py-4"
                         >
                             <div></div>
-                            <router-link href="/" style="width: 50%">
+                            <router-link
+                                :href="route('home')"
+                                style="width: 50%"
+                                :aria-current="
+                                    router.matches('home') ? 'page' : false
+                                "
+                            >
                                 <ApplicationLogo style="width: 100%" />
                             </router-link>
                             <locale-switcher variant="button" />

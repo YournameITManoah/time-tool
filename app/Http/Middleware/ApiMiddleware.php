@@ -20,13 +20,19 @@ class ApiMiddleware
         $request->headers->set('Accept', 'application/json');
         $request->headers->set('Origin', $request->header('Origin', $request->getHttpHost()));
 
-        if (!$request->isMethod('POST')) return $next($request);
-
         $contentType = $request->header('Content-Type');
-        if ($contentType != 'application/json') {
+        if ($request->isMethod('POST') && $contentType != 'application/json') {
             return response()->json(['message' => 'Unsupported Media Type'], 415, ['Accept-Post' => 'application/json; charset=UTF-8']);
         }
 
-        return $next($request);;
+        if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'])) {
+            json_decode($request->getContent());
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                return response()->json(['message' => 'Bad Request'], 400);
+            }
+        }
+
+        return $next($request);
+        ;
     }
 }
