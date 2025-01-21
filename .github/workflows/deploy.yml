@@ -94,6 +94,7 @@ jobs:
                       **/.git*/**
                       **/node_modules/**
                       **/vendor/**
+                      !resources/view/vendor/**
                       .hybridly/**
                       .vscode/**
                       public/**
