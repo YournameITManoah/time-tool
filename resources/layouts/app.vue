@@ -1,6 +1,10 @@
 <template>
     <v-app :class="{ 'bg-grey-lighten-4': !theme.current.value.dark }">
-        <v-sonner position="top-right" expand />
+        <v-sonner
+            position="top-right"
+            expand
+            :container-aria-label="i18n.t('Notifications')"
+        />
         <slot name="header" />
         <v-main scrollable>
             <slot />

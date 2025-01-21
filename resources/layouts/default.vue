@@ -52,7 +52,7 @@
             <v-app-bar color="primary">
                 <template v-if="mobile" #prepend>
                     <v-app-bar-nav-icon
-                        aria-hidden="true"
+                        tabindex="-1"
                         @click.stop="drawer = !drawer"
                     />
                 </template>

@@ -219,11 +219,6 @@ const projects = computed(() => {
     return userTasks.value
         .map((ut) => ut.project)
         .filter((p, i, s) => s.findIndex((p2) => p2.id === p.id) === i)
-        .filter(
-            (p) =>
-                (!p.start_date || p.start_date < today) &&
-                (!p.end_date || p.end_date > today),
-        )
 })
 
 // Tasks of selected project
