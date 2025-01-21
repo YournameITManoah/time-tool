@@ -50,11 +50,11 @@
                         @click.stop="drawer = !drawer"
                     />
                 </template>
-                <v-toolbar-title
-                    :text="name"
-                    :aria-label="camelPad(name)"
-                    translate="no"
-                />
+                <v-toolbar-title>
+                    <span :aria-label="camelPad(name)" translate="no">
+                        {{ name }}
+                    </span>
+                </v-toolbar-title>
                 <v-spacer />
                 <router-link
                     :href="route('time-log.create')"
