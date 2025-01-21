@@ -22,13 +22,13 @@ class ApiMiddleware
 
         $contentType = $request->header('Content-Type');
         if ($request->isMethod('POST') && $contentType != 'application/json') {
-            return response()->json(['message' => 'Unsupported Media Type'], 415, ['Accept-Post' => 'application/json; charset=UTF-8']);
+            abort(415, 'Unsupported Media Type.', ['Accept-Post' => 'application/json; charset=UTF-8']);
         }
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'])) {
             json_decode($request->getContent());
             if (json_last_error() !== JSON_ERROR_NONE) {
-                return response()->json(['message' => 'Bad Request'], 400);
+                abort(400, 'Bad Request.');
             }
         }
 
