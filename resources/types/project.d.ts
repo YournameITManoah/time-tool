@@ -10,8 +10,5 @@ export interface Project extends Resource {
 }
 
 export interface ProjectExtended extends Project {
-    client: {
-        id: number
-        name: string
-    }
+    client: { id: number; name: string }
 }

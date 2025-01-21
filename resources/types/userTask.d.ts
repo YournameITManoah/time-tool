@@ -9,13 +9,12 @@ export interface UserTask extends Resource {
 
 export interface UserTaskExtended extends UserTask {
     project: {
+        client: { id: number; name: string }
+        client_id: number
         end_date: null | string
         id: number
         name: string
         start_date: null | string
     }
-    task: {
-        id: number
-        name: string
-    }
+    task: { id: number; name: string }
 }
