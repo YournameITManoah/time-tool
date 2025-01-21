@@ -33,8 +33,7 @@ class UserTaskApiController extends ApiController
             ->when($request->get('sort'), function ($query, $sortBy) {
                 return $query->orderBy($sortBy['key'], $sortBy['order']);
             })
-            ->with('project:id,name,start_date,end_date')
-            ->with('task:id,name')
+            ->with(['project:id,name,client_id,start_date,end_date', 'task:id,name', 'project.client:id,name'])
             ->paginate($perPage);
 
         return $userTasks;
