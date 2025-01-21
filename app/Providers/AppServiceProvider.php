@@ -91,6 +91,8 @@ class AppServiceProvider extends ServiceProvider
                 ));
         });
 
+        $this->loadViewsFrom(__DIR__ . '/../../resources/views/vendor/scramble', 'scramble');
+
         Gate::define('viewApiDocs', function (User $user) {
             return true;
         });

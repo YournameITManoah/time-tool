@@ -22,23 +22,7 @@ const options: I18nOptions = {
         ) as Record<SupportedLocale, MessageSchema>),
 
         // Overwrite some missing Vuetify translations
-        nl: {
-            ...messages.nl,
-            $vuetify: {
-                ...vuetifyMessages.nl,
-                dismiss: 'Sluiten',
-                fileUpload: {
-                    ...vuetifyMessages.nl.fileUpload,
-                    browse: 'Blader door bestanden',
-                    divider: 'of',
-                    title: 'Sleep en zet bestanden hier neer',
-                },
-                timePicker: {
-                    ...vuetifyMessages.nl.timePicker,
-                    title: 'Selecteer tijd',
-                },
-            },
-        },
+        nl: { ...messages.nl, $vuetify: { ...vuetifyMessages.nl } },
     },
 }
 
