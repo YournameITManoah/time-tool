@@ -32,7 +32,14 @@
                                 @update:model-value="
                                     form.fields.task_id = undefined
                                 "
-                            />
+                            >
+                                <template #item="{ props: itemProps, item }">
+                                    <v-list-item
+                                        v-bind="itemProps"
+                                        :subtitle="item.raw.client.name"
+                                    />
+                                </template>
+                            </v-select>
                         </v-col>
                         <v-col
                             :cols="sizes.cols"

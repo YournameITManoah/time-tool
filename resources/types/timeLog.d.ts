@@ -12,12 +12,6 @@ export interface TimeLog extends Resource {
 }
 
 export interface TimeLogExtended extends TimeLog {
-    project: {
-        id: number
-        name: string
-    }
-    task: {
-        id: number
-        name: string
-    }
+    project: { id: number; name: string }
+    task: { id: number; name: string }
 }
