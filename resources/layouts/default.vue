@@ -15,11 +15,17 @@
                 :expand-on-hover="!mobile"
             >
                 <v-list>
-                    <v-list-item
-                        :subtitle="user?.email"
-                        :title="user?.name"
-                        prepend-icon="mdi-account"
-                    >
+                    <v-list-item prepend-icon="mdi-account">
+                        <v-list-item-title
+                            :aria-label="`${t('Name')}: ${user?.name}`"
+                        >
+                            {{ user?.name }}
+                        </v-list-item-title>
+                        <v-list-item-subtitle
+                            :aria-label="`${t('Email')}: ${user?.email}`"
+                        >
+                            {{ user?.email }}
+                        </v-list-item-subtitle>
                         <template #append>
                             <v-list-item-action>
                                 <v-btn
