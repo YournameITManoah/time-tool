@@ -89,7 +89,7 @@ const breadcrumbs = computed(() => [
         title: t('Dashboard'),
     },
     {
-        disabled: true,
+        current: true,
         href: route('time-log.index'),
         title: t('Time Logs'),
     },

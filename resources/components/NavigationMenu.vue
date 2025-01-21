@@ -9,12 +9,16 @@
                 :href="item.href"
                 link
             />
-            <router-link v-else :href="item.href" @click="emit('close')">
+            <router-link
+                v-else
+                :href="item.href"
+                :aria-current="item.current ? 'page' : false"
+                @click="emit('close')"
+            >
                 <v-list-item
                     :class="{
-                        'v-list-item--active': false,
+                        'v-list-item--active': item.current,
                     }"
-                    :exact="item.exact"
                     :prepend-icon="item.icon"
                     :title="item.title"
                     link
@@ -25,7 +29,7 @@
 </template>
 <script lang="ts" setup>
 interface NavItem {
-    exact?: boolean
+    current?: boolean
     external?: boolean
     href: string
     icon: string
@@ -43,11 +47,13 @@ const emit = defineEmits<{
 const navigation = computed((): NavItem[] => {
     const items: NavItem[] = [
         {
+            current: router.matches('dashboard'),
             href: route('dashboard'),
             icon: 'mdi-view-dashboard',
             title: t('Dashboard'),
         },
         {
+            current: router.matches('time-log.index'),
             href: route('time-log.index'),
             icon: 'mdi-clock-outline',
             title: t('Time Logs'),

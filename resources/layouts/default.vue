@@ -4,7 +4,7 @@
             v-model="confirmLogout"
             :message="t('messages.timer_running')"
             confirm-label="Log Out"
-            :on-confirm="() => router.post('logout')"
+            :on-confirm="() => router.post(route('logout'))"
         />
         <template #header>
             <v-navigation-drawer
@@ -50,11 +50,18 @@
                         @click.stop="drawer = !drawer"
                     />
                 </template>
-                <v-toolbar-title :text="name" />
+                <v-toolbar-title
+                    :text="name"
+                    :aria-label="camelPad(name)"
+                    translate="no"
+                />
                 <v-spacer />
                 <router-link
                     :href="route('time-log.create')"
                     :aria-label="t('Create Time Log')"
+                    :aria-current="
+                        router.matches('time-log.create') ? 'page' : false
+                    "
                 >
                     <v-btn icon tabindex="-1" aria-hidden="true">
                         <v-icon icon="mdi-plus" />
@@ -117,7 +124,7 @@ const timerStore = useTimerStore()
 
 const onLogout = () => {
     if (timerStore.startTime) confirmLogout.value = true
-    else router.post('logout')
+    else router.post(route('logout'))
 }
 
 // Fix keyboard accessibility
