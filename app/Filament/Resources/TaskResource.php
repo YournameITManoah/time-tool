@@ -37,13 +37,8 @@ class TaskResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->translateLabel()
-                    ->required()
-                    ->maxLength(100),
-                Forms\Components\Toggle::make('billable')
-                    ->translateLabel()
-                    ->required(),
+                Forms\Components\TextInput::make('name'),
+                Forms\Components\Toggle::make('billable'),
             ]);
     }
 
@@ -58,26 +53,14 @@ class TaskResource extends Resource
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->translateLabel()
-                    ->sortable()
                     ->searchable(),
                 Tables\Columns\IconColumn::make('billable')
-                    ->translateLabel()
                     ->boolean(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->translateLabel()
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->translateLabel()
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('created_at'),
+                Tables\Columns\TextColumn::make('updated_at'),
             ])
             ->filters([
-                Tables\Filters\TernaryFilter::make('billable')
-                    ->translateLabel()
+                Tables\Filters\TernaryFilter::make('billable'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

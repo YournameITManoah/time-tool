@@ -43,25 +43,13 @@ class UserTaskResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('user_id')
-                    ->translateLabel()
                     ->relationship('user', 'name')
-                    ->searchable()
-                    ->preload()
-                    ->required()
                     ->hiddenOn(UserUserTasksRelationManager::class),
                 Forms\Components\Select::make('project_id')
-                    ->translateLabel()
                     ->relationship('project', 'name')
-                    ->searchable()
-                    ->preload()
-                    ->required()
                     ->hiddenOn(ProjectUserTasksRelationManager::class),
                 Forms\Components\Select::make('task_id')
-                    ->translateLabel()
                     ->relationship('task', 'name')
-                    ->searchable()
-                    ->preload()
-                    ->required()
                     ->hiddenOn(TaskUserTasksRelationManager::class),
             ]);
     }
@@ -77,50 +65,27 @@ class UserTaskResource extends Resource
             ->recordTitleAttribute('id')
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
-                    ->translateLabel()
                     ->numeric()
-                    ->sortable()
                     ->searchable()
                     ->hiddenOn(UserUserTasksRelationManager::class),
                 Tables\Columns\TextColumn::make('project.name')
-                    ->translateLabel()
                     ->numeric()
-                    ->sortable()
                     ->searchable()
                     ->hiddenOn(ProjectUserTasksRelationManager::class),
                 Tables\Columns\TextColumn::make('task.name')
-                    ->translateLabel()
                     ->numeric()
-                    ->sortable()
                     ->searchable()
                     ->hiddenOn(TaskUserTasksRelationManager::class),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->translateLabel()
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->translateLabel()
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('created_at'),
+                Tables\Columns\TextColumn::make('updated_at'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('user')
-                    ->translateLabel()
-                    ->relationship('user', 'name')
-                    ->searchable()
-                    ->preload(),
+                    ->relationship('user', 'name'),
                 Tables\Filters\SelectFilter::make('project')
-                    ->translateLabel()
-                    ->relationship('project', 'name')
-                    ->searchable()
-                    ->preload(),
+                    ->relationship('project', 'name'),
                 Tables\Filters\SelectFilter::make('task')
-                    ->translateLabel()
                     ->relationship('task', 'name')
-                    ->searchable()
-                    ->preload()
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

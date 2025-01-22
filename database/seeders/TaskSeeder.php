@@ -2,17 +2,18 @@
 
 namespace Database\Seeders;
 
-use App\Models\TimeLog;
+use App\Models\Client;
+use App\Models\Project;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class TimeLogSeeder extends Seeder
+class TaskSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        //TimeLog::factory(50)->create();
+        //
     }
 }
