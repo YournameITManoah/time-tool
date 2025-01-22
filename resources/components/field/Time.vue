@@ -6,6 +6,7 @@
         :label="label"
         prepend-icon="mdi-clock-time-four-outline"
         readonly
+        @click:clear="model = null"
     >
         <v-menu
             v-model="menu"
@@ -17,8 +18,11 @@
                 v-if="menu"
                 v-model="model"
                 :min="min"
+                color="primary"
                 :max="max"
                 format="24hr"
+                scrollable
+                :use-seconds="!!model && model.split(':').length === 3"
                 @update:model-value="menu = false"
             />
         </v-menu>

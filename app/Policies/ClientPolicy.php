@@ -13,6 +13,10 @@ class ClientPolicy
      */
     public function before(User $user, string $ability): bool|null
     {
+        if (str_contains($ability, 'force')) {
+            return null;
+        }
+
         if ($user->isAdmin()) {
             return true;
         }
@@ -25,7 +29,7 @@ class ClientPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -33,7 +37,7 @@ class ClientPolicy
      */
     public function view(User $user, Client $client): bool
     {
-        return false;
+        return true;
     }
 
     /**

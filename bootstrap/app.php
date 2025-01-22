@@ -16,11 +16,12 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->statefulApi();
         $middleware->prependToGroup('api', [\App\Http\Middleware\Localization::class, \App\Http\Middleware\ApiMiddleware::class]);
-        $middleware->appendToGroup('web', [\App\Http\Middleware\Localization::class, \App\Http\Middleware\HandleHybridRequests::class]);
+        $middleware->appendToGroup('web', [\App\Http\Middleware\Localization::class]);
+        $middleware->appendToGroup('hybridly', [\App\Http\Middleware\HandleHybridRequests::class]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->respond(function (Response $response, Throwable $exception, Request $request) {
-            if (!$request->is('api*') && !$request->is('admin*') && in_array($response->getStatusCode(), [401, 403, 404, 500, 503])) {
+            if (!$request->is('api*') && !$request->is('admin*') && !$request->is('livewire*') && in_array($response->getStatusCode(), [401, 403, 404, 500, 503])) {
                 $globals = new \App\Http\Middleware\HandleHybridRequests();
                 return hybridly()->share($globals->share())->view('error', ['status' => $response->getStatusCode()])
                     ->toResponse($request)

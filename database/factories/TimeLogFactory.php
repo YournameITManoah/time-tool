@@ -36,6 +36,7 @@ class TimeLogFactory extends Factory
             'date' => $date->format('Y-m-d'),
             'start_time' => $start->format('H:i'),
             'stop_time' => $end->format('H:i'),
+            'comments' => $this->faker->boolean() ? $this->faker->text() : null,
         ];
     }
 }

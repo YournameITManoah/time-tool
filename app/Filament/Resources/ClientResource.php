@@ -26,7 +26,7 @@ class ClientResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
 
     // The navigation order of the resource
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 40;
 
     // The navigation group of the resource
     protected static ?string $navigationGroup = 'Admin';
@@ -41,16 +41,9 @@ class ClientResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->translateLabel()
-                    ->required()
                     ->maxLength(50)
                     ->unique(ignoreRecord: true),
-                Forms\Components\TextInput::make('email')
-                    ->translateLabel()
-                    ->email()
-                    ->required()
-                    ->maxLength(100)
-                    ->unique(ignoreRecord: true),
+                Forms\Components\TextInput::make('email'),
             ]);
     }
 
@@ -63,35 +56,26 @@ class ClientResource extends Resource
     {
         return $table
             ->recordTitleAttribute('name')
+            ->defaultSort('name', 'asc')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->translateLabel()
-                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
-                    ->translateLabel()
-                    ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->translateLabel()
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->translateLabel()
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('created_at'),
+                Tables\Columns\TextColumn::make('updated_at'),
             ])
             ->filters([
-                //
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }
@@ -118,6 +102,14 @@ class ClientResource extends Resource
             'create' => Pages\CreateClient::route('/create'),
             'edit' => Pages\EditClient::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 
     /**

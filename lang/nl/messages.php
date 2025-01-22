@@ -21,7 +21,7 @@ return [
     'valid_project_hours' => 'De geregistreerde project uren mogen niet hoger zijn dan :max. Nog beschikbaar: :remaining uur.',
     'valid_time_format' => 'Het veld :attribute moet overeenkomen met het formaat H:i of H:i:s.',
     'valid_time_log_frame' => 'Het veld :attribute overlapt met een bestaande tijdregistratie.',
-    'valid_user_task' => 'Je hebt onvoldoende rechten om tijd te registeren voor dit :attribute veld.',
+    'valid_connection' => 'Je hebt onvoldoende rechten om tijd te registeren voor dit :attribute veld.',
     'verify_email_sent' => 'Er is een nieuwe verificatie link gestuurd naar het e-mailadres dat is opgegeven tijdens de registratie.',
     'verify_email_text' => 'Bedankt voor jouw aanmelding! Voordat je begint, verifieer jouw e-mailadres door op de link te klikken die we je zojuist hebben gemaild. Als je de e-mail niet hebt ontvangen, sturen we graag een andere.',
     'welcome' => 'Welkom bij :app!',

@@ -190,6 +190,7 @@ return [
     */
 
     'attributes' => [
+        'comments' => 'Comments',
         'date' => 'Date',
         'email' => 'Email',
         'name' => 'Name',

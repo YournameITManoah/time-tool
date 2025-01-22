@@ -26,7 +26,7 @@ class UserResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
     // The navigation order of the resource
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 50;
 
     // The navigation group of the resource
     protected static ?string $navigationGroup = 'Admin';
@@ -41,32 +41,17 @@ class UserResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->translateLabel()
-                    ->required()
-                    ->maxLength(50)
+                    ->maxLength(length: 50)
                     ->unique(ignoreRecord: true),
-                Forms\Components\TextInput::make('email')
-                    ->translateLabel()
-                    ->email()
-                    ->required()
-                    ->maxLength(100)
-                    ->unique(ignoreRecord: true),
+                Forms\Components\TextInput::make('email'),
                 Forms\Components\TextInput::make('password')
-                    ->translateLabel()
-                    ->password()
-                    ->revealable()
-                    ->required()
                     ->rules([Rules\Password::defaults()]),
                 Forms\Components\TextInput::make('available_hours')
-                    ->translateLabel()
                     ->numeric()
-                    ->required()
                     ->minValue(0)
                     ->maxValue(40),
                 Forms\Components\TextInput::make('planned_hours')
-                    ->translateLabel()
                     ->numeric()
-                    ->required()
                     ->minValue(0)
                     ->maxValue(40)
                     ->lte('available_hours')
@@ -84,44 +69,28 @@ class UserResource extends Resource
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->translateLabel()
-                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
-                    ->translateLabel()
-                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('available_hours')
-                    ->translateLabel()
-                    ->numeric()
-                    ->sortable(),
+                    ->numeric(),
                 Tables\Columns\TextColumn::make('planned_hours')
-                    ->translateLabel()
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('role.name')
-                    ->translateLabel()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->translateLabel()
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->translateLabel()
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->numeric(),
+                Tables\Columns\TextColumn::make('role.name'),
+                Tables\Columns\TextColumn::make('created_at'),
+                Tables\Columns\TextColumn::make('updated_at'),
             ])
             ->filters([
-                //
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }
@@ -133,7 +102,7 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\UserTasksRelationManager::class,
+            RelationManagers\ConnectionsRelationManager::class,
         ];
     }
 
@@ -148,6 +117,14 @@ class UserResource extends Resource
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 
     /**

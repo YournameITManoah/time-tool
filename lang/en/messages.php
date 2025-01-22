@@ -21,7 +21,7 @@ return [
     'valid_project_hours' => 'The logged project hours must not be greater than :max. Remaining: :remaining hours.',
     'valid_time_format' => 'The :attribute field must match the format H:i or H:i:s.',
     'valid_time_log_frame' => 'The :attribute field conflicts with an existing time log.',
-    'valid_user_task' => 'You\'re not allowed to log time for the given :attribute field.',
+    'valid_connection' => 'You\'re not allowed to log time for the given :attribute field.',
     'verify_email_sent' => 'A new verification link has been sent to the email address you provided during registration.',
     'verify_email_text' => 'Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.',
     'welcome' => 'Welcome to :app!',

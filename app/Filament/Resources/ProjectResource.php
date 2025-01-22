@@ -11,6 +11,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 /**
  * A project which users can log time for
@@ -24,7 +26,7 @@ class ProjectResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     // The navigation order of the resource
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 30;
 
     // The navigation group of the resource
     protected static ?string $navigationGroup = 'Admin';
@@ -39,27 +41,21 @@ class ProjectResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('client_id')
-                    ->translateLabel()
                     ->relationship('client', 'name')
-                    ->searchable()
-                    ->preload()
-                    ->required()
                     ->hiddenOn(ClientProjectsRelationManager::class),
                 Forms\Components\TextInput::make('name')
-                    ->translateLabel()
-                    ->required()
                     ->maxLength(50),
                 Forms\Components\DatePicker::make('start_date')
-                    ->translateLabel()
+                    ->required(false)
                     ->minDate('today')
                     ->maxDate('+10 years'),
                 Forms\Components\DatePicker::make('end_date')
-                    ->translateLabel()
+                    ->required(false)
                     ->minDate('today')
                     ->maxDate('+10 years')
                     ->afterOrEqual('start_date'),
                 Forms\Components\TextInput::make('available_hours')
-                    ->translateLabel()
+                    ->required(false)
                     ->numeric()
                     ->minValue(0)
                     ->default(null),
@@ -75,53 +71,59 @@ class ProjectResource extends Resource
     {
         return $table
             ->recordTitleAttribute('name')
+            ->defaultSort('start_date', 'asc')
             ->columns([
                 Tables\Columns\TextColumn::make('client.name')
-                    ->translateLabel()
-                    ->sortable()
                     ->searchable()
                     ->hiddenOn(ClientProjectsRelationManager::class),
                 Tables\Columns\TextColumn::make('name')
-                    ->translateLabel()
-                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('start_date')
-                    ->translateLabel()
-                    ->date()
-                    ->sortable(),
+                    ->date(),
                 Tables\Columns\TextColumn::make('end_date')
-                    ->translateLabel()
-                    ->date()
-                    ->sortable(),
+                    ->date(),
                 Tables\Columns\TextColumn::make('available_hours')
-                    ->translateLabel()
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->translateLabel()
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->translateLabel()
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->numeric(),
+                Tables\Columns\IconColumn::make('active')
+                    ->boolean()
+                    ->sortable(false)
+                    ->state(function (Project $record): float {
+                        return ($record->start_date === null || $record->start_date->isBefore('now')) && ($record->end_date === null || $record->end_date->isAfter('now'));
+                    }),
+                Tables\Columns\TextColumn::make('created_at'),
+                Tables\Columns\TextColumn::make('updated_at'),
             ])
             ->filters([
+                Tables\Filters\TernaryFilter::make('active')
+                    ->default()
+                    ->queries(
+                        true: fn(Builder $query) => $query->where(function ($query) {
+                            $query->whereNull('start_date')->orWhereDate('start_date', '<=', now());
+                        })
+                            ->where(function ($query) {
+                                $query->whereNull('end_date')->orWhereDate('end_date', '>=', now());
+                            }),
+                        false: fn(Builder $query) => $query->where(function ($query) {
+                            $query->whereNotNull('start_date')->whereDate('start_date', '>', now());
+                        })
+                            ->orWhere(function ($query) {
+                                $query->whereNotNull('end_date')->whereDate('end_date', '<', now());
+                            }),
+                        blank: fn(Builder $query) => $query,
+                    ),
                 Tables\Filters\SelectFilter::make('client')
-                    ->translateLabel()
                     ->relationship('client', 'name')
-                    ->searchable()
-                    ->preload()
                     ->hiddenOn(ClientProjectsRelationManager::class),
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }
@@ -133,8 +135,7 @@ class ProjectResource extends Resource
     public static function getRelations(): array
     {
         return [
-                //TasksRelationManager::class,
-            RelationManagers\UserTasksRelationManager::class,
+            RelationManagers\ConnectionsRelationManager::class,
         ];
     }
 
@@ -149,6 +150,14 @@ class ProjectResource extends Resource
             'create' => Pages\CreateProject::route('/create'),
             'edit' => Pages\EditProject::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 
     /**

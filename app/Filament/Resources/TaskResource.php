@@ -10,6 +10,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 /**
  * A task which users can log time for
@@ -23,7 +25,7 @@ class TaskResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-list-bullet';
 
     // The navigation order of the resource
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 20;
 
     // The navigation group of the resource
     protected static ?string $navigationGroup = 'Admin';
@@ -38,12 +40,8 @@ class TaskResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->translateLabel()
-                    ->required()
-                    ->maxLength(100),
-                Forms\Components\Toggle::make('billable')
-                    ->translateLabel()
-                    ->required(),
+                    ->maxLength(20),
+                Forms\Components\Toggle::make('billable'),
             ]);
     }
 
@@ -58,33 +56,23 @@ class TaskResource extends Resource
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->translateLabel()
-                    ->sortable()
                     ->searchable(),
                 Tables\Columns\IconColumn::make('billable')
-                    ->translateLabel()
                     ->boolean(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->translateLabel()
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->translateLabel()
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('created_at'),
+                Tables\Columns\TextColumn::make('updated_at'),
             ])
             ->filters([
-                Tables\Filters\TernaryFilter::make('billable')
-                    ->translateLabel()
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }
@@ -96,8 +84,7 @@ class TaskResource extends Resource
     public static function getRelations(): array
     {
         return [
-                //ProjectsRelationManager::class,
-            RelationManagers\UserTasksRelationManager::class,
+            RelationManagers\ConnectionsRelationManager::class,
         ];
     }
 
@@ -112,6 +99,14 @@ class TaskResource extends Resource
             'create' => Pages\CreateTask::route('/create'),
             'edit' => Pages\EditTask::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 
     /**
