@@ -133,6 +133,8 @@ jobs:
                   script: |
                       cd app
 
+                      rm -fr bootstrap/cache
+
                       composer install --prefer-dist -o
 
                       php artisan optimize:clear
