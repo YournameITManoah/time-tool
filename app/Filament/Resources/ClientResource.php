@@ -26,7 +26,7 @@ class ClientResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
 
     // The navigation order of the resource
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 40;
 
     // The navigation group of the resource
     protected static ?string $navigationGroup = 'Admin';
@@ -66,14 +66,16 @@ class ClientResource extends Resource
                 Tables\Columns\TextColumn::make('updated_at'),
             ])
             ->filters([
-                //
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }
@@ -100,6 +102,14 @@ class ClientResource extends Resource
             'create' => Pages\CreateClient::route('/create'),
             'edit' => Pages\EditClient::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 
     /**

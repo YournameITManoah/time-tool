@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -23,6 +24,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     use HasApiTokens;
     use HasFactory;
     use Notifiable;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -67,9 +69,9 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         return $this->hasMany(TimeLog::class);
     }
 
-    public function userTasks(): HasMany
+    public function connections(): HasMany
     {
-        return $this->hasMany(UserTask::class);
+        return $this->hasMany(Connection::class);
     }
 
     public function role(): BelongsTo

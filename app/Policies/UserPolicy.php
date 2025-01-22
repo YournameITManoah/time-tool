@@ -12,6 +12,10 @@ class UserPolicy
      */
     public function before(User $user, string $ability): bool|null
     {
+        if (str_contains($ability, 'force')) {
+            return null;
+        }
+
         if ($user->isAdmin()) {
             return true;
         }

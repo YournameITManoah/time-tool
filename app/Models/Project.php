@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @mixin IdeHelperProject
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Project extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -56,8 +58,8 @@ class Project extends Model
         return $this->hasMany(TimeLog::class);
     }
 
-    public function userTasks(): HasMany
+    public function connections(): HasMany
     {
-        return $this->hasMany(UserTask::class);
+        return $this->hasMany(Connection::class);
     }
 }

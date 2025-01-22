@@ -3,16 +3,20 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\UserTask;
+use App\Models\Connection;
 use Illuminate\Auth\Access\Response;
 
-class UserTaskPolicy
+class ConnectionPolicy
 {
     /**
      * Perform pre-authorization checks.
      */
     public function before(User $user, string $ability): bool|null
     {
+        if (str_contains($ability, 'force')) {
+            return null;
+        }
+
         if ($user->isAdmin()) {
             return true;
         }
@@ -31,9 +35,9 @@ class UserTaskPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, UserTask $userTask): bool
+    public function view(User $user, Connection $connection): bool
     {
-        return false;
+        return $user->id === $connection->user_id;
     }
 
     /**
@@ -47,7 +51,7 @@ class UserTaskPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, UserTask $userTask): bool
+    public function update(User $user, Connection $connection): bool
     {
         return false;
     }
@@ -55,7 +59,7 @@ class UserTaskPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, UserTask $userTask): bool
+    public function delete(User $user, Connection $connection): bool
     {
         return false;
     }
@@ -63,7 +67,7 @@ class UserTaskPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, UserTask $userTask): bool
+    public function restore(User $user, Connection $connection): bool
     {
         return false;
     }
@@ -71,7 +75,7 @@ class UserTaskPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, UserTask $userTask): bool
+    public function forceDelete(User $user, Connection $connection): bool
     {
         return false;
     }

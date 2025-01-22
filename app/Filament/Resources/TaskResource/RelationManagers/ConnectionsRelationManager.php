@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\UserResource\RelationManagers;
+namespace App\Filament\Resources\TaskResource\RelationManagers;
 
-use App\Filament\Resources\UserTaskResource;
+use App\Filament\Resources\ConnectionResource;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -12,18 +12,18 @@ use \Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class UserTasksRelationManager extends RelationManager
+class ConnectionsRelationManager extends RelationManager
 {
-    protected static string $relationship = 'userTasks';
+    protected static string $relationship = 'connections';
 
     public function form(Form $form): Form
     {
-        return UserTaskResource::form($form);
+        return ConnectionResource::form($form);
     }
 
     public function table(Table $table): Table
     {
-        return UserTaskResource::table($table)
+        return ConnectionResource::table($table)
             ->headerActions([
                 Tables\Actions\CreateAction::make(),
             ]);
@@ -31,7 +31,7 @@ class UserTasksRelationManager extends RelationManager
 
     public static function getTitle(Model $ownerRecord, string $pageClass): string
     {
-        return __('User Tasks');
+        return __('Connections');
     }
 
     /**
@@ -40,7 +40,7 @@ class UserTasksRelationManager extends RelationManager
      */
     public static function getModelLabel(): string
     {
-        return __('User Task');
+        return __('Connection');
     }
 
     /**
@@ -49,6 +49,6 @@ class UserTasksRelationManager extends RelationManager
      */
     public static function getPluralModelLabel(): string
     {
-        return __('User Tasks');
+        return __('Connections');
     }
 }

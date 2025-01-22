@@ -33,7 +33,8 @@ class TimeLogApiController extends ApiController
         // -1 means fetch all
         if ($perPage === '-1') {
             $perPage = '1000';
-        };
+        }
+        ;
 
         // Get the time logs of the logged in user
         $timeLogs = TimeLog::query()
@@ -109,5 +110,10 @@ class TimeLogApiController extends ApiController
     {
         // Check if user is authorized
         \Gate::authorize('delete', $timeLog);
+
+        // Delete the time log
+        $timeLog->delete();
+
+        return response()->noContent();
     }
 }

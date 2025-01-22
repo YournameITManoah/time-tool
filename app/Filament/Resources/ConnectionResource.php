@@ -2,12 +2,12 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\TaskResource\RelationManagers\UserTasksRelationManager as TaskUserTasksRelationManager;
-use App\Filament\Resources\UserResource\RelationManagers\UserTasksRelationManager as UserUserTasksRelationManager;
-use App\Filament\Resources\ProjectResource\RelationManagers\UserTasksRelationManager as ProjectUserTasksRelationManager;
-use App\Filament\Resources\UserTaskResource\Pages;
-use App\Filament\Resources\UserTaskResource\RelationManagers;
-use App\Models\UserTask;
+use App\Filament\Resources\TaskResource\RelationManagers\ConnectionsRelationManager as TaskConnectionsRelationManager;
+use App\Filament\Resources\UserResource\RelationManagers\ConnectionsRelationManager as UserConnectionsRelationManager;
+use App\Filament\Resources\ProjectResource\RelationManagers\ConnectionsRelationManager as ProjectConnectionsRelationManager;
+use App\Filament\Resources\ConnectionResource\Pages;
+use App\Filament\Resources\ConnectionResource\RelationManagers;
+use App\Models\Connection;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -19,16 +19,16 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 /**
  * A task belonging to a specific user within a specific project
  */
-class UserTaskResource extends Resource
+class ConnectionResource extends Resource
 {
     // The related model
-    protected static ?string $model = UserTask::class;
+    protected static ?string $model = Connection::class;
 
     // The icon to use in the navigation menu
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-link';
 
     // The navigation order of the resource
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 60;
 
     // The navigation group of the resource
     protected static ?string $navigationGroup = 'Admin';
@@ -44,13 +44,13 @@ class UserTaskResource extends Resource
             ->schema([
                 Forms\Components\Select::make('user_id')
                     ->relationship('user', 'name')
-                    ->hiddenOn(UserUserTasksRelationManager::class),
+                    ->hiddenOn(UserConnectionsRelationManager::class),
                 Forms\Components\Select::make('project_id')
                     ->relationship('project', 'name')
-                    ->hiddenOn(ProjectUserTasksRelationManager::class),
+                    ->hiddenOn(ProjectConnectionsRelationManager::class),
                 Forms\Components\Select::make('task_id')
                     ->relationship('task', 'name')
-                    ->hiddenOn(TaskUserTasksRelationManager::class),
+                    ->hiddenOn(TaskConnectionsRelationManager::class),
             ]);
     }
 
@@ -67,15 +67,15 @@ class UserTaskResource extends Resource
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
                     ->searchable()
-                    ->hiddenOn(UserUserTasksRelationManager::class),
+                    ->hiddenOn(UserConnectionsRelationManager::class),
                 Tables\Columns\TextColumn::make('project.name')
                     ->numeric()
                     ->searchable()
-                    ->hiddenOn(ProjectUserTasksRelationManager::class),
+                    ->hiddenOn(ProjectConnectionsRelationManager::class),
                 Tables\Columns\TextColumn::make('task.name')
                     ->numeric()
                     ->searchable()
-                    ->hiddenOn(TaskUserTasksRelationManager::class),
+                    ->hiddenOn(TaskConnectionsRelationManager::class),
                 Tables\Columns\TextColumn::make('created_at'),
                 Tables\Columns\TextColumn::make('updated_at'),
             ])
@@ -115,9 +115,9 @@ class UserTaskResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUserTasks::route('/'),
-            'create' => Pages\CreateUserTask::route('/create'),
-            'edit' => Pages\EditUserTask::route('/{record}/edit'),
+            'index' => Pages\ListConnections::route('/'),
+            'create' => Pages\CreateConnection::route('/create'),
+            'edit' => Pages\EditConnection::route('/{record}/edit'),
         ];
     }
 
@@ -127,7 +127,7 @@ class UserTaskResource extends Resource
      */
     public static function getModelLabel(): string
     {
-        return __('User Task');
+        return __('Connection');
     }
 
     /**
@@ -136,6 +136,6 @@ class UserTaskResource extends Resource
      */
     public static function getPluralModelLabel(): string
     {
-        return __('User Tasks');
+        return __('Connections');
     }
 }
