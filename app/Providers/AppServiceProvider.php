@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\User;
+use Filament\Tables\Columns\Column;
 use Filament\Tables\Table;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Gate;
@@ -13,11 +14,21 @@ use Illuminate\Foundation\Console\CliDumper;
 use Illuminate\Foundation\Http\HtmlDumper;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules;
 use Illuminate\Support\ServiceProvider;
 use BezhanSalleh\FilamentLanguageSwitch\LanguageSwitch;
 use Dedoc\Scramble\Scramble;
 use Dedoc\Scramble\Support\Generator\OpenApi;
 use Dedoc\Scramble\Support\Generator\SecurityScheme;
+use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\Field;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 
 /**
  * Apply a mapping callback receiving key and value as arguments.
@@ -75,9 +86,68 @@ class AppServiceProvider extends ServiceProvider
                 : $rule;
         });
 
+        // Filament form default
+        Field::configureUsing(function (Field $field) {
+            $field->translateLabel()->required();
+        });
+
+        Checkbox::configureUsing(function (Checkbox $checkbox) {
+            $checkbox->required(false);
+        });
+
+        TextInput::configureUsing(function (TextInput $text) {
+            $text->maxLength(100);
+
+            if ($text->getName() === 'email') {
+                $text->email()->unique(ignoreRecord: true);
+            }
+
+            if ($text->getName() === 'password') {
+                $text->password()->revealable();
+            }
+        });
+
+        Select::configureUsing(function (Select $select) {
+            $select->searchable()->preload();
+        });
+
+        Textarea::configureUsing(function (Textarea $textarea) {
+            $textarea->autosize()->maxLength(255);
+        });
+
         // Filament table defaults
         Table::configureUsing(function (Table $table): void {
             $table->deferLoading()->extremePaginationLinks();
+        });
+
+        Column::configureUsing(function (Column $column): void {
+            $column->translateLabel()->sortable()->wrap();
+        });
+
+        TextColumn::configureUsing(function (TextColumn $column): void {
+            if ($column->getName() === 'email') {
+                $column->icon('heroicon-m-envelope')->copyable();
+            }
+
+            if ($column->isCopyable($column->getState())) {
+                $column->tooltip(__('Click to copy'));
+            }
+
+            if (in_array($column->getName(), ['created_at', 'updated_at'])) {
+                $column->since()->dateTimeTooltip()->toggleable(isToggledHiddenByDefault: true);
+            }
+        });
+
+        Filter::configureUsing(function (Filter $filter): void {
+            $filter->translateLabel();
+        });
+
+        SelectFilter::configureUsing(function (SelectFilter $filter): void {
+            $filter->searchable()->preload();
+        });
+
+        TernaryFilter::configureUsing(function (SelectFilter $filter): void {
+            $filter->searchable(false);
         });
 
         // Filament LanguageSwitch configuration
@@ -91,12 +161,8 @@ class AppServiceProvider extends ServiceProvider
                 ));
         });
 
-        Gate::define('viewApiDocs', function (User $user) {
-            return true;
-        });
-
+        // API docs defaults
         Scramble::ignoreDefaultRoutes();
-
         Scramble::afterOpenApiGenerated(function (OpenApi $openApi) {
             $openApi->secure(SecurityScheme::http('bearer'));
         });

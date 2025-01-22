@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\TimeLogResource\Pages;
 use App\Models\TimeLog;
 use App\Rules\UniqueTimeLogFrame;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
 use App\Filament\Exports\TimeLogExporter;
@@ -41,37 +42,21 @@ class TimeLogResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('user_id')
-                    ->translateLabel()
-                    ->relationship('user', 'name')
-                    ->searchable()
-                    ->preload()
-                    ->required(),
+                    ->relationship('user', 'name'),
                 Forms\Components\Select::make('project_id')
-                    ->translateLabel()
-                    ->relationship('project', 'name')
-                    ->searchable()
-                    ->preload()
-                    ->required(),
+                    ->relationship('project', 'name'),
                 Forms\Components\Select::make('task_id')
-                    ->translateLabel()
-                    ->relationship('task', 'name')
-                    ->searchable()
-                    ->preload()
-                    ->required(),
+                    ->relationship('task', 'name'),
                 Forms\Components\DatePicker::make('date')
-                    ->translateLabel()
-                    ->required()
                     ->minDate('1 year ago')
                     ->maxDate('today'),
                 Forms\Components\TimePicker::make('start_time')
-                    ->translateLabel()
-                    ->seconds(false)
-                    ->required(),
+                    ->seconds(false),
                 Forms\Components\TimePicker::make('stop_time')
-                    ->translateLabel()
                     ->seconds(false)
-                    ->required()
                     ->after('start_time'),
+                Forms\Components\Textarea::make('comments')
+                    ->required(false)
             ]);
     }
 
@@ -84,59 +69,34 @@ class TimeLogResource extends Resource
     {
         return $table
             ->recordTitleAttribute('id')
+            ->defaultSort('date', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
-                    ->translateLabel()
-                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('project.name')
-                    ->translateLabel()
-                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('task.name')
-                    ->translateLabel()
                     ->numeric()
-                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('date')
-                    ->translateLabel()
-                    ->date()
-                    ->sortable(),
+                    ->formatStateUsing(fn(string $state): string => Carbon::parse($state)->diffInDays() < 1 ? __('Today') : Carbon::parse($state)->diffForHumans(['options' => \Carbon\CarbonInterface::ONE_DAY_WORDS]))
+                    ->dateTooltip(),
                 Tables\Columns\TextColumn::make('start_time')
-                    ->translateLabel()
-                    ->time('h:i')
-                    ->sortable(),
+                    ->time('h:i'),
                 Tables\Columns\TextColumn::make('stop_time')
-                    ->translateLabel()
-                    ->time('H:i')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->translateLabel()
-                    ->dateTime()
-                    ->sortable()
+                    ->time('H:i'),
+                Tables\Columns\TextColumn::make('comments')
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->translateLabel()
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('created_at'),
+                Tables\Columns\TextColumn::make('updated_at'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('user')
-                    ->translateLabel()
-                    ->relationship('user', 'name')
-                    ->searchable()
-                    ->preload(),
+                    ->relationship('user', 'name'),
                 Tables\Filters\SelectFilter::make('project')
-                    ->translateLabel()
-                    ->relationship('project', 'name')
-                    ->searchable()
-                    ->preload(),
+                    ->relationship('project', 'name'),
                 Tables\Filters\SelectFilter::make('task')
-                    ->translateLabel()
                     ->relationship('task', 'name')
-                    ->searchable()
-                    ->preload()
             ])
             ->headerActions([
                 Tables\Actions\ExportAction::make()
