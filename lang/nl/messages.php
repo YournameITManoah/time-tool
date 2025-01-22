@@ -15,6 +15,7 @@ return [
     'confirm_timer_cancel' => 'Je staat op het punt om de timer te annuleren. Weet je het zeker?',
     'error_session_expired' => 'Jouw sessie is verlopen. Ververs alsjeblieft de pagina.',
     'forgot_password_text' => 'Wachtwoord vergeten? Geen probleem. Laat ons je e-mailadres weten en we zullen je een e-mail sturen met een link om je wachtwoord te resetten en een nieuwe in te stellen.',
+    'time_log_removed' => 'Tijdregistratie is succesvol verwijderd.',
     'time_log_saved' => 'Tijdregistratie is succesvol opgeslagen.',
     'timer_running' => 'Je hebt nog een timer lopen. Weet je het zeker?',
     'unexpected_error_text' => 'Er is iets fout gegaan. Probeer het later opnieuw of ga terug naar het begin.',

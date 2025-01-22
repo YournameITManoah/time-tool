@@ -15,6 +15,7 @@ return [
     'confirm_timer_cancel' => 'You are about to cancel the timer. Are you sure?',
     'error_session_expired' => 'Your session has expired. Please refresh the page.',
     'forgot_password_text' => 'Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.',
+    'time_log_removed' => 'Time log has been removed successfully.',
     'time_log_saved' => 'Time log has been saved successfully.',
     'timer_running' => 'You still have a timer running. Are you sure?',
     'unexpected_error_text' => 'Something went wrong. Please try again later or go back home.',

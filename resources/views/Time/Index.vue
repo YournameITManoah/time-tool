@@ -13,6 +13,8 @@
                     :items-length="totalItems"
                     :loading="isLoadingTable"
                     :search="search"
+                    hover
+                    @click:row="onRowClick"
                     @update:options="loadItems"
                 >
                     <template #top>
@@ -54,11 +56,19 @@
                             <v-btn
                                 tabindex="-1"
                                 size="small"
-                                aria-hidden="true"
                                 variant="text"
+                                :disabled="removing === item.id"
                                 icon="mdi-pencil"
                             />
                         </router-link>
+                        <v-btn
+                            size="small"
+                            variant="text"
+                            color="error"
+                            icon="mdi-delete"
+                            :loading="removing === item.id"
+                            @click.stop="removeTimeLog(item.id)"
+                        />
                     </template>
                 </v-data-table-server>
             </v-card-text>
@@ -71,6 +81,7 @@ import type {
     PagedResult,
     TimeLogExtended,
     VDataTableOptions,
+    VDataTableRow,
 } from '@/types'
 
 import { emitter } from '~/resources/application/mitt'
@@ -114,6 +125,28 @@ const items = ref<TimeLogExtended[]>([])
 const totalItems = ref(0)
 const isLoadingTable = ref(false)
 const search = ref<string | undefined>()
+
+const removing = ref(0)
+const removeTimeLog = async (id: number) => {
+    removing.value = id
+    try {
+        await router.navigate({
+            method: 'DELETE',
+            url: route('time-log.destroy', { time_log: id }),
+        })
+    } catch (e) {
+        console.error(e)
+    } finally {
+        removing.value = 0
+    }
+}
+
+const onRowClick = async (
+    _e: PointerEvent,
+    row: VDataTableRow<(typeof headers.value)[0], TimeLogExtended>,
+) => {
+    router.navigate({ url: route('time-log.edit', { time_log: row.item.id }) })
+}
 
 const loadItems = async ({
     itemsPerPage,
