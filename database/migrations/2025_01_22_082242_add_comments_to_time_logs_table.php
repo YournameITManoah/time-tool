@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('time_logs', function (Blueprint $table) {
-            $table->string('comments', 255)->nullable();
+            $table->string('comments', 200)->nullable();
         });
     }
 

@@ -112,7 +112,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Textarea::configureUsing(function (Textarea $textarea) {
-            $textarea->autosize()->maxLength(255);
+            $textarea->autosize()->maxLength(200);
         });
 
         // Filament table defaults

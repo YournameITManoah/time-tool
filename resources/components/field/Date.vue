@@ -1,5 +1,5 @@
 <template>
-    <v-date-input v-model="local" />
+    <v-date-input v-model="local" hide-actions />
 </template>
 <script setup lang="ts">
 defineOptions({ name: 'FieldDate' })

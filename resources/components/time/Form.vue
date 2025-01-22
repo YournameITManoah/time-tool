@@ -108,6 +108,7 @@
                                     :min="form.fields.start_time"
                                     :rules="[isRequired]"
                                     :error-messages="form.errors.stop_time"
+                                    clearable
                                 />
                             </v-col>
                         </template>
@@ -247,7 +248,7 @@ onMounted(() => {
 const resetFields = () => {
     form.fields.project_id = props.defaults?.project_id
     form.fields.task_id = props.defaults?.task_id
-    form.fields.date = props.defaults?.date
+    form.fields.date = props.defaults?.date ?? today
     form.fields.start_time = formatTime(props.defaults?.start_time)
     form.fields.stop_time = formatTime(props.defaults?.stop_time)
 }

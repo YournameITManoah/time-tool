@@ -39,7 +39,8 @@ class TaskResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name'),
+                Forms\Components\TextInput::make('name')
+                    ->maxLength(20),
                 Forms\Components\Toggle::make('billable'),
             ]);
     }
@@ -83,7 +84,6 @@ class TaskResource extends Resource
     public static function getRelations(): array
     {
         return [
-                //ProjectsRelationManager::class,
             RelationManagers\ConnectionsRelationManager::class,
         ];
     }
