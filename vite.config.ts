@@ -7,5 +7,5 @@ export default defineConfig({
         hybridly({ vueComponents: { directoryAsNamespace: true } }),
         vuetify({ autoImport: true }),
     ],
-    server: { cors: true },
+    //server: { cors: true },
 })

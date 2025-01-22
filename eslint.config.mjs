@@ -6,7 +6,7 @@ import globals from 'globals'
 import tslint from 'typescript-eslint'
 
 export default [
-    { ignores: ['node_modules/', 'vendor/', 'public/'] },
+    { ignores: ['node_modules/', 'vendor/', 'public/', '.hybridly/'] },
     { files: ['**/*.{js,mjs,cjs,ts,mts,vue}'] },
     { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
     {
