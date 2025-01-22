@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\User;
-use App\Models\UserTask;
+use App\Models\Connection;
 use Illuminate\Http\Request;
 
 class AuthTokenApiController extends ApiController

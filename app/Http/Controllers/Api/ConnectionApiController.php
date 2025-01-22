@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\UserTask;
+use App\Models\Connection;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class UserTaskApiController extends ApiController
+class ConnectionApiController extends ApiController
 {
     /**
      * Display a listing of the resource.
      *
-     * @response LengthAwarePaginator<UserTask>
+     * @response LengthAwarePaginator<Connection>
      */
     public function index(Request $request)
     {
         // Check if user is authorized
-        \Gate::authorize('viewAny', UserTask::class);
+        \Gate::authorize('viewAny', Connection::class);
 
         // Defaults
         $defaultLimit = 10;
@@ -27,8 +27,8 @@ class UserTaskApiController extends ApiController
             $perPage = '1000';
         }
 
-        // Get the user tasks of the logged in user
-        $userTasks = UserTask::query()
+        // Get the connections of the logged in user
+        $connections = Connection::query()
             ->where('user_id', \Auth::id())
             ->with(['project:id,name,client_id,start_date,end_date', 'task:id,name', 'project.client:id,name'])
             ->whereHas('project', function ($query) {
@@ -44,6 +44,6 @@ class UserTaskApiController extends ApiController
             })
             ->paginate($perPage);
 
-        return $userTasks;
+        return $connections;
     }
 }

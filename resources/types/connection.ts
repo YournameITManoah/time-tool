@@ -1,13 +1,13 @@
 import type { Resource } from './general'
 
-export interface UserTask extends Resource {
+export interface Connection extends Resource {
     id: number
     project_id: number
     task_id: number
     user_id: number
 }
 
-export interface UserTaskExtended extends UserTask {
+export interface ConnectionExtended extends Connection {
     project: {
         client: { id: number; name: string }
         client_id: number

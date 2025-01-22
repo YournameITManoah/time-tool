@@ -10,8 +10,8 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::table('time_logs', function (Blueprint $table) {
-            $table->string('comments', 200)->nullable();
+        Schema::table('clients', function (Blueprint $table) {
+            $table->softDeletes();
         });
     }
 
@@ -20,8 +20,8 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::table('time_logs', function (Blueprint $table) {
-            $table->dropColumn('comments');
+        Schema::table('clients', function (Blueprint $table) {
+            $table->dropSoftDeletes();
         });
     }
 };

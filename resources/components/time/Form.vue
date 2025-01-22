@@ -19,7 +19,7 @@
                                 :label="t('Project')"
                                 :items="projects"
                                 :error-messages="form.errors.project_id"
-                                :loading="fetchingUserTasks"
+                                :loading="fetchingConnections"
                                 :disabled="
                                     variant === 'timer' &&
                                     !!defaults?.start_time
@@ -108,6 +108,7 @@
                                     :min="form.fields.start_time"
                                     :rules="[isRequired]"
                                     :error-messages="form.errors.stop_time"
+                                    clearable
                                 />
                             </v-col>
                         </template>
@@ -165,7 +166,7 @@
     </v-card>
 </template>
 <script lang="ts" setup>
-import type { TimeLog, UserTaskExtended, VFormRef } from '@/types'
+import type { ConnectionExtended, TimeLog, VFormRef } from '@/types'
 
 import { useTimeLogStore } from '@/stores/time-log'
 
@@ -209,37 +210,37 @@ const sizes = computed(() => {
     }
 })
 
-// User tasks
-const fetchingUserTasks = ref(false)
+// Connections
+const fetchingConnections = ref(false)
 const timeLogStore = useTimeLogStore()
-const userTasks = ref<UserTaskExtended[]>([])
-const fetchUserTasks = async () => {
+const connections = ref<ConnectionExtended[]>([])
+const fetchConnections = async () => {
     try {
-        fetchingUserTasks.value = true
-        userTasks.value = await timeLogStore.getUserTasks()
+        fetchingConnections.value = true
+        connections.value = await timeLogStore.getConnections()
     } catch (e) {
         console.error(e)
     } finally {
-        fetchingUserTasks.value = false
+        fetchingConnections.value = false
     }
 }
 
 // Projects of current user
 const projects = computed(() => {
-    return userTasks.value
-        .map((ut) => ut.project)
+    return connections.value
+        .map((c) => c.project)
         .filter((p, i, s) => s.findIndex((p2) => p2.id === p.id) === i)
 })
 
 // Tasks of selected project
 const tasks = computed(() => {
-    return userTasks.value
+    return connections.value
         .filter((ut) => ut.project.id === form.fields.project_id)
         .map((ut) => ut.task)
 })
 
 onMounted(() => {
-    fetchUserTasks()
+    fetchConnections()
     resetFields()
 })
 
@@ -247,7 +248,7 @@ onMounted(() => {
 const resetFields = () => {
     form.fields.project_id = props.defaults?.project_id
     form.fields.task_id = props.defaults?.task_id
-    form.fields.date = props.defaults?.date
+    form.fields.date = props.defaults?.date ?? today
     form.fields.start_time = formatTime(props.defaults?.start_time)
     form.fields.stop_time = formatTime(props.defaults?.stop_time)
 }

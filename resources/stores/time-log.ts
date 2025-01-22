@@ -1,33 +1,33 @@
-import type { PagedResult, UserTaskExtended } from '@/types'
+import type { ConnectionExtended, PagedResult } from '@/types'
 
 import { defineStore } from 'pinia'
 
 interface State {
-    userTasks: UserTaskExtended[]
+    connections: ConnectionExtended[]
 }
 
 export const useTimeLogStore = defineStore('time-log', {
     actions: {
         /**
-         * Fetch all user tasks trough API
+         * Fetch all connections trough API
          * @param refresh Whether to refresh when already fetched
-         * @returns The user tasks
+         * @returns The connections
          */
-        async getUserTasks(refresh?: boolean) {
-            if (this.userTasks.length && !refresh) return this.userTasks
+        async getConnections(refresh?: boolean) {
+            if (this.connections.length && !refresh) return this.connections
             try {
                 const result = await window.axios<
-                    PagedResult<UserTaskExtended>
-                >('/api/user-task', { params: { limit: -1 } })
+                    PagedResult<ConnectionExtended>
+                >('/api/connection', { params: { limit: -1 } })
 
-                this.userTasks = result.data.data
+                this.connections = result.data.data
             } catch (e) {
                 console.error(e)
             }
-            return this.userTasks
+            return this.connections
         },
     },
     state: (): State => ({
-        userTasks: [],
+        connections: [],
     }),
 })

@@ -12,6 +12,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 /**
  * A project which users can log time for
@@ -25,7 +26,7 @@ class ProjectResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     // The navigation order of the resource
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 30;
 
     // The navigation group of the resource
     protected static ?string $navigationGroup = 'Admin';
@@ -113,13 +114,16 @@ class ProjectResource extends Resource
                 Tables\Filters\SelectFilter::make('client')
                     ->relationship('client', 'name')
                     ->hiddenOn(ClientProjectsRelationManager::class),
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }
@@ -131,8 +135,7 @@ class ProjectResource extends Resource
     public static function getRelations(): array
     {
         return [
-                //TasksRelationManager::class,
-            RelationManagers\UserTasksRelationManager::class,
+            RelationManagers\ConnectionsRelationManager::class,
         ];
     }
 
@@ -147,6 +150,14 @@ class ProjectResource extends Resource
             'create' => Pages\CreateProject::route('/create'),
             'edit' => Pages\EditProject::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 
     /**

@@ -27,7 +27,7 @@ class TimeLogResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-clock';
 
     // The navigation order of the resource
-    protected static ?int $navigationSort = 0;
+    protected static ?int $navigationSort = 10;
 
     // The navigation group of the resource
     protected static ?string $navigationGroup = 'Admin';

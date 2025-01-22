@@ -7,7 +7,7 @@ use App\Models\Project;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class UserTaskSeeder extends Seeder
+class ConnectionSeeder extends Seeder
 {
     /**
      * Run the database seeds.

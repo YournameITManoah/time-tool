@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @mixin IdeHelperUserTask
+ * @mixin IdeHelperConnection
  */
-class UserTask extends Model
+class Connection extends Model
 {
     use HasFactory;
 

@@ -7,16 +7,16 @@ use Illuminate\Support\Str;
 use App\Models\Project;
 use App\Models\Task;
 use App\Models\User;
-use App\Models\UserTask;
+use App\Models\Connection;
 
-class UserTaskFactory extends Factory
+class ConnectionFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = UserTask::class;
+    protected $model = Connection::class;
 
     /**
      * Define the model's default state.

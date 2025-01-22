@@ -2,44 +2,36 @@
 
 namespace App\Filament\Resources\ProjectResource\RelationManagers;
 
-use App\Filament\Resources\TaskResource;
+use App\Filament\Resources\ConnectionResource;
 use Filament\Forms;
 use Filament\Forms\Form;
-use \Illuminate\Database\Eloquent\Model;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use \Illuminate\Database\Eloquent\Model;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class TasksRelationManager extends RelationManager
+class ConnectionsRelationManager extends RelationManager
 {
-    protected static string $relationship = 'tasks';
+    protected static string $relationship = 'connections';
 
     public function form(Form $form): Form
     {
-        return TaskResource::form($form);
+        return ConnectionResource::form($form);
     }
 
     public function table(Table $table): Table
     {
-        return TaskResource::table($table)
+        return ConnectionResource::table($table)
             ->headerActions([
-                Tables\Actions\AttachAction::make()->preloadRecordSelect(),
-            ])
-            ->actions([
-                Tables\Actions\DetachAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DetachBulkAction::make(),
-                ]),
+                Tables\Actions\CreateAction::make(),
             ]);
     }
 
     public static function getTitle(Model $ownerRecord, string $pageClass): string
     {
-        return __('Tasks');
+        return __('Connections');
     }
 
     /**
@@ -48,7 +40,7 @@ class TasksRelationManager extends RelationManager
      */
     public static function getModelLabel(): string
     {
-        return __('Task');
+        return __('Connection');
     }
 
     /**
@@ -57,6 +49,6 @@ class TasksRelationManager extends RelationManager
      */
     public static function getPluralModelLabel(): string
     {
-        return __('Tasks');
+        return __('Connections');
     }
 }
