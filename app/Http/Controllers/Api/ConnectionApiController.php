@@ -12,6 +12,7 @@ class ConnectionApiController extends ApiController
      * Display a listing of the resource.
      *
      * @response LengthAwarePaginator<Connection>
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index(Request $request)
     {
