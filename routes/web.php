@@ -25,9 +25,9 @@ Route::middleware(['hybridly'])->group(function () {
 
     // Protected routes
     Route::middleware(['auth', 'verified'])->group(function () {
-        Route::get('/dashboard', [DashboardController::class, 'index'])
+        Route::get('dashboard', [DashboardController::class, 'index'])
             ->name('dashboard');
-        Route::resource('/time-log', TimeLogController::class)->except('show');
+        Route::resource('time-logs', TimeLogController::class)->except('show');
     });
 
     require __DIR__ . '/auth.php';

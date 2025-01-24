@@ -22,10 +22,10 @@ const props = defineProps<{
 
 const breadcrumbs = computed(() => [
     { href: route('dashboard'), title: t('Dashboard') },
-    { href: route('time-log.index'), title: t('Time Logs') },
+    { href: route('time-logs.index'), title: t('Time Logs') },
     {
         current: true,
-        href: route(`time-log.${props.edit ? 'edit' : 'create'}`, {
+        href: route(`time-logs.${props.edit ? 'edit' : 'create'}`, {
             time_log: props.edit?.id,
         }),
         title: props.edit ? t('Edit') : t('Create'),
