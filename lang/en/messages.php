@@ -12,7 +12,7 @@ return [
     */
 
     'confirm_password_text' => 'This is a secure area of the application. Please confirm your password before continuing.',
-    'confirm_timer_cancel' => 'You are about to cancel the timer. Are you sure?',
+    'confirm_timer_discard' => 'You are about to discard the timer. Are you sure?',
     'error_session_expired' => 'Your session has expired. Please refresh the page.',
     'forgot_password_text' => 'Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.',
     'time_log_removed' => 'Time log has been removed successfully.',
