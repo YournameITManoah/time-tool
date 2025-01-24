@@ -8,5 +8,8 @@ export function useValidation() {
     const isRequired = (v: boolean | number | string) =>
         (v !== undefined && v !== null && v !== '') || t('validation.required')
 
-    return { isRequired }
+    const maxLength = (max: number) => (v: string) =>
+        !v || v.length <= max || t('validation.max.string', { max })
+
+    return { isRequired, maxLength }
 }

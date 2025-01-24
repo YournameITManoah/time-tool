@@ -102,7 +102,20 @@
                                     :min="form.fields.start_time"
                                     :rules="[isRequired]"
                                     :error-messages="form.errors.stop_time"
-                                    clearable
+                                />
+                            </v-col>
+                            <v-col
+                                :cols="sizes.cols"
+                                :sm="sizes.sm"
+                                :md="sizes.md"
+                                :lg="sizes.lg"
+                            >
+                                <field-textarea
+                                    v-model="form.fields.comments"
+                                    :label="t('Comments')"
+                                    :error-messages="form.errors.comments"
+                                    prepend-icon="mdi-comment-outline"
+                                    :max="200"
                                 />
                             </v-col>
                         </template>
@@ -276,10 +289,12 @@ const resetFields = () => {
     form.fields.date = props.defaults?.date ?? today
     form.fields.start_time = formatTime(props.defaults?.start_time)
     form.fields.stop_time = formatTime(props.defaults?.stop_time)
+    form.fields.comments = props.defaults?.comments
 }
 
 const form = useForm<Partial<TimeLog>>({
     fields: {
+        comments: undefined,
         date: undefined,
         project_id: undefined,
         start_time: undefined,
