@@ -18,7 +18,7 @@ export const useTimeLogStore = defineStore('time-log', {
             try {
                 const result = await window.axios<
                     PagedResult<ConnectionExtended>
-                >('/api/connection', { params: { limit: -1 } })
+                >(route('api.connections.index'), { params: { limit: -1 } })
 
                 this.connections = result.data.data
             } catch (e) {

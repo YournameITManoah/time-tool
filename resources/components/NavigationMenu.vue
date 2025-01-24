@@ -54,8 +54,8 @@ const navigation = computed((): NavItem[] => {
             title: t('Dashboard'),
         },
         {
-            current: router.matches('time-log.index'),
-            href: route('time-log.index'),
+            current: router.matches('time-logs.index'),
+            href: route('time-logs.index'),
             icon: 'mdi-clock-outline',
             title: t('Time Logs'),
         },
