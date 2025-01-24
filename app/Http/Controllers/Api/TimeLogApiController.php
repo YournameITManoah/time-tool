@@ -13,6 +13,7 @@ class TimeLogApiController extends ApiController
      * Display a listing of the resource.
      *
      * @response LengthAwarePaginator<TimeLog>
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index(Request $request)
     {
@@ -51,6 +52,8 @@ class TimeLogApiController extends ApiController
 
     /**
      * Store a newly created resource in storage.
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(StoreTimeLogRequest $request)
     {
@@ -76,6 +79,8 @@ class TimeLogApiController extends ApiController
 
     /**
      * Display the specified resource.
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function show(Request $request, TimeLog $timeLog)
     {
@@ -88,6 +93,8 @@ class TimeLogApiController extends ApiController
 
     /**
      * Update the specified resource in storage.
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(StoreTimeLogRequest $request, TimeLog $timeLog)
     {
@@ -105,6 +112,8 @@ class TimeLogApiController extends ApiController
 
     /**
      * Remove the specified resource from storage.
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy(Request $request, TimeLog $timeLog)
     {
