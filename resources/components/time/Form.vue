@@ -20,10 +20,7 @@
                                 :items="projects"
                                 :error-messages="form.errors.project_id"
                                 :loading="fetchingConnections"
-                                :disabled="
-                                    variant === 'timer' &&
-                                    !!defaults?.start_time
-                                "
+                                :disabled="timerActive"
                                 prepend-icon="mdi-cards-variant"
                                 item-title="name"
                                 item-value="id"
@@ -53,10 +50,7 @@
                                 :items="tasks"
                                 :error-messages="form.errors.task_id"
                                 prepend-icon="mdi-format-list-bulleted"
-                                :disabled="
-                                    variant === 'timer' &&
-                                    !!defaults?.start_time
-                                "
+                                :disabled="timerActive"
                                 item-title="name"
                                 item-value="id"
                                 :rules="[isRequired]"
@@ -113,7 +107,25 @@
                             </v-col>
                         </template>
                     </v-row>
-                    <v-row v-if="variant !== 'timer'">
+                    <v-row v-if="variant === 'timer'">
+                        <v-alert
+                            v-if="timerErrors.length"
+                            type="error"
+                            color="error"
+                            variant="outlined"
+                            :title="t('Errors')"
+                        >
+                            <ul class="pl-5">
+                                <li
+                                    v-for="timerError in timerErrors"
+                                    :key="timerError"
+                                >
+                                    {{ timerError }}
+                                </li>
+                            </ul>
+                        </v-alert>
+                    </v-row>
+                    <v-row v-else>
                         <v-spacer />
                         <router-link
                             :disabled="form.processing"
@@ -140,26 +152,26 @@
             </v-card-text>
             <v-card-actions v-if="variant === 'timer'">
                 <dialog-confirm
-                    v-model="confirmCancel"
-                    :message="t('messages.confirm_timer_cancel')"
-                    :on-confirm="() => emit('cancel')"
+                    v-model="confirmDiscard"
+                    :message="t('messages.confirm_timer_discard')"
+                    :confirm-label="t('Discard')"
+                    :on-confirm="() => emit('discard')"
                 />
-                <v-spacer></v-spacer>
                 <v-btn
+                    v-if="timerActive"
                     color="error"
                     :disabled="form.processing"
-                    :text="t('Cancel')"
-                    @click="
-                        defaults?.start_time
-                            ? (confirmCancel = true)
-                            : emit('cancel')
-                    "
+                    prepend-icon="mdi-cancel"
+                    :text="t('Discard')"
+                    @click="confirmDiscard = true"
                 />
+                <v-spacer />
                 <v-btn
                     color="primary"
                     type="submit"
+                    :prepend-icon="timerActive ? 'mdi-stop' : 'mdi-play'"
                     :loading="form.processing"
-                    :text="defaults?.start_time ? t('Save') : t('Start')"
+                    :text="timerActive ? t('Stop') : t('Start')"
                 />
             </v-card-actions>
         </v-form>
@@ -177,7 +189,7 @@ defineOptions({ name: 'TimeLogForm' })
 const { t } = useI18n()
 const { isRequired } = useValidation()
 
-const confirmCancel = ref(false)
+const confirmDiscard = ref(false)
 
 const props = withDefaults(
     defineProps<{
@@ -191,7 +203,7 @@ const props = withDefaults(
 )
 
 const emit = defineEmits<{
-    (e: 'cancel'): void
+    (e: 'discard'): void
     (e: 'start', project: number, task: number): void
 }>()
 
@@ -199,6 +211,18 @@ const emit = defineEmits<{
 const today = new Date().toISOString()
 const lastYear = new Date()
 lastYear.setFullYear(new Date().getFullYear() - 1)
+
+const timerActive = computed(() => {
+    return props.variant === 'timer' && !!props.defaults?.start_time
+})
+
+const timerErrors = computed(() => {
+    return [
+        form.errors.date,
+        form.errors.start_time,
+        form.errors.stop_time,
+    ].filter((e): e is string => !!e)
+})
 
 // Column sizes
 const sizes = computed(() => {
@@ -285,7 +309,6 @@ const submit = async () => {
         // If timer, stop the timer
         if (props.variant === 'timer') {
             form.fields.stop_time = new Date().toLocaleTimeString('nl')
-            emit('cancel')
         }
         form.submit().then((res) => {
             // If submission was successful, reset the form
@@ -294,6 +317,7 @@ const submit = async () => {
                     .length
             ) {
                 resetFields()
+                emit('discard')
                 emitter.emit('time-log:refresh', true)
             }
         })

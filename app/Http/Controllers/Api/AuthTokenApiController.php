@@ -20,7 +20,7 @@ class AuthTokenApiController extends ApiController
         $request->validate(['api_key' => 'required|string', 'email' => 'required|email']);
 
         if ($request->api_key != \Config::get('app.api_key')) {
-            return response()->json(['message' => 'No valid api key provided.'], 401);
+            abort(401, 'No valid api key provided.');
         }
 
         $user = User::where('email', $request->email)->firstOrFail();

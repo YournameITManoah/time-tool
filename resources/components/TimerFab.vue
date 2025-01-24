@@ -1,7 +1,7 @@
 <template>
     <v-fab location="bottom end" color="primary" icon size="x-large" app appear>
         <template v-if="duration">{{ duration }}</template>
-        <v-icon v-else icon="mdi-clock" />
+        <v-icon v-else icon="mdi-timer" />
         <v-menu
             v-model="menu"
             activator="parent"
@@ -11,7 +11,7 @@
                 :defaults="timeLog"
                 variant="timer"
                 style="max-width: 400px"
-                @cancel="resetTimer"
+                @discard="resetTimer"
                 @start="startTimer"
             />
         </v-menu>

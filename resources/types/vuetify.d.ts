@@ -8,6 +8,12 @@ export interface VDataTableOptions {
     sortBy: { key: string; order: 'asc' | 'desc' }[]
 }
 
+export interface VDataTableRow<C, T> {
+    columns: C[]
+    index: number
+    item: T
+}
+
 export interface VFormRef {
     errors: VFormRefError[]
     isDisabled: boolean
