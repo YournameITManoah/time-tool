@@ -20,7 +20,7 @@
                                 :items="projects"
                                 :error-messages="form.errors.project_id"
                                 :loading="fetchingConnections"
-                                :disabled="timerActive"
+                                :readonly="timerActive"
                                 prepend-icon="mdi-cards-variant"
                                 item-title="name"
                                 item-value="id"
@@ -50,7 +50,7 @@
                                 :items="tasks"
                                 :error-messages="form.errors.task_id"
                                 prepend-icon="mdi-format-list-bulleted"
-                                :disabled="timerActive"
+                                :readonly="timerActive"
                                 item-title="name"
                                 item-value="id"
                                 :rules="[isRequired]"
@@ -204,6 +204,7 @@ const props = withDefaults(
 
 const emit = defineEmits<{
     (e: 'discard'): void
+    (e: 'processing', val: boolean): void
     (e: 'start', project: number, task: number): void
 }>()
 
@@ -290,6 +291,13 @@ const form = useForm<Partial<TimeLog>>({
         time_log: props.defaults?.id,
     }),
 })
+
+watch(
+    () => form.processing,
+    (val) => {
+        emit('processing', val)
+    },
+)
 
 const formRef = ref<null | VFormRef>(null)
 const submit = async () => {
