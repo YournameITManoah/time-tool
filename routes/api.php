@@ -15,8 +15,8 @@ Route::post('auth/token', [AuthTokenApiController::class, 'store']);
 
 // Protected api routes
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::resource('time-log', TimeLogApiController::class, ['as' => 'api'])->except(['create', 'edit']);
-    Route::resource('connection', ConnectionApiController::class, ['as' => 'api'])->only('index');
+    Route::resource('time-logs', TimeLogApiController::class, ['as' => 'api'])->except(['create', 'edit']);
+    Route::resource('connections', ConnectionApiController::class, ['as' => 'api'])->only('index');
 });
 
 // Fallback to 404 Not Found should be the last route

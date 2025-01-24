@@ -63,10 +63,10 @@
                 </v-toolbar-title>
                 <v-spacer />
                 <router-link
-                    :href="route('time-log.create')"
+                    :href="route('time-logs.create')"
                     :aria-label="t('Create Time Log')"
                     :aria-current="
-                        router.matches('time-log.create') ? 'page' : false
+                        router.matches('time-logs.create') ? 'page' : false
                     "
                 >
                     <v-btn icon tabindex="-1" aria-hidden="true">

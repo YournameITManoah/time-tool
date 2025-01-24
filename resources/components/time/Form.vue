@@ -129,7 +129,7 @@
                         <v-spacer />
                         <router-link
                             :disabled="form.processing"
-                            :href="route('time-log.index')"
+                            :href="route('time-logs.index')"
                             :aria-label="t('Cancel')"
                         >
                             <v-btn
@@ -286,7 +286,7 @@ const form = useForm<Partial<TimeLog>>({
         task_id: undefined,
     },
     method: props.variant === 'edit' ? 'PATCH' : 'POST',
-    url: route(`time-log.${props.variant === 'edit' ? 'update' : 'store'}`, {
+    url: route(`time-logs.${props.variant === 'edit' ? 'update' : 'store'}`, {
         time_log: props.defaults?.id,
     }),
 })

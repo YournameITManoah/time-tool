@@ -21,7 +21,7 @@
                         <v-row no-gutters>
                             <v-spacer />
                             <router-link
-                                :href="route('time-log.create')"
+                                :href="route('time-logs.create')"
                                 :aria-label="t('Create Time Log')"
                             >
                                 <v-btn
@@ -49,7 +49,7 @@
                     <template #item.actions="{ item }">
                         <router-link
                             :href="
-                                route('time-log.edit', { time_log: item.id })
+                                route('time-logs.edit', { time_log: item.id })
                             "
                             :aria-label="t('Edit Time Log')"
                         >
@@ -101,7 +101,7 @@ const breadcrumbs = computed(() => [
     },
     {
         current: true,
-        href: route('time-log.index'),
+        href: route('time-logs.index'),
         title: t('Time Logs'),
     },
 ])
@@ -132,7 +132,7 @@ const removeTimeLog = async (id: number) => {
     try {
         await router.navigate({
             method: 'DELETE',
-            url: route('time-log.destroy', { time_log: id }),
+            url: route('time-logs.destroy', { time_log: id }),
         })
     } catch (e) {
         console.error(e)
@@ -145,7 +145,7 @@ const onRowClick = async (
     _e: PointerEvent,
     row: VDataTableRow<(typeof headers.value)[0], TimeLogExtended>,
 ) => {
-    router.navigate({ url: route('time-log.edit', { time_log: row.item.id }) })
+    router.navigate({ url: route('time-logs.edit', { time_log: row.item.id }) })
 }
 
 const loadItems = async ({
@@ -165,7 +165,7 @@ const loadItems = async ({
 
     try {
         const result = await window.axios<PagedResult<TimeLogExtended>>(
-            '/api/time-log',
+            route('api.time-logs.index'),
             { params },
         )
         items.value = result.data.data

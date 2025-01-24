@@ -51,7 +51,7 @@ class TimeLogController extends Controller
         ]);
 
         // Redirect to overview
-        return redirect()->route('time-log.index')->with('success', __('messages.time_log_saved'));
+        return redirect()->route('time-logs.index')->with('success', __('messages.time_log_saved'));
     }
 
     /**
