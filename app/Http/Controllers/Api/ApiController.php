@@ -7,24 +7,19 @@ use Dedoc\Scramble\Attributes\ExcludeRouteFromDocs;
 
 class ApiController extends Controller
 {
-    private function response(int $status, string $message)
-    {
-        return response()->json(['message' => $message], $status);
-    }
-
     public function unauthorized()
     {
-        return $this->response(401, 'Unauthenticated.');
+        abort(401, 'Unauthorized.');
     }
 
     public function forbidden()
     {
-        return $this->response(403, 'Forbidden.');
+        abort(403, 'Forbidden.');
     }
 
     #[ExcludeRouteFromDocs]
     public function notFound()
     {
-        return $this->response(404, 'Not Found.');
+        abort(404, 'Not Found.');
     }
 }

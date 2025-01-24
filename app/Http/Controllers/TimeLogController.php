@@ -96,9 +96,9 @@ class TimeLogController extends Controller
         Gate::authorize('delete', $timeLog);
 
         // Delete time log
-        $timLog->delete();
+        $timeLog->delete();
 
         // Redirect back with success message
-        return redirect()->route('time-log.index');
+        return redirect()->back()->with('success', __('messages.time_log_removed'));
     }
 }
