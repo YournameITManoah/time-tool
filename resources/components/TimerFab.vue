@@ -5,6 +5,7 @@
         <v-menu
             v-model="menu"
             activator="parent"
+            :persistent="processing"
             :close-on-content-click="false"
         >
             <time-form
@@ -12,6 +13,7 @@
                 variant="timer"
                 style="max-width: 400px"
                 @discard="resetTimer"
+                @processing="processing = $event"
                 @start="startTimer"
             />
         </v-menu>
@@ -32,6 +34,7 @@ const { startTime, timeLog } = storeToRefs(useTimerStore())
 // Local State
 const menu = ref(false)
 const duration = ref('')
+const processing = ref(false)
 const interval = ref<null | number>(null)
 const date = new Date().toLocaleDateString('en-CA')
 
