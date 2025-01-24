@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/valid-v-slot -->
 <template layout>
     <div>
         <div class="mb-5">
@@ -46,6 +47,14 @@
                     <template #item.duration="{ item }">
                         {{ formatDuration(item.start_time, item.stop_time) }}
                     </template>
+                    <template #item.comments="{ item }">
+                        <div
+                            class="text-truncate"
+                            :style="`min-width: 93px; max-width: ${mdAndDown ? 10 : lgAndDown ? 20 : 40}vw`"
+                        >
+                            {{ item.comments }}
+                        </div>
+                    </template>
                     <template #item.actions="{ item }">
                         <router-link
                             :href="
@@ -84,11 +93,14 @@ import type {
     VDataTableRow,
 } from '@/types'
 
+import { useDisplay } from 'vuetify'
+
 import { emitter } from '~/resources/application/mitt'
 
 defineOptions({ name: 'TimeLogIndex' })
 
 const { t } = useI18n()
+const { lgAndDown, mdAndDown } = useDisplay()
 
 useHead({ title: t('Time Logs') })
 
@@ -115,6 +127,7 @@ const headers = computed(() => {
         { key: 'start_time', title: t('Start time') },
         { key: 'stop_time', title: t('Stop time') },
         { key: 'duration', sortable: false, title: t('Duration') },
+        { key: 'comments', sortable: false, title: t('Comments') },
         { key: 'actions', sortable: false, title: t('Actions') },
     ]
         .filter((h) => h.key !== groupBy.value[0]?.key)

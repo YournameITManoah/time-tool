@@ -1,6 +1,7 @@
 import type { Resource } from './general'
 
 export interface TimeLog extends Resource {
+    comments: null | string
     date: string
     description: string
     id: number
