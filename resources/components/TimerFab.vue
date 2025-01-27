@@ -43,6 +43,7 @@ onMounted(() => {
         startTimer(
             timeLog.value.project_id,
             timeLog.value.task_id,
+            timeLog.value.comments,
             startTime.value,
         )
     }
@@ -59,12 +60,18 @@ const calculateDuration = () => {
 }
 
 // Start the timer
-const startTimer = (project: number, task: number, start?: Date) => {
+const startTimer = (
+    project: number,
+    task: number,
+    comments?: string,
+    start?: Date,
+) => {
     // Set time log properties
     startTime.value = start ?? new Date()
     timeLog.value.start_time = startTime.value.toLocaleTimeString('nl')
     timeLog.value.project_id = project
     timeLog.value.task_id = task
+    timeLog.value.comments = comments
 
     // (re)start interval
     if (interval.value !== null) window.clearInterval(interval.value)
