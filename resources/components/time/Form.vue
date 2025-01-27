@@ -105,20 +105,35 @@
                                 />
                             </v-col>
                             <v-col
+                                v-if="duration"
                                 :cols="sizes.cols"
                                 :sm="sizes.sm"
                                 :md="sizes.md"
                                 :lg="sizes.lg"
                             >
-                                <field-textarea
-                                    v-model="form.fields.comments"
-                                    :label="t('Comments')"
-                                    :error-messages="form.errors.comments"
-                                    prepend-icon="mdi-comment-outline"
-                                    :max="200"
+                                <v-text-field
+                                    :model-value="duration"
+                                    readonly
+                                    :label="t('Duration')"
+                                    prepend-icon="mdi-timer-sand"
                                 />
                             </v-col>
                         </template>
+                        <v-col
+                            :cols="sizes.cols"
+                            :sm="sizes.sm"
+                            :md="sizes.md"
+                            :lg="sizes.lg"
+                        >
+                            <field-textarea
+                                v-model="form.fields.comments"
+                                :label="t('Comments')"
+                                :readonly="timerActive"
+                                :error-messages="form.errors.comments"
+                                prepend-icon="mdi-comment-outline"
+                                :max="200"
+                            />
+                        </v-col>
                     </v-row>
                     <v-row v-if="variant === 'timer'">
                         <v-alert
@@ -225,6 +240,13 @@ const emit = defineEmits<{
 const today = new Date().toISOString()
 const lastYear = new Date()
 lastYear.setFullYear(new Date().getFullYear() - 1)
+
+const { formatDuration } = useDate()
+
+const duration = computed(() => {
+    if (!form.fields.start_time || !form.fields.stop_time) return
+    return formatDuration(form.fields.start_time, form.fields.stop_time)
+})
 
 const timerActive = computed(() => {
     return props.variant === 'timer' && !!props.defaults?.start_time
