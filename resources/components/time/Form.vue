@@ -129,6 +129,7 @@
                                 v-model="form.fields.comments"
                                 :label="t('Comments')"
                                 :readonly="timerActive"
+                                :clearable="!timerActive"
                                 :error-messages="form.errors.comments"
                                 prepend-icon="mdi-comment-outline"
                                 :max="200"
@@ -233,7 +234,7 @@ const props = withDefaults(
 const emit = defineEmits<{
     (e: 'discard'): void
     (e: 'processing', val: boolean): void
-    (e: 'start', project: number, task: number): void
+    (e: 'start', project: number, task: number, comments?: string): void
 }>()
 
 // Dates
@@ -348,7 +349,12 @@ const submit = async () => {
         form.fields.project_id &&
         form.fields.task_id
     ) {
-        emit('start', form.fields.project_id, form.fields.task_id)
+        emit(
+            'start',
+            form.fields.project_id,
+            form.fields.task_id,
+            form.fields.comments,
+        )
         resetFields()
     } else {
         // If timer, stop the timer
