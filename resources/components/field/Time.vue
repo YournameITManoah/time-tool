@@ -21,10 +21,10 @@
                 :max="max"
                 format="24hr"
                 scrollable
-                :use-seconds="!!model && model.split(':').length === 3"
-                @update:hour="updateHours"
-                @update:minute="updateMinutes"
-                @update:model-value="menu = false"
+                class="time-picker"
+                :use-seconds="useSeconds"
+                @update:minute="menu = useSeconds"
+                @update:second="menu = false"
             />
         </v-menu>
     </v-text-field>
@@ -41,15 +41,12 @@ defineProps<{
 const menu = ref(false)
 const model = defineModel<null | string>({ default: null })
 
-const updateHours = (val: number) => {
-    const [, m, s] = model.value?.split(':') ?? ['00', '00']
-    model.value = `${pad(val)}:${m}${s ? `:${s}` : ''}`
-}
-
-const updateMinutes = (val: number) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [h, _m, s] = model.value?.split(':') ?? ['00', '00']
-    model.value = `${h}:${pad(val)}${s ? `:${s}` : ''}`
-    if (!s) menu.value = false
-}
+const useSeconds = computed(() => {
+    return !!model.value && model.value.split(':').length === 3
+})
 </script>
+<style lang="scss" scoped>
+.time-picker :deep(.v-time-picker-controls__time__btn__active) {
+    color: rgb(var(--v-theme-primary));
+}
+</style>
