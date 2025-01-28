@@ -35,7 +35,7 @@ class StoreTimeLogRequest extends FormRequest
             'date' => [$this->getMethod() == 'PATCH' ? 'sometimes' : 'required', 'date', 'after_or_equal:1 year ago', 'before_or_equal:now', new ValidProjectDate($current)],
             'start_time' => [$this->getMethod() == 'PATCH' ? 'sometimes' : 'required', new Time(), new UniqueTimeLogFrame($current)],
             'stop_time' => [$this->getMethod() == 'PATCH' ? 'sometimes' : 'required', new Time(), 'after:start_time', new UniqueTimeLogFrame($current)],
-            'comments' => ['sometimes', 'string', 'max:200']
+            'comments' => ['sometimes', 'nullable', 'string', 'max:200']
         ];
     }
 }
