@@ -1,5 +1,5 @@
 <template>
-    <v-app :class="{ 'bg-grey-lighten-4': !theme.current.value.dark }">
+    <v-app :class="{ 'bg-grey-lighten-4': !vuetifyTheme.current.value.dark }">
         <v-sonner
             position="top-right"
             expand
@@ -13,6 +13,8 @@
     </v-app>
 </template>
 <script setup lang="ts">
+import { useGeneralStore } from '@/stores/general'
+import { storeToRefs } from 'pinia'
 import { useTheme } from 'vuetify'
 import { toast, VSonner } from 'vuetify-sonner'
 import 'vuetify-sonner/style.css'
@@ -21,10 +23,11 @@ defineOptions({ name: 'AppLayout' })
 
 // Composables
 const i18n = useI18n()
-const theme = useTheme()
+const vuetifyTheme = useTheme()
 const flash = useProperty('flash')
 const locale = useProperty('locale')
 const prefersDark = usePreferredDark()
+const { theme } = storeToRefs(useGeneralStore())
 
 // When notifications change, display them
 watchImmediate(flash, (val) => {
@@ -42,7 +45,15 @@ watchImmediate(locale, (val) => {
 })
 
 // Update internal theme
+const setTheme = (dark: boolean) => {
+    vuetifyTheme.global.name.value = dark ? 'dark' : 'light'
+}
+
 watchImmediate(prefersDark, (val) => {
-    theme.global.name.value = val ? 'dark' : 'light'
+    if (theme.value === 'system') setTheme(val)
+})
+
+watchImmediate(theme, (val) => {
+    setTheme(val === 'system' ? prefersDark.value : val === 'dark')
 })
 </script>

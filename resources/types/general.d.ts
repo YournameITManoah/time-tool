@@ -12,7 +12,7 @@ export interface PagedResult<T> {
     from: number
     last_page: number
     last_page_url: string
-    links: { active: boolean; label: string; url: null | string; }[]
+    links: { active: boolean; label: string; url: null | string }[]
     next_page_url: null | string
     path: string
     per_page: number
@@ -25,3 +25,5 @@ export interface Resource {
     created_at: string
     updated_at: string
 }
+
+export type Theme = 'dark' | 'light' | 'system'
