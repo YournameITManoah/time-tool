@@ -45,6 +45,7 @@
                 <navigation-menu @close="closeNav" />
                 <template #append>
                     <v-list>
+                        <theme-switcher variant="list" />
                         <locale-switcher variant="list" />
                     </v-list>
                 </template>

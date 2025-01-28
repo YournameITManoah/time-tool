@@ -27,11 +27,19 @@
                 </v-btn>
                 <v-list-item
                     v-else
-                    :prepend-avatar="`/img/flags/${currentLocale.value}.svg`"
                     :title="currentLocale.title"
                     :disabled="form.processing"
                     v-bind="menuProps"
-                />
+                >
+                    <template #prepend>
+                        <v-avatar size="small" aria-hidden="true" start>
+                            <v-img
+                                :src="`/img/flags/${currentLocale.value}.svg`"
+                                :alt="currentLocale.title"
+                            />
+                        </v-avatar>
+                    </template>
+                </v-list-item>
             </template>
             <v-list>
                 <template v-for="item in localeList" :key="item.value">
