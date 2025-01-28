@@ -6,6 +6,7 @@ export function useTheme() {
     const vuetifyTheme = useVuetifyTheme()
     const prefersDark = usePreferredDark()
 
+    // Set Vuetify theme
     const setTheme = (theme: Theme) => {
         if (theme == 'system') {
             vuetifyTheme.global.name.value = prefersDark.value

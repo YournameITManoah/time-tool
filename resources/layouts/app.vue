@@ -39,8 +39,9 @@ watchImmediate(locale, (val) => {
     i18n.locale.value = val
 })
 
-const { current, prefersDark, setTheme } = useTheme()
+// Update internal theme
 const { theme } = storeToRefs(useGeneralStore())
+const { current, prefersDark, setTheme } = useTheme()
 
 watchImmediate(prefersDark, () => {
     setTheme(theme.value)

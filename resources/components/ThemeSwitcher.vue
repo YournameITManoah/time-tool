@@ -42,6 +42,10 @@ import { storeToRefs } from 'pinia'
 const { t } = useI18n()
 const { theme } = storeToRefs(useGeneralStore())
 
+defineProps<{
+    variant: 'button' | 'list'
+}>()
+
 const themes = computed((): { title: string; value: Theme }[] => {
     return [
         { title: t('Light theme'), value: 'light' },
@@ -49,10 +53,6 @@ const themes = computed((): { title: string; value: Theme }[] => {
         { title: t('System theme'), value: 'system' },
     ]
 })
-
-defineProps<{
-    variant: 'button' | 'list'
-}>()
 
 const currentTheme = useArrayFind(themes, (t) => t.value === theme.value)
 
