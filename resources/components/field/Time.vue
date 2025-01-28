@@ -46,6 +46,7 @@ const useSeconds = computed(() => {
 })
 </script>
 <style lang="scss" scoped>
+// Fix for https://github.com/vuetifyjs/vuetify/pull/20926
 .time-picker :deep(.v-time-picker-controls__time__btn__active) {
     color: rgb(var(--v-theme-primary));
 }
