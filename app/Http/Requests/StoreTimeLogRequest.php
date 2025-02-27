@@ -32,7 +32,7 @@ class StoreTimeLogRequest extends FormRequest
                 new MaxProjectHours($current)
             ],
             'task_id' => [$this->getMethod() == 'PATCH' ? 'sometimes' : 'required', 'integer', new ValidConnection()],
-            'date' => [$this->getMethod() == 'PATCH' ? 'sometimes' : 'required', 'date', 'after_or_equal:1 year ago', 'before_or_equal:now', new ValidProjectDate($current)],
+            'date' => [$this->getMethod() == 'PATCH' ? 'sometimes' : 'required', 'date_format:Y-m-d', 'after_or_equal:1 year ago', 'before_or_equal:now', new ValidProjectDate($current)],
             'start_time' => [$this->getMethod() == 'PATCH' ? 'sometimes' : 'required', new Time(), new UniqueTimeLogFrame($current)],
             'stop_time' => [$this->getMethod() == 'PATCH' ? 'sometimes' : 'required', new Time(), 'after:start_time', new UniqueTimeLogFrame($current)],
             'comments' => ['sometimes', 'nullable', 'string', 'max:200']
