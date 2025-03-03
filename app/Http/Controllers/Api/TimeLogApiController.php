@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\TimeLog;
 use App\Http\Requests\StoreTimeLogRequest;
 use Illuminate\Http\Request;
+use Dedoc\Scramble\Attributes\HeaderParameter;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class TimeLogApiController extends ApiController
@@ -15,6 +16,7 @@ class TimeLogApiController extends ApiController
      * @response LengthAwarePaginator<TimeLog>
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
+    #[HeaderParameter('Accept-Language', description: 'The preferred language.', type: 'string', default: 'en-US,en;q=0.7', example: 'nl,en-US;q=0.7,en;q=0.3')]
     public function index(Request $request)
     {
         // Check if user is authorized
@@ -55,6 +57,7 @@ class TimeLogApiController extends ApiController
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
+    #[HeaderParameter('Accept-Language', description: 'The preferred language.', type: 'string', default: 'en-US,en;q=0.7', example: 'nl,en-US;q=0.7,en;q=0.3')]
     public function store(StoreTimeLogRequest $request)
     {
         // Check if user is authorized
@@ -82,6 +85,7 @@ class TimeLogApiController extends ApiController
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
+    #[HeaderParameter('Accept-Language', description: 'The preferred language.', type: 'string', default: 'en-US,en;q=0.7', example: 'nl,en-US;q=0.7,en;q=0.3')]
     public function show(Request $request, TimeLog $timeLog)
     {
         // Check if user is authorized
@@ -96,6 +100,7 @@ class TimeLogApiController extends ApiController
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
+    #[HeaderParameter('Accept-Language', description: 'The preferred language.', type: 'string', default: 'en-US,en;q=0.7', example: 'nl,en-US;q=0.7,en;q=0.3')]
     public function update(StoreTimeLogRequest $request, TimeLog $timeLog)
     {
         // Check if user is authorized
@@ -115,6 +120,7 @@ class TimeLogApiController extends ApiController
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
+    #[HeaderParameter('Accept-Language', description: 'The preferred language.', type: 'string', default: 'en-US,en;q=0.7', example: 'nl,en-US;q=0.7,en;q=0.3')]
     public function destroy(Request $request, TimeLog $timeLog)
     {
         // Check if user is authorized

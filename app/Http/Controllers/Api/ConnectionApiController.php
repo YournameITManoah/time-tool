@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Connection;
 use Illuminate\Http\Request;
+use Dedoc\Scramble\Attributes\HeaderParameter;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class ConnectionApiController extends ApiController
@@ -14,6 +15,7 @@ class ConnectionApiController extends ApiController
      * @response LengthAwarePaginator<Connection>
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
+    #[HeaderParameter('Accept-Language', description: 'The preferred language.', type: 'string', default: 'en-US,en;q=0.7', example: 'nl,en-US;q=0.7,en;q=0.3')]
     public function index(Request $request)
     {
         // Check if user is authorized
