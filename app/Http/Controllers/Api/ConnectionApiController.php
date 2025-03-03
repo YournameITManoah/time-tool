@@ -15,7 +15,7 @@ class ConnectionApiController extends ApiController
      * @response LengthAwarePaginator<Connection>
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    #[HeaderParameter('Accept-Language', description: 'The preferred language.', type: 'string', default: 'en-US,en;q=0.7', example: 'nl,en-US;q=0.7,en;q=0.3')]
+    #[HeaderParameter('Accept-Language', description: 'The preferred language.', type: 'string', default: 'system locale', example: 'nl,en-US;q=0.7,en;q=0.3')]
     public function index(Request $request)
     {
         // Check if user is authorized

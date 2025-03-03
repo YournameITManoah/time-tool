@@ -16,7 +16,7 @@ class TimeLogApiController extends ApiController
      * @response LengthAwarePaginator<TimeLog>
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    #[HeaderParameter('Accept-Language', description: 'The preferred language.', type: 'string', default: 'en-US,en;q=0.7', example: 'nl,en-US;q=0.7,en;q=0.3')]
+    #[HeaderParameter('Accept-Language', description: 'The preferred language.', type: 'string', default: 'system locale', example: 'nl,en-US;q=0.7,en;q=0.3')]
     public function index(Request $request)
     {
         // Check if user is authorized
@@ -57,7 +57,7 @@ class TimeLogApiController extends ApiController
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    #[HeaderParameter('Accept-Language', description: 'The preferred language.', type: 'string', default: 'en-US,en;q=0.7', example: 'nl,en-US;q=0.7,en;q=0.3')]
+    #[HeaderParameter('Accept-Language', description: 'The preferred language.', type: 'string', default: 'system locale', example: 'nl,en-US;q=0.7,en;q=0.3')]
     public function store(StoreTimeLogRequest $request)
     {
         // Check if user is authorized
@@ -85,7 +85,7 @@ class TimeLogApiController extends ApiController
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    #[HeaderParameter('Accept-Language', description: 'The preferred language.', type: 'string', default: 'en-US,en;q=0.7', example: 'nl,en-US;q=0.7,en;q=0.3')]
+    #[HeaderParameter('Accept-Language', description: 'The preferred language.', type: 'string', default: 'system locale', example: 'nl,en-US;q=0.7,en;q=0.3')]
     public function show(Request $request, TimeLog $timeLog)
     {
         // Check if user is authorized
@@ -100,7 +100,7 @@ class TimeLogApiController extends ApiController
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    #[HeaderParameter('Accept-Language', description: 'The preferred language.', type: 'string', default: 'en-US,en;q=0.7', example: 'nl,en-US;q=0.7,en;q=0.3')]
+    #[HeaderParameter('Accept-Language', description: 'The preferred language.', type: 'string', default: 'system locale', example: 'nl,en-US;q=0.7,en;q=0.3')]
     public function update(StoreTimeLogRequest $request, TimeLog $timeLog)
     {
         // Check if user is authorized
@@ -120,7 +120,7 @@ class TimeLogApiController extends ApiController
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    #[HeaderParameter('Accept-Language', description: 'The preferred language.', type: 'string', default: 'en-US,en;q=0.7', example: 'nl,en-US;q=0.7,en;q=0.3')]
+    #[HeaderParameter('Accept-Language', description: 'The preferred language.', type: 'string', default: 'system locale', example: 'nl,en-US;q=0.7,en;q=0.3')]
     public function destroy(Request $request, TimeLog $timeLog)
     {
         // Check if user is authorized

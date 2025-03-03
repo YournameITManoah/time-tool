@@ -15,7 +15,7 @@ class AuthTokenApiController extends ApiController
      *
      * @unauthenticated
      */
-    #[HeaderParameter('Accept-Language', description: 'The preferred language.', type: 'string', default: 'en-US,en;q=0.7', example: 'nl,en-US;q=0.7,en;q=0.3')]
+    #[HeaderParameter('Accept-Language', description: 'The preferred language.', type: 'string', default: 'system locale', example: 'nl,en-US;q=0.7,en;q=0.3')]
     public function store(Request $request)
     {
         $request->validate(['api_key' => 'required|string', 'email' => 'required|email']);
